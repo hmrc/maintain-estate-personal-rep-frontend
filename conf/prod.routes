@@ -1,5 +1,5 @@
 # Add all the application routes to the app.routes file
-->         /maintain-estate-personal-rep-frontend                    app.Routes
+->         /maintain-an-estate/personal-representative                   app.Routes
 ->         /                          health.Routes
 ->     	   /template                  template.Routes
 
