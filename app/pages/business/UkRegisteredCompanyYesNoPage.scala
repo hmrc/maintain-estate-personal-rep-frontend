@@ -14,20 +14,26 @@
  * limitations under the License.
  */
 
-package navigation
+package pages.business
 
-import models._
-import pages._
-import play.api.mvc.Call
+import models.UserAnswers
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-trait Navigator {
+import scala.util.Try
 
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call
+case object UkRegisteredCompanyYesNoPage extends QuestionPage[Boolean] {
 
-  def yesNoNav(ua: UserAnswers, fromPage: QuestionPage[Boolean], yesCall: => Call, noCall: => Call): Call = {
-    ua.get(fromPage)
-      .map(if (_) yesCall else noCall)
-      .getOrElse(controllers.routes.SessionExpiredController.onPageLoad())
+  override def path: JsPath = basePath \ toString
+
+  override def toString: String = "ukRegisteredCompanyYesNo"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
+    value match {
+      case Some(false) =>
+        userAnswers.remove(UtrPage)
+      case _ =>
+        super.cleanup(value, userAnswers)
+    }
   }
-
 }

@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package navigation
+package forms
 
-import models._
-import pages._
-import play.api.mvc.Call
+import forms.mappings.Mappings
+import javax.inject.Inject
+import models.IndividualOrBusiness
+import play.api.data.Form
 
-trait Navigator {
+class IndividualOrBusinessFormProvider @Inject() extends Mappings {
 
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call
-
-  def yesNoNav(ua: UserAnswers, fromPage: QuestionPage[Boolean], yesCall: => Call, noCall: => Call): Call = {
-    ua.get(fromPage)
-      .map(if (_) yesCall else noCall)
-      .getOrElse(controllers.routes.SessionExpiredController.onPageLoad())
-  }
-
+  def apply(): Form[IndividualOrBusiness] =
+    Form(
+      "value" -> enumerable[IndividualOrBusiness]("individualOrBusiness.error.required")
+    )
 }

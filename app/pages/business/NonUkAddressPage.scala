@@ -14,20 +14,15 @@
  * limitations under the License.
  */
 
-package navigation
+package pages.business
 
-import models._
-import pages._
-import play.api.mvc.Call
+import models.NonUkAddress
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-trait Navigator {
+case object NonUkAddressPage extends QuestionPage[NonUkAddress] {
 
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call
+  override def path: JsPath = basePath \ toString
 
-  def yesNoNav(ua: UserAnswers, fromPage: QuestionPage[Boolean], yesCall: => Call, noCall: => Call): Call = {
-    ua.get(fromPage)
-      .map(if (_) yesCall else noCall)
-      .getOrElse(controllers.routes.SessionExpiredController.onPageLoad())
-  }
-
+  override def toString: String = "nonUkAddress"
 }

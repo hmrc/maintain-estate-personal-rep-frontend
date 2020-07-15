@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package navigation
+package forms
 
-import models._
-import pages._
-import play.api.mvc.Call
+import forms.mappings.{Mappings, Validation}
+import javax.inject.Inject
+import play.api.data.Form
 
-trait Navigator {
+class TelephoneNumberFormProvider @Inject() extends Mappings {
 
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call
-
-  def yesNoNav(ua: UserAnswers, fromPage: QuestionPage[Boolean], yesCall: => Call, noCall: => Call): Call = {
-    ua.get(fromPage)
-      .map(if (_) yesCall else noCall)
-      .getOrElse(controllers.routes.SessionExpiredController.onPageLoad())
-  }
-
+  def withPrefix(prefix: String): Form[String] =
+    Form(
+      "value" -> text(s"$prefix.error.required")
+        .verifying(
+          firstError(
+            isNotEmpty("value", s"$prefix.error.required"),
+            regexp(Validation.telephoneRegex, s"$prefix.error.invalid")
+          )
+        )
+    )
 }

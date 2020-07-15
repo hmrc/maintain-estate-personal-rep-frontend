@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-package navigation
+package config.annotations;
 
-import models._
-import pages._
-import play.api.mvc.Call
+import com.google.inject.BindingAnnotation;
 
-trait Navigator {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call
-
-  def yesNoNav(ua: UserAnswers, fromPage: QuestionPage[Boolean], yesCall: => Call, noCall: => Call): Call = {
-    ua.get(fromPage)
-      .map(if (_) yesCall else noCall)
-      .getOrElse(controllers.routes.SessionExpiredController.onPageLoad())
-  }
-
-}
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD})
+@BindingAnnotation
+public @interface Business {}

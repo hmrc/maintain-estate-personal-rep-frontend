@@ -14,20 +14,26 @@
  * limitations under the License.
  */
 
-package navigation
+package models
 
-import models._
-import pages._
-import play.api.mvc.Call
+import viewmodels.RadioOption
 
-trait Navigator {
+sealed trait IndividualOrBusiness
 
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call
+object IndividualOrBusiness extends Enumerable.Implicits {
 
-  def yesNoNav(ua: UserAnswers, fromPage: QuestionPage[Boolean], yesCall: => Call, noCall: => Call): Call = {
-    ua.get(fromPage)
-      .map(if (_) yesCall else noCall)
-      .getOrElse(controllers.routes.SessionExpiredController.onPageLoad())
+  case object Individual extends WithName("individual") with IndividualOrBusiness
+  case object Business extends WithName("business") with IndividualOrBusiness
+
+  val values: Set[IndividualOrBusiness] = Set(
+    Individual, Business
+  )
+
+  val options: Set[RadioOption] = values.map {
+    value =>
+      RadioOption("individualOrBusiness", value.toString)
   }
 
+  implicit val enumerable: Enumerable[IndividualOrBusiness] =
+    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
 }

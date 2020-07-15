@@ -14,20 +14,10 @@
  * limitations under the License.
  */
 
-package navigation
+package pages
 
-import models._
-import pages._
-import play.api.mvc.Call
+import play.api.libs.json.JsPath
 
-trait Navigator {
-
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call
-
-  def yesNoNav(ua: UserAnswers, fromPage: QuestionPage[Boolean], yesCall: => Call, noCall: => Call): Call = {
-    ua.get(fromPage)
-      .map(if (_) yesCall else noCall)
-      .getOrElse(controllers.routes.SessionExpiredController.onPageLoad())
-  }
-
+package object individual {
+  val basePath: JsPath = JsPath \ 'individual
 }
