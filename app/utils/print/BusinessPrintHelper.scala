@@ -45,7 +45,7 @@ class BusinessPrintHelper @Inject()(answerRowConverter: AnswerRowConverter,
     val add: Seq[AnswerRow] = Seq(
       bound.enumQuestion(IndividualOrBusinessPage, "individualOrBusiness", controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode).url),
       bound.yesNoQuestion(UkRegisteredCompanyYesNoPage, "business.ukRegisteredCompanyYesNo", rts.UkRegisteredCompanyYesNoController.onPageLoad(NormalMode).url),
-      bound.stringQuestion(NamePage, s"business.${ukRegPrefix}Company.name", companyNameChangeRoute),
+      bound.stringQuestion(NamePage, s"business.${ukRegPrefix}CompanyName", companyNameChangeRoute),
       bound.stringQuestion(UtrPage, "business.utr", rts.UtrController.onPageLoad(NormalMode).url),
       bound.yesNoQuestion(AddressUkYesNoPage, "business.addressUkYesNo", rts.AddressUkYesNoController.onPageLoad(NormalMode).url),
       bound.addressQuestion(UkAddressPage, "business.ukAddress", rts.UkAddressController.onPageLoad(NormalMode).url),

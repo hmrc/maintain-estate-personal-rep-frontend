@@ -25,7 +25,7 @@ import views.html.business.UkCompanyNameView
 
 class UkCompanyNameViewSpec extends QuestionViewBehaviours[String] {
 
-  val messageKeyPrefix = "business.ukCompany.name"
+  val messageKeyPrefix = "business.ukCompanyName"
   val name = "Name"
 
   override val form: Form[String] = new StringFormProvider().withPrefix(messageKeyPrefix, 53)

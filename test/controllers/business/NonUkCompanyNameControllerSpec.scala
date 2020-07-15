@@ -37,7 +37,7 @@ import scala.concurrent.Future
 class NonUkCompanyNameControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new StringFormProvider()
-  val form: Form[String] = formProvider.withPrefix("business.nonUkCompany.name", 53)
+  val form: Form[String] = formProvider.withPrefix("business.nonUkCompanyName", 53)
   val name = "Name"
 
   lazy val nameRoute: String = routes.NonUkCompanyNameController.onPageLoad(NormalMode).url

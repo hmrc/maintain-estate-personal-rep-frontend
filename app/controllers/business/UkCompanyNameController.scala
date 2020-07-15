@@ -41,7 +41,7 @@ class UkCompanyNameController @Inject()(
                                          view: UkCompanyNameView
                                        )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[String] = formProvider.withPrefix("business.ukCompany.name", 53)
+  val form: Form[String] = formProvider.withPrefix("business.ukCompanyName", 53)
 
   def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithData {
     implicit request =>
