@@ -57,8 +57,8 @@ class CheckDetailsController @Inject()(
         case Some(business) =>
           // TODO - add UTR to request in Index Controller
           connector.addBusinessPersonalRep("fakeUtr", business).map(_ =>
-            // TODO - redirect to add-to page
-            Redirect(???)
+            // TODO - add User to request, pattern match on AffinityGroup and redirect to relevant declaration
+            Redirect(controllers.business.add.routes.CheckDetailsController.onPageLoad())
           )
       }
   }
