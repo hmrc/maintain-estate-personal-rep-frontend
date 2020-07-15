@@ -55,7 +55,9 @@ class CheckDetailsController @Inject()(
         case None =>
           Future.successful(InternalServerError)
         case Some(business) =>
+          // TODO - add UTR to request in Index Controller
           connector.addBusinessPersonalRep("fakeUtr", business).map(_ =>
+            // TODO - redirect to add-to page
             Redirect(???)
           )
       }
