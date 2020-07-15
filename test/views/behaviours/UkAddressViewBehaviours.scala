@@ -16,24 +16,32 @@
 
 package views.behaviours
 
+import models.UkAddress
 import play.api.data.{Form, FormError}
 import play.twirl.api.HtmlFormat
 
-trait QuestionViewBehaviours[A] extends ViewBehaviours {
+
+trait UkAddressViewBehaviours extends ViewBehaviours {
 
   val errorKey = "value"
   val errorMessage = "error.number"
   val error: FormError = FormError(errorKey, errorMessage)
 
-  val form: Form[A]
+  val form: Form[UkAddress]
 
-  def pageWithTextFields(form: Form[A],
-                         createView: Form[A] => HtmlFormat.Appendable,
-                         messageKeyPrefix: String,
-                         messageKeyParam: Option[String],
-                         fields: String*) = {
+  def ukAddressPage(createView: Form[UkAddress] => HtmlFormat.Appendable,
+                    messageKeyPrefix: Option[String],
+                    args: String*): Unit = {
 
-    "behave like a question page" when {
+    val prefix = messageKeyPrefix.getOrElse("site.address.uk")
+
+    val fields =  Seq(("line1",None),
+      ("line2",None),
+      ("line3", None),
+      ("line4", None),
+      ("postcode", Some("site.address.uk.postcode.hint")))
+
+    "behave like a ukAddressPage" when {
 
       "rendered" must {
 
@@ -41,7 +49,7 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
 
           s"contain an input for $field" in {
             val doc = asDocument(createView(form))
-            assertRenderedById(doc, field)
+            assertRenderedById(doc, field._1)
           }
         }
 
@@ -57,7 +65,7 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
         "show an error prefix in the browser title" in {
 
           val doc = asDocument(createView(form.withError(error)))
-          assertEqualsValue(doc, "title", s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title", messageKeyParam.getOrElse(""))}""")
+          assertEqualsValue(doc, "title", s"""${messages("error.browser.title.prefix")} ${messages(s"$prefix.title", args: _*)}""")
         }
       }
 
@@ -67,21 +75,28 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
 
           "show an error summary" in {
 
-            val doc = asDocument(createView(form.withError(FormError(field, "error"))))
+            val doc = asDocument(createView(form.withError(FormError(field._1, "error"))))
             assertRenderedById(doc, "error-summary-heading")
           }
 
-          s"show an error associated with the field '$field'" in {
+          s"show an error in the label for field '$field'" in {
 
-            val doc = asDocument(createView(form.withError(FormError(field, "error"))))
-            val inputField = doc.getElementById(field)
-            inputField.attr("aria-describedby").split(" ").foreach { idOfDescribedByTarget =>
-              doc.getElementById(idOfDescribedByTarget) mustNot be(null)
-            }
-            doc.select(s"label[for='$field']").size() mustBe 1
+            val doc = asDocument(createView(form.withError(FormError(field._1, "error"))))
+            val errorSpan = doc.getElementsByClass("error-message").first
+            errorSpan.parent.getElementsByClass("form-label").attr("for") mustBe field._1
           }
+        }
+      }
+
+      for (field <- fields) {
+        s"contains a label and optional hint text for the field '$field'" in {
+          val doc = asDocument(createView(form))
+          val fieldName = field._1
+          val fieldHint = field._2 map (k => messages(k))
+          assertContainsLabel(doc, fieldName, messages(s"site.address.uk.$fieldName"), fieldHint)
         }
       }
     }
   }
+
 }

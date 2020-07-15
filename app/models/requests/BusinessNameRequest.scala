@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-package utils.countryOptions
+package models.requests
 
-import config.FrontendAppConfig
-import javax.inject.{Inject, Singleton}
-import play.api.Environment
+import models.UserAnswers
+import play.api.mvc.WrappedRequest
 
-@Singleton
-class AllCountryOptions @Inject()(environment: Environment, config: FrontendAppConfig)
-  extends CountryOptions {
-
-  override def options: Seq[InputOption] = getCountries(environment, config.locationCanonicalList)
-
+case class BusinessNameRequest[T](request: DataRequest[T], businessName: String) extends WrappedRequest[T](request){
+  val userAnswers:UserAnswers = request.userAnswers
 }

@@ -116,7 +116,6 @@ business.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (
 business.utr.title = What is the personal representative’s Unique Taxpayer Reference (UTR)?
 business.utr.heading = What is {0}’s Unique Taxpayer Reference (UTR)?
 business.utr.hint = This is 10 numbers, for example 12345 67890. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’.
-business.utr.hint.reader = This is 10 numbers, for example 1 2 3 4 5 6 7 8 9 0. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’.
 business.utr.p1 = You can
 business.utr.link = find a lost UTR number (opens in a new window or tab)
 business.utr.error.required = Enter the personal representative’s Unique Taxpayer Reference
