@@ -152,3 +152,6 @@ business.startDate.error.required = The date the business became the new persona
 business.startDate.error.invalid = Enter a real date
 business.startDate.error.future = The date the business became the new personal representative must be today or in the past
 business.startDate.error.past = The date the business became the new personal representative cannot be before the start date of the trust
+
+business.checkDetails.title = Check personal representative’s details
+business.checkDetails.heading = Check personal representative’s details
