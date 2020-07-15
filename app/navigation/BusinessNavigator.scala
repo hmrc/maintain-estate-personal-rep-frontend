@@ -17,7 +17,7 @@
 package navigation
 
 import controllers.business.{routes => rts}
-import controllers.business.add.{routes => add}
+import controllers.business.add.{routes => addRts}
 import javax.inject.Inject
 import models.{CheckMode, Mode, NormalMode, UserAnswers}
 import pages.Page
@@ -32,7 +32,7 @@ class BusinessNavigator @Inject()() extends Navigator {
     case UtrPage => rts.AddressUkYesNoController.onPageLoad(mode)
     case UkAddressPage | NonUkAddressPage => rts.TelephoneNumberController.onPageLoad(mode)
     case TelephoneNumberPage => telephoneNumberRoute(mode)
-    case StartDatePage => add.CheckDetailsController.onPageLoad()
+    case StartDatePage => addRts.CheckDetailsController.onPageLoad()
   }
 
   private def conditionalNavigation(mode: Mode): PartialFunction[Page, UserAnswers => Call] = {
@@ -50,7 +50,7 @@ class BusinessNavigator @Inject()() extends Navigator {
 
   private def telephoneNumberRoute(mode: Mode): Call = {
     mode match {
-      case NormalMode => rts.StartDateController.onPageLoad(mode)
+      case NormalMode => addRts.StartDateController.onPageLoad()
       case CheckMode => ???
     }
   }

@@ -40,7 +40,8 @@ POST       /telephone-number                            controllers.business.Tel
 GET        /change-telephone-number                     controllers.business.TelephoneNumberController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-telephone-number                     controllers.business.TelephoneNumberController.onSubmit(mode: Mode = CheckMode)
 
-GET        /start-date                                  controllers.business.StartDateController.onPageLoad(mode: Mode = NormalMode)
-POST       /start-date                                  controllers.business.StartDateController.onSubmit(mode: Mode = NormalMode)
-GET        /change-start-date                           controllers.business.StartDateController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-start-date                           controllers.business.StartDateController.onSubmit(mode: Mode = CheckMode)
+GET        /start-date                                  controllers.business.add.StartDateController.onPageLoad()
+POST       /start-date                                  controllers.business.add.StartDateController.onSubmit()
+
+GET        /check-details                               controllers.business.add.CheckDetailsController.onPageLoad()
+POST       /check-details                               controllers.business.add.CheckDetailsController.onSubmit()

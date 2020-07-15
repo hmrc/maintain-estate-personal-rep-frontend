@@ -100,7 +100,7 @@ class BusinessNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks  {
           val mode = NormalMode
 
           navigator.nextPage(TelephoneNumberPage, mode, emptyUserAnswers)
-            .mustBe(controllers.business.routes.StartDateController.onPageLoad(mode))
+            .mustBe(controllers.business.add.routes.StartDateController.onPageLoad())
         }
 
         "Check mode" ignore {

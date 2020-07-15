@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers.business
+package controllers.business.add
 
 import java.time.LocalDate
 
@@ -22,7 +22,7 @@ import config.annotations.Business
 import controllers.actions.Actions
 import forms.DateFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.NormalMode
 import navigation.Navigator
 import pages.business.StartDatePage
 import play.api.data.Form
@@ -30,7 +30,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.business.StartDateView
+import views.html.business.add.StartDateView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -46,7 +46,7 @@ class StartDateController @Inject()(
 
   val form: Form[LocalDate] = formProvider.withPrefix("business.startDate")
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithBusinessName {
+  def onPageLoad(): Action[AnyContent] = actions.authWithBusinessName {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(StartDatePage) match {
@@ -54,21 +54,21 @@ class StartDateController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, request.businessName, mode))
+      Ok(view(preparedForm, request.businessName))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithBusinessName.async {
+  def onSubmit(): Action[AnyContent] = actions.authWithBusinessName.async {
     implicit request =>
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, request.businessName, mode))),
+          Future.successful(BadRequest(view(formWithErrors, request.businessName))),
 
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(StartDatePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(StartDatePage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(StartDatePage, NormalMode, updatedAnswers))
       )
   }
 }

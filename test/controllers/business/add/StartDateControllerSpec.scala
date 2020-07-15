@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-package controllers.business
+package controllers.business.add
 
 import java.time.LocalDate
 
 import base.SpecBase
 import config.annotations.Business
 import forms.DateFormProvider
-import models.{NormalMode, UserAnswers}
+import models.UserAnswers
 import navigation.{FakeNavigator, Navigator}
 import pages.business.{NamePage, StartDatePage}
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.business.StartDateView
+import views.html.business.add.StartDateView
 
 class StartDateControllerSpec extends SpecBase {
 
-  lazy val startDateRoute: String = routes.StartDateController.onPageLoad(NormalMode).url
+  lazy val startDateRoute: String = routes.StartDateController.onPageLoad().url
 
   val formProvider = new DateFormProvider(frontendAppConfig)
   val form: Form[LocalDate] = formProvider.withPrefix("business.startDate")
@@ -58,7 +58,7 @@ class StartDateControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, name, NormalMode)(fakeRequest, messages).toString
+        view(form, name)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -79,7 +79,7 @@ class StartDateControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), name, NormalMode)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), name)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -127,7 +127,7 @@ class StartDateControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, name, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, name)(fakeRequest, messages).toString
 
       application.stop()
     }

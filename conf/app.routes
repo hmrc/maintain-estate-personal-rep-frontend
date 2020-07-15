@@ -20,6 +20,3 @@ GET        /individual-or-business                      controllers.IndividualOr
 POST       /individual-or-business                      controllers.IndividualOrBusinessController.onSubmit(mode: Mode = NormalMode)
 GET        /change-individual-or-business               controllers.IndividualOrBusinessController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-individual-or-business               controllers.IndividualOrBusinessController.onSubmit(mode: Mode = CheckMode)
-
-GET        /check-details                               controllers.business.add.CheckDetailsController.onPageLoad()
-POST       /check-details                               controllers.business.add.CheckDetailsController.onSubmit()
