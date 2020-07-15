@@ -41,6 +41,46 @@ site.service_name = Register and Maintain an Estate
 site.textarea.char_limit = (Limit is {0} characters)
 site.sign_out = Sign out
 
+site.address.uk.title = What is the address?
+site.address.uk.heading = What is {0}’s address?
+site.address.uk.line1 = Address line 1
+site.address.uk.line2 = Address line 2
+site.address.uk.line3 = Address line 3 (optional)
+site.address.uk.line4 = Address line 4 (optional)
+site.address.uk.postcode = Postcode
+site.address.uk.postcode.hint = For example AB1 1AB
+
+site.address.nonUk.title = What is the address?
+site.address.nonUk.heading = What is {0}’s address?
+site.address.nonUk.line1 = Address line 1
+site.address.nonUk.line2 = Address line 2
+site.address.nonUk.line3 = Address line 3 (optional)
+site.address.nonUk.country = Country
+site.address.nonUk.country.select = Select a country
+
+ukAddress.line1.error.required = Enter address line 1
+ukAddress.line2.error.required = Enter address line 2
+ukAddress.postcode.error.required = Enter a postcode
+ukAddress.line1.error.length = Address line 1 must be 35 characters or less
+ukAddress.line2.error.length = Address line 2 must be 35 characters or less
+ukAddress.line3.error.length = Address line 3 must be 35 characters or less
+ukAddress.line4.error.length = Address line 4 must be 35 characters or less
+ukAddress.line1.error.invalid = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+ukAddress.line2.error.invalid = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+ukAddress.line3.error.invalid = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+ukAddress.line4.error.invalid = Address line 4 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+ukAddress.postcode.error.invalid = Enter a real postcode
+
+nonUkAddress.line1.error.required = Enter address line 1
+nonUkAddress.line2.error.required = Enter address line 2
+nonUkAddress.country.error.required = Select a country
+nonUkAddress.line1.error.length = Address line 1 must be 35 characters or less
+nonUkAddress.line2.error.length = Address line 2 must be 35 characters or less
+nonUkAddress.line3.error.length = Address line 3 must be 35 characters or less
+nonUkAddress.line1.error.invalid = Address line 1 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+nonUkAddress.line2.error.invalid = Address line 2 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+nonUkAddress.line3.error.invalid = Address line 3 must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
