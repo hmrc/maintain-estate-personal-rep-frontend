@@ -17,28 +17,25 @@
 package controllers
 
 import base.SpecBase
+import models.NormalMode
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.IndexView
 
 class IndexControllerSpec extends SpecBase {
 
   "Index Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "redirect to Individual or Business" in {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, routes.IndexController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.IndexController.onPageLoad("UTR").url)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[IndexView]
+      status(result) mustEqual SEE_OTHER
 
-      status(result) mustEqual OK
-
-      contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
+      redirectLocation(result) mustBe Some(controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode).url)
 
       application.stop()
     }

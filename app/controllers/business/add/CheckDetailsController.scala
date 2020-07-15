@@ -55,8 +55,7 @@ class CheckDetailsController @Inject()(
         case None =>
           Future.successful(InternalServerError)
         case Some(business) =>
-          // TODO - add UTR to request in Index Controller
-          connector.addBusinessPersonalRep("fakeUtr", business).map(_ =>
+          connector.addBusinessPersonalRep(request.userAnswers.utr, business).map(_ =>
             // TODO - add User to request, pattern match on AffinityGroup and redirect to relevant declaration
             Redirect(controllers.business.add.routes.CheckDetailsController.onPageLoad())
           )

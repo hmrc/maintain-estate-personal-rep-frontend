@@ -17,11 +17,10 @@
 package generators
 
 import models.UserAnswers
-import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues
 import pages._
-import play.api.libs.json.{JsPath, JsValue, Json}
+import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersGenerator extends TryValues {
   self: Generators =>
@@ -36,12 +35,14 @@ trait UserAnswersGenerator extends TryValues {
     Arbitrary {
       for {
         id      <- nonEmptyString
+        utr     <- nonEmptyString
         data    <- generators match {
           case Nil => Gen.const(Map[QuestionPage[_], JsValue]())
           case _   => Gen.mapOf(oneOf(generators))
         }
       } yield UserAnswers (
         id = id,
+        utr = utr,
         data = data.foldLeft(Json.obj()) {
           case (obj, (path, value)) =>
             obj.setObject(path.path, value).get
