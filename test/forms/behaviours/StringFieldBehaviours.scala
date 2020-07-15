@@ -16,11 +16,12 @@
 
 package forms.behaviours
 
+import org.scalacheck.Gen
 import play.api.data.{Form, FormError}
 
-trait StringFieldBehaviours extends FieldBehaviours {
+trait StringFieldBehaviours extends FieldBehaviours with OptionalFieldBehaviours {
 
-    def fieldWithMaxLength(form: Form[_],
+  def fieldWithMaxLength(form: Form[_],
                            fieldName: String,
                            maxLength: Int,
                            lengthError: FormError): Unit = {
@@ -31,6 +32,51 @@ trait StringFieldBehaviours extends FieldBehaviours {
         string =>
           val result = form.bind(Map(fieldName -> string)).apply(fieldName)
           result.errors shouldEqual Seq(lengthError)
+      }
+    }
+  }
+
+  def fieldWithMinLength(form : Form[_],
+                         fieldName : String,
+                         minLength : Int,
+                         lengthError : FormError): Unit = {
+
+    s"not bind strings shorter than $minLength characters" in {
+
+      val length = if (minLength > 0 && minLength < 2) minLength else minLength -1
+
+      forAll(stringsWithMaxLength(length) -> "shortString") {
+        string =>
+          val result = form.bind(Map(fieldName -> string)).apply(fieldName)
+          result.errors shouldEqual Seq(lengthError)
+      }
+    }
+  }
+
+  def nonEmptyField(form: Form[_],
+                    fieldName: String,
+                    requiredError: FormError): Unit = {
+
+    "not bind spaces" in {
+
+      val result = form.bind(Map(fieldName -> "    ")).apply(fieldName)
+      result.errors shouldBe Seq(requiredError)
+    }
+  }
+
+  def fieldWithRegexpWithGenerator(form: Form[_],
+                                   fieldName: String,
+                                   regexp: String,
+                                   generator: Gen[String],
+                                   error: FormError): Unit = {
+
+    s"not bind strings which do not match $regexp" in {
+      forAll(generator) {
+        string =>
+          whenever(!string.matches(regexp) && string.nonEmpty) {
+            val result = form.bind(Map(fieldName -> string)).apply(fieldName)
+            result.errors shouldEqual Seq(error)
+          }
       }
     }
   }

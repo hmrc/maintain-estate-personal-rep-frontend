@@ -43,3 +43,62 @@ site.sign_out = Sign out
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
+
+individualOrBusiness.checkYourAnswersLabel = Is the personal representative an individual or a business?
+individualOrBusiness.title = Is the personal representative an individual or a business?
+individualOrBusiness.heading = Is the personal representative an individual or a business?
+individualOrBusiness.hint = The personal representative can be the estate’s administrator or executor
+individualOrBusiness.individual = Individual
+individualOrBusiness.business = Business
+individualOrBusiness.error.required = Select if the personal representative is an individual or business
+
+business.ukRegisteredCompanyYesNo.title = Is the personal representative a UK registered company?
+business.ukRegisteredCompanyYesNo.heading = Is the personal representative a UK registered company?
+business.ukRegisteredCompanyYesNo.checkYourAnswersLabel = Is the personal representative a UK registered company?
+business.ukRegisteredCompanyYesNo.error.required = Select yes if the personal representative is a UK registered company
+
+business.ukCompany.name.checkYourAnswersLabel = What is the company’s name?
+business.ukCompany.name.title = What is the company’s name?
+business.ukCompany.name.heading = What is the company’s name?
+business.ukCompany.name.hint = Enter the name as it appears on tax returns and other letters about Corporation Tax
+business.ukCompany.name.error.required = Enter the company’s name
+business.ukCompany.name.error.length = Company’s name cannot be more than 53 characters
+business.ukCompany.name.error.invalid = Company’s name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+
+business.nonUkCompany.name.checkYourAnswersLabel = What is the business’s name?
+business.nonUkCompany.name.title = What is the business’s name?
+business.nonUkCompany.name.heading = What is the business’s name?
+business.nonUkCompany.name.error.required = Enter the business name
+business.nonUkCompany.name.error.length = Business name must be 53 characters or less
+business.nonUkCompany.name.error.invalid = Business name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+
+business.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR)?
+business.utr.title = What is the personal representative’s Unique Taxpayer Reference (UTR)?
+business.utr.heading = What is {0}’s Unique Taxpayer Reference (UTR)?
+business.utr.hint = This is 10 numbers, for example 12345 67890. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’.
+business.utr.hint.reader = This is 10 numbers, for example 1 2 3 4 5 6 7 8 9 0. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’.
+business.utr.p1 = You can
+business.utr.link = find a lost UTR number (opens in a new window or tab)
+business.utr.error.required = Enter the personal representative’s Unique Taxpayer Reference
+business.utr.error.length = Unique Taxpayer Reference must be a 10 digit number
+business.utr.error.invalid = Enter the Unique Taxpayer Reference in the correct format
+
+business.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+business.addressUkYesNo.title = Is the personal representative’s address in the UK?
+business.addressUkYesNo.heading = Is {0}’s address in the UK?
+business.addressUkYesNo.error.required = Select yes if the personal representative’s address is in the UK
+
+business.ukAddress.checkYourAnswersLabel = What is {0}’s address?
+business.ukAddress.title = What is the personal representative’s address?
+business.ukAddress.heading = What is {0}’s address?
+
+business.nonUkAddress.checkYourAnswersLabel = What is {0}’s address?
+business.nonUkAddress.title = What is the personal representative’s address?
+business.nonUkAddress.heading = What is {0}’s address?
+
+business.telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
+business.telephoneNumber.title = What is the personal representative’s telephone number?
+business.telephoneNumber.heading = What is {0}’s telephone number?
+business.telephoneNumber.hint = For international numbers include the country code
+business.telephoneNumber.error.required = Enter the personal representative’s telephone number
+business.telephoneNumber.error.invalid = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
