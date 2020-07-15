@@ -16,49 +16,44 @@
 
 package controllers.business
 
+import java.time.LocalDate
+
 import base.SpecBase
 import config.annotations.Business
-import forms.UkAddressFormProvider
-import models.{NormalMode, UkAddress, UserAnswers}
-import navigation.Navigator
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
-import pages.business.{NamePage, UkAddressPage}
+import forms.DateFormProvider
+import models.{NormalMode, UserAnswers}
+import navigation.{FakeNavigator, Navigator}
+import pages.business.{NamePage, StartDatePage}
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
-import views.html.business.UkAddressView
+import views.html.business.StartDateView
 
-import scala.concurrent.Future
+class StartDateControllerSpec extends SpecBase {
 
-class UkAddressControllerSpec extends SpecBase with MockitoSugar {
+  lazy val startDateRoute: String = routes.StartDateController.onPageLoad(NormalMode).url
 
-  val form = new UkAddressFormProvider()()
+  val formProvider = new DateFormProvider(frontendAppConfig)
+  val form: Form[LocalDate] = formProvider.withPrefix("business.startDate")
+  val name: String = "Name"
 
-  val name = "Name"
+  val validAnswer: LocalDate = LocalDate.parse("2019-02-03")
 
   val baseAnswers: UserAnswers = emptyUserAnswers
     .set(NamePage, name).success.value
 
-  val validAnswer: UkAddress = UkAddress("value 1", "value 2", None, None, "AB1 1AB")
-
-  lazy val ukAddressControllerRoute: String = routes.UkAddressController.onPageLoad(NormalMode).url
-
-  "UkAddress controller" must {
+  "StartDate controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = baseAnswers.set(NamePage, name).success.value
+      val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      val request = FakeRequest(GET, ukAddressControllerRoute)
+      val request = FakeRequest(GET, startDateRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[UkAddressView]
+      val view = application.injector.instanceOf[StartDateView]
 
       status(result) mustEqual OK
 
@@ -71,13 +66,13 @@ class UkAddressControllerSpec extends SpecBase with MockitoSugar {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = baseAnswers
-        .set(UkAddressPage, validAnswer).success.value
+        .set(StartDatePage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, ukAddressControllerRoute)
+      val request = FakeRequest(GET, startDateRoute)
 
-      val view = application.injector.instanceOf[UkAddressView]
+      val view = application.injector.instanceOf[StartDateView]
 
       val result = route(application, request).value
 
@@ -89,20 +84,22 @@ class UkAddressControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
 
-    "redirect to the next page when valid data is submitted" in {
-
-      val mockPlaybackRepository = mock[SessionRepository]
-
-      when(mockPlaybackRepository.set(any())) thenReturn Future.successful(true)
+    "redirect to next page when valid data is submitted" in {
 
       val application =
         applicationBuilder(userAnswers = Some(baseAnswers))
-          .overrides(bind[Navigator].qualifiedWith(classOf[Business]).toInstance(fakeNavigator))
+          .overrides(
+            bind[Navigator].qualifiedWith(classOf[Business]).toInstance(new FakeNavigator(onwardRoute))
+          )
           .build()
 
       val request =
-        FakeRequest(POST, ukAddressControllerRoute)
-          .withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"), ("postcode", "AB1 1AB"))
+        FakeRequest(POST, startDateRoute)
+          .withFormUrlEncodedBody(
+            "value.day"   -> validAnswer.getDayOfMonth.toString,
+            "value.month" -> validAnswer.getMonthValue.toString,
+            "value.year"  -> validAnswer.getYear.toString
+          )
 
       val result = route(application, request).value
 
@@ -115,17 +112,15 @@ class UkAddressControllerSpec extends SpecBase with MockitoSugar {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = baseAnswers.set(NamePage, name).success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
 
       val request =
-        FakeRequest(POST, ukAddressControllerRoute)
-          .withFormUrlEncodedBody(("value", ""))
+        FakeRequest(POST, startDateRoute)
+          .withFormUrlEncodedBody(("value", "invalid value"))
 
-      val boundForm = form.bind(Map("value" -> ""))
+      val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[UkAddressView]
+      val view = application.injector.instanceOf[StartDateView]
 
       val result = route(application, request).value
 
@@ -141,12 +136,11 @@ class UkAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, ukAddressControllerRoute)
+      val request = FakeRequest(GET, startDateRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
@@ -157,8 +151,12 @@ class UkAddressControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, ukAddressControllerRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, startDateRoute)
+          .withFormUrlEncodedBody(
+            "value.day"   -> validAnswer.getDayOfMonth.toString,
+            "value.month" -> validAnswer.getMonthValue.toString,
+            "value.year"  -> validAnswer.getYear.toString
+          )
 
       val result = route(application, request).value
 

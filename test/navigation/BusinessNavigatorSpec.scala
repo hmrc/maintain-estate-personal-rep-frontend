@@ -94,15 +94,19 @@ class BusinessNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks  {
           .mustBe(controllers.business.routes.TelephoneNumberController.onPageLoad(mode))
       }
 
-      "Telephone number" ignore {
+      "Telephone number" when {
 
         "Normal mode" in {
-          navigator.nextPage(TelephoneNumberPage, NormalMode, emptyUserAnswers)
-            .mustBe(new NotImplementedError("an implementation is missing"))
+          val mode = NormalMode
+
+          navigator.nextPage(TelephoneNumberPage, mode, emptyUserAnswers)
+            .mustBe(controllers.business.routes.StartDateController.onPageLoad(mode))
         }
 
-        "Check mode" in {
-          navigator.nextPage(TelephoneNumberPage, CheckMode, emptyUserAnswers)
+        "Check mode" ignore {
+          val mode = CheckMode
+
+          navigator.nextPage(TelephoneNumberPage, mode, emptyUserAnswers)
             .mustBe(new NotImplementedError("an implementation is missing"))
         }
       }

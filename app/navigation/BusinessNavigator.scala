@@ -30,8 +30,7 @@ class BusinessNavigator @Inject()() extends Navigator {
   private def simpleNavigation(mode: Mode): PartialFunction[Page, Call] = {
     case UtrPage => rts.AddressUkYesNoController.onPageLoad(mode)
     case UkAddressPage | NonUkAddressPage => rts.TelephoneNumberController.onPageLoad(mode)
-    case TelephoneNumberPage if mode == NormalMode => ???
-    case TelephoneNumberPage if mode == CheckMode => ???
+    case TelephoneNumberPage => telephoneNumberRoute(mode)
     case StartDatePage => ???
   }
 
@@ -47,4 +46,11 @@ class BusinessNavigator @Inject()() extends Navigator {
   private def routes(mode: Mode): PartialFunction[Page, UserAnswers => Call] =
     simpleNavigation(mode) andThen (c => (_:UserAnswers) => c) orElse
       conditionalNavigation(mode)
+
+  private def telephoneNumberRoute(mode: Mode): Call = {
+    mode match {
+      case NormalMode => rts.StartDateController.onPageLoad(mode)
+      case CheckMode => ???
+    }
+  }
 }
