@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,18 +12,30 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package utils.countryOptions
+@import viewmodels.AnswerSection
+@import controllers.business.add.routes._
 
-import config.FrontendAppConfig
-import javax.inject.{Inject, Singleton}
-import play.api.Environment
+@this(
+    main_template: MainTemplate,
+    formHelper: FormWithCSRF
+)
 
-@Singleton
-class AllCountryOptions @Inject()(environment: Environment, config: FrontendAppConfig)
-  extends CountryOptions {
+@(answerSection: AnswerSection)(implicit request: Request[_], messages: Messages)
 
-  override def options: Seq[InputOption] = getCountries(environment, config.locationCanonicalList)
+@main_template(
+    title = messages("business.checkDetails.title")
+) {
 
+    @formHelper(action = CheckDetailsController.onSubmit(), 'autoComplete -> "off") {
+
+        @components.back_link()
+
+        @components.heading("business.checkDetails.heading")
+
+        @components.answer_section(answerSection)
+
+        @components.submit_button()
+    }
 }

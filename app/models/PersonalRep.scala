@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-package views
+package models
 
-import views.behaviours.ViewBehaviours
-import views.html.IndexView
+import play.api.libs.json.{JsPath, JsSuccess, Reads}
 
-class IndexViewSpec extends ViewBehaviours {
+trait PersonalRep {
 
-  "Index view" must {
+  def readAtSubPath[T: Reads](subPath: JsPath): Reads[T] = Reads (
+    _.transform(subPath.json.pick)
+      .flatMap(_.validate[T])
+  )
 
-    val application = applicationBuilder().build()
+  def readNullableAtSubPath[T: Reads](subPath: JsPath): Reads[Option[T]] = Reads (
+    _.transform(subPath.json.pick)
+      .flatMap(_.validate[T])
+      .map(Some(_))
+      .recoverWith(_ => JsSuccess(None))
+  )
 
-    val view = application.injector.instanceOf[IndexView]
-
-    val applyView = view.apply()(fakeRequest, messages)
-
-    behave like normalPage(applyView, "index", "guidance")
-  }
 }

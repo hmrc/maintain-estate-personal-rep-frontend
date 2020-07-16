@@ -16,7 +16,6 @@
 
 package pages.business
 
-import models.UserAnswers
 import pages.behaviours.PageBehaviours
 
 
@@ -31,7 +30,7 @@ class UkRegisteredCompanyYesNoPageSpec extends PageBehaviours {
     beRemovable[Boolean](UkRegisteredCompanyYesNoPage)
 
     "implement cleanup logic when NO selected" in {
-      val userAnswers = UserAnswers("id")
+      val userAnswers = emptyUserAnswers
         .set(UkRegisteredCompanyYesNoPage, true)
         .flatMap(_.set(UtrPage, "1234567890"))
         .flatMap(_.set(UkRegisteredCompanyYesNoPage, false))

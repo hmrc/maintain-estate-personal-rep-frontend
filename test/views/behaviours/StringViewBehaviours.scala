@@ -26,7 +26,7 @@ trait StringViewBehaviours extends QuestionViewBehaviours[String] {
   def stringPage(form: Form[String],
                  createView: Form[String] => HtmlFormat.Appendable,
                  messageKeyPrefix: String,
-                 expectedFormAction: String,
+                 messageKeyParam: Option[String],
                  expectedHintKey: Option[String] = None) = {
 
     "behave like a page with a string value field" when {
@@ -37,7 +37,7 @@ trait StringViewBehaviours extends QuestionViewBehaviours[String] {
 
           val doc = asDocument(createView(form))
           val expectedHintText = expectedHintKey map (k => messages(k))
-          assertContainsLabel(doc, "value", messages(s"$messageKeyPrefix.heading"), expectedHintText)
+          assertContainsLabel(doc, "value", messages(s"$messageKeyPrefix.heading", messageKeyParam.getOrElse("")), expectedHintText)
         }
 
         "contain an input for the value" in {
@@ -74,7 +74,7 @@ trait StringViewBehaviours extends QuestionViewBehaviours[String] {
         "show an error prefix in the browser title" in {
 
           val doc = asDocument(createView(form.withError(error)))
-          assertEqualsValue(doc, "title", s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title")}""")
+          assertEqualsValue(doc, "title", s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title", messageKeyParam.getOrElse(""))}""")
         }
       }
     }

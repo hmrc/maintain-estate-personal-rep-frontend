@@ -97,26 +97,25 @@ business.ukRegisteredCompanyYesNo.heading = Is the personal representative a UK 
 business.ukRegisteredCompanyYesNo.checkYourAnswersLabel = Is the personal representative a UK registered company?
 business.ukRegisteredCompanyYesNo.error.required = Select yes if the personal representative is a UK registered company
 
-business.ukCompany.name.checkYourAnswersLabel = What is the company’s name?
-business.ukCompany.name.title = What is the company’s name?
-business.ukCompany.name.heading = What is the company’s name?
-business.ukCompany.name.hint = Enter the name as it appears on tax returns and other letters about Corporation Tax
-business.ukCompany.name.error.required = Enter the company’s name
-business.ukCompany.name.error.length = Company’s name cannot be more than 53 characters
-business.ukCompany.name.error.invalid = Company’s name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+business.ukCompanyName.checkYourAnswersLabel = What is the company’s name?
+business.ukCompanyName.title = What is the company’s name?
+business.ukCompanyName.heading = What is the company’s name?
+business.ukCompanyName.hint = Enter the name as it appears on tax returns and other letters about Corporation Tax
+business.ukCompanyName.error.required = Enter the company’s name
+business.ukCompanyName.error.length = Company’s name cannot be more than 53 characters
+business.ukCompanyName.error.invalid = Company’s name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
-business.nonUkCompany.name.checkYourAnswersLabel = What is the business’s name?
-business.nonUkCompany.name.title = What is the business’s name?
-business.nonUkCompany.name.heading = What is the business’s name?
-business.nonUkCompany.name.error.required = Enter the business name
-business.nonUkCompany.name.error.length = Business name must be 53 characters or less
-business.nonUkCompany.name.error.invalid = Business name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+business.nonUkCompanyName.checkYourAnswersLabel = What is the business’s name?
+business.nonUkCompanyName.title = What is the business’s name?
+business.nonUkCompanyName.heading = What is the business’s name?
+business.nonUkCompanyName.error.required = Enter the business name
+business.nonUkCompanyName.error.length = Business name must be 53 characters or less
+business.nonUkCompanyName.error.invalid = Business name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
 business.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR)?
 business.utr.title = What is the personal representative’s Unique Taxpayer Reference (UTR)?
 business.utr.heading = What is {0}’s Unique Taxpayer Reference (UTR)?
 business.utr.hint = This is 10 numbers, for example 12345 67890. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’.
-business.utr.hint.reader = This is 10 numbers, for example 1 2 3 4 5 6 7 8 9 0. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’.
 business.utr.p1 = You can
 business.utr.link = find a lost UTR number (opens in a new window or tab)
 business.utr.error.required = Enter the personal representative’s Unique Taxpayer Reference
@@ -142,3 +141,17 @@ business.telephoneNumber.heading = What is {0}’s telephone number?
 business.telephoneNumber.hint = For international numbers include the country code
 business.telephoneNumber.error.required = Enter the personal representative’s telephone number
 business.telephoneNumber.error.invalid = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
+
+business.startDate.checkYourAnswersLabel = When did the business become the new personal representative?
+business.startDate.title = When did the business become the new personal representative?
+business.startDate.heading = When did {0} become the new personal representative?
+business.startDate.hint = For example, 31 3 1980
+business.startDate.error.required.all = Enter the date the business became the new personal representative
+business.startDate.error.required.two = The date the business became the new personal representative must include a {0} and a {1}
+business.startDate.error.required = The date the business became the new personal representative must include a {0}
+business.startDate.error.invalid = Enter a real date
+business.startDate.error.future = The date the business became the new personal representative must be today or in the past
+business.startDate.error.past = The date the business became the new personal representative cannot be before the start date of the estate
+
+business.checkDetails.title = Check personal representative’s details
+business.checkDetails.heading = Check personal representative’s details

@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,19 +12,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this(
-    main_template: MainTemplate
-)
+package models.requests
 
-@()(implicit request: Request[_], messages: Messages)
+import models.UserAnswers
+import play.api.mvc.WrappedRequest
 
-@main_template(
-    title = messages("index.title")
-    ) {
-
-    @components.heading("index.heading")
-
-    <p>@messages("index.guidance")</p>
+case class BusinessNameRequest[T](request: DataRequest[T], businessName: String) extends WrappedRequest[T](request){
+  val userAnswers:UserAnswers = request.userAnswers
 }

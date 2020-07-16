@@ -1,6 +1,6 @@
 # microservice specific routes
 
-GET        /                                            controllers.IndexController.onPageLoad
+->         /business                                    business.Routes
 
 GET        /assets/*file                                controllers.Assets.versioned(path="/public", file: Asset)
 
@@ -13,3 +13,10 @@ GET        /check-your-answers                          controllers.CheckYourAns
 GET        /unauthorised                                controllers.UnauthorisedController.onPageLoad
 
 GET        /logout                                      controllers.LogoutController.logout()
+
+GET        /individual-or-business                      controllers.IndividualOrBusinessController.onPageLoad(mode: Mode = NormalMode)
+POST       /individual-or-business                      controllers.IndividualOrBusinessController.onSubmit(mode: Mode = NormalMode)
+GET        /change-individual-or-business               controllers.IndividualOrBusinessController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-individual-or-business               controllers.IndividualOrBusinessController.onSubmit(mode: Mode = CheckMode)
+
+GET        /:utr                                        controllers.IndexController.onPageLoad(utr: String)

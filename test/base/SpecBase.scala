@@ -19,6 +19,7 @@ package base
 import config.FrontendAppConfig
 import controllers.actions._
 import models.UserAnswers
+import navigation.FakeNavigator
 import org.scalatest.TryValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatestplus.play.PlaySpec
@@ -27,13 +28,18 @@ import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{Injector, bind}
 import play.api.libs.json.Json
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 
 trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with ScalaFutures with IntegrationPatience {
 
   val userAnswersId = "id"
 
-  def emptyUserAnswers = UserAnswers(userAnswersId, Json.obj())
+  val fakeNavigator = new FakeNavigator()
+
+  def onwardRoute: Call = Call("GET", "/foo")
+
+  def emptyUserAnswers = UserAnswers(userAnswersId, "UTR", frontendAppConfig.minDate, Json.obj())
 
   def injector: Injector = app.injector
 
