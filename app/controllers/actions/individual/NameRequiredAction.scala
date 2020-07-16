@@ -18,24 +18,24 @@ package controllers.actions.individual
 
 import javax.inject.Inject
 import models.NormalMode
-import models.requests.{BusinessNameRequest, DataRequest}
-import pages.business.NamePage
+import models.requests.{DataRequest, IndividualNameRequest}
+import pages.individual.NamePage
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class NameRequiredAction @Inject()(implicit val executionContext: ExecutionContext)
-  extends ActionRefiner[DataRequest, BusinessNameRequest] {
+  extends ActionRefiner[DataRequest, IndividualNameRequest] {
 
-  override protected def refine[A](request: DataRequest[A]): Future[Either[Result, BusinessNameRequest[A]]] = {
+  override protected def refine[A](request: DataRequest[A]): Future[Either[Result, IndividualNameRequest[A]]] = {
 
     Future.successful(
       request.userAnswers.get(NamePage) match {
         case None =>
-          Left(Redirect(controllers.business.routes.UkRegisteredCompanyYesNoController.onPageLoad(NormalMode)))
+          Left(Redirect(controllers.individual.routes.NameController.onPageLoad(NormalMode)))
         case Some(name) =>
-          Right(BusinessNameRequest(request, name))
+          Right(IndividualNameRequest(request, name.displayFullName))
       }
     )
   }

@@ -18,7 +18,7 @@ package controllers.individual
 
 import config.annotations.Individual
 import controllers.actions.Actions
-import forms.{NameFormProvider, StringFormProvider}
+import forms.NameFormProvider
 import javax.inject.Inject
 import models.{Mode, Name}
 import navigation.Navigator

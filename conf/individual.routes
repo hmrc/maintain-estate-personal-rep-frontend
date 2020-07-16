@@ -4,3 +4,8 @@ GET        /name                                        controllers.individual.N
 POST       /name                                        controllers.individual.NameController.onSubmit(mode: Mode = NormalMode)
 GET        /change-name                                 controllers.individual.NameController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-name                                 controllers.individual.NameController.onSubmit(mode: Mode = CheckMode)
+
+GET        /date-of-birth                               controllers.individual.DateOfBirthController.onPageLoad(mode: Mode = NormalMode)
+POST       /date-of-birth                               controllers.individual.DateOfBirthController.onSubmit(mode: Mode = NormalMode)
+GET        /change-date-of-birth                        controllers.individual.DateOfBirthController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-date-of-birth                        controllers.individual.DateOfBirthController.onSubmit(mode: Mode = CheckMode)

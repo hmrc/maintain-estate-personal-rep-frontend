@@ -41,6 +41,7 @@ site.service_name = Register and Maintain an Estate
 site.textarea.char_limit = (Limit is {0} characters)
 site.sign_out = Sign out
 site.error = Error:
+site.date.hint = For example, 31 3 1980
 
 site.address.uk.title = What is the address?
 site.address.uk.heading = What is {0}’s address?
@@ -171,3 +172,13 @@ individual.name.error.lastName.length = Personal representative last name must b
 individual.name.error.firstName.invalid = Personal representative’s first name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 individual.name.error.middleName.invalid = Personal representative’s middle name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 individual.name.error.lastName.invalid = Personal representative’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+
+individual.dateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
+individual.dateOfBirth.title = What is the personal representative’s date of birth?
+individual.dateOfBirth.heading = What is {0}’s date of birth?
+individual.dateOfBirth.error.required.all = Enter a date of birth
+individual.dateOfBirth.error.required.two = Date of birth must include a {0} and a {1}
+individual.dateOfBirth.error.required = Date of birth must include a {0}
+individual.dateOfBirth.error.invalid = Enter a real date of birth
+individual.dateOfBirth.error.future = Date of birth must be today or in the past
+individual.dateOfBirth.error.past = Date of birth must be after 31 December 1499
