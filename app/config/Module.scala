@@ -17,9 +17,9 @@
 package config
 
 import com.google.inject.AbstractModule
-import config.annotations.Business
+import config.annotations.{Business, Individual}
 import controllers.actions._
-import navigation.{BusinessNavigator, Navigator}
+import navigation.{BusinessNavigator, IndividualNavigator, Navigator}
 import repositories.{DefaultSessionRepository, SessionRepository}
 
 class Module extends AbstractModule {
@@ -35,5 +35,6 @@ class Module extends AbstractModule {
     bind(classOf[SessionRepository]).to(classOf[DefaultSessionRepository]).asEagerSingleton()
 
     bind(classOf[Navigator]).annotatedWith(classOf[Business]).to(classOf[BusinessNavigator]).asEagerSingleton()
+    bind(classOf[Navigator]).annotatedWith(classOf[Individual]).to(classOf[IndividualNavigator]).asEagerSingleton()
   }
 }
