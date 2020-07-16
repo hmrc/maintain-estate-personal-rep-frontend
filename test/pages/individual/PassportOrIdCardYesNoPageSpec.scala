@@ -33,7 +33,7 @@ class PassportOrIdCardYesNoPageSpec extends PageBehaviours {
     beRemovable[Boolean](PassportOrIdCardDetailsYesNoPage)
 
     "implement cleanup logic when NO selected" in {
-      val userAnswers = UserAnswers("id")
+      val userAnswers = emptyUserAnswers
         .set(PassportDetailsPage, Passport("GB", "1", LocalDate.of(2030, 10, 10))).success.value
         .set(PassportOrIdCardDetailsYesNoPage, false)
 
@@ -41,7 +41,7 @@ class PassportOrIdCardYesNoPageSpec extends PageBehaviours {
     }
 
     "implement cleanup logic when Yes selected" in {
-      val userAnswers = UserAnswers("id")
+      val userAnswers = emptyUserAnswers
         .set(IdCardDetailsPage, IdCard("GB", "1", LocalDate.of(2030, 10, 10))).success.value
         .set(PassportOrIdCardDetailsYesNoPage, true)
 

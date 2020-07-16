@@ -1,0 +1,6 @@
+# microservice specific routes
+
+GET        /name                                        controllers.individual.NameController.onPageLoad(mode: Mode = NormalMode)
+POST       /name                                        controllers.individual.NameController.onSubmit(mode: Mode = NormalMode)
+GET        /change-name                                 controllers.individual.NameController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-name                                 controllers.individual.NameController.onSubmit(mode: Mode = CheckMode)

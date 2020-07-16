@@ -31,6 +31,7 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
                          createView: Form[A] => HtmlFormat.Appendable,
                          messageKeyPrefix: String,
                          messageKeyParam: Option[String],
+                         expectedFormAction: String,
                          fields: String*) = {
 
     "behave like a question page" when {
@@ -78,6 +79,8 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
             inputField.attr("aria-describedby").split(" ").foreach { idOfDescribedByTarget =>
               doc.getElementById(idOfDescribedByTarget) mustNot be(null)
             }
+
+
             doc.select(s"label[for='$field']").size() mustBe 1
           }
         }

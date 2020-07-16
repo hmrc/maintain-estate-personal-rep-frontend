@@ -40,6 +40,7 @@ site.continue = Continue
 site.service_name = Register and Maintain an Estate
 site.textarea.char_limit = (Limit is {0} characters)
 site.sign_out = Sign out
+site.error = Error:
 
 site.address.uk.title = What is the address?
 site.address.uk.heading = What is {0}’s address?
@@ -155,3 +156,18 @@ business.startDate.error.past = The date the business became the new personal re
 
 business.checkDetails.title = Check personal representative’s details
 business.checkDetails.heading = Check personal representative’s details
+
+individual.name.checkYourAnswersLabel = What is the personal representative name?
+individual.name.title = What is the personal representative name?
+individual.name.heading = What is the personal representative name?
+individual.name.firstName = First name
+individual.name.middleName = Middle names (optional)
+individual.name.lastName = Last name
+individual.name.error.firstName.required = Enter the personal representative’s first name
+individual.name.error.lastName.required = Enter the personal representative’s last name
+individual.name.error.firstName.length = Personal representative first name must be 35 characters or less
+individual.name.error.middleName.length = Personal representative middle name must be 35 characters or less
+individual.name.error.lastName.length = Personal representative last name must be 35 characters or less
+individual.name.error.firstName.invalid = Personal representative’s first name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+individual.name.error.middleName.invalid = Personal representative’s middle name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+individual.name.error.lastName.invalid = Personal representative’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
