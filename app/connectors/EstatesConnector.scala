@@ -33,4 +33,10 @@ class EstatesConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
     http.POST[JsValue, HttpResponse](addBusinessPersonalRepUrl(utr), Json.toJson(business))
   }
 
+  private def getDateOfDeathUrl(utr: String) = s"${config.estatesUrl}/estates/$utr/date-of-death"
+
+  def getDateOfDeath(utr: String)(implicit hc: HeaderCarrier, ex: ExecutionContext): Future[JsValue] = {
+    http.GET[JsValue](getDateOfDeathUrl(utr))
+  }
+
 }

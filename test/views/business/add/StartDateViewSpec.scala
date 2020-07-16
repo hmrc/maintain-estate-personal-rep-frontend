@@ -29,7 +29,7 @@ class StartDateViewSpec extends QuestionViewBehaviours[LocalDate] {
   val prefix = "business.startDate"
   val name: String = "Name"
 
-  override val form: Form[LocalDate] = new DateFormProvider(frontendAppConfig).withPrefix(prefix)
+  override val form: Form[LocalDate] = new DateFormProvider(frontendAppConfig).withConfig(prefix)
 
   val view: StartDateView = viewFor[StartDateView](Some(emptyUserAnswers))
 

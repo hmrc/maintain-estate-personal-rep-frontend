@@ -35,7 +35,7 @@ class StartDateControllerSpec extends SpecBase {
   lazy val startDateRoute: String = routes.StartDateController.onPageLoad().url
 
   val formProvider = new DateFormProvider(frontendAppConfig)
-  val form: Form[LocalDate] = formProvider.withPrefix("business.startDate")
+  val form: Form[LocalDate] = formProvider.withConfig("business.startDate")
   val name: String = "Name"
 
   val validAnswer: LocalDate = LocalDate.parse("2019-02-03")

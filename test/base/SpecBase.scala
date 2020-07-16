@@ -39,7 +39,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  def emptyUserAnswers = UserAnswers(userAnswersId, "UTR", Json.obj())
+  def emptyUserAnswers = UserAnswers(userAnswersId, "UTR", frontendAppConfig.minDate, Json.obj())
 
   def injector: Injector = app.injector
 

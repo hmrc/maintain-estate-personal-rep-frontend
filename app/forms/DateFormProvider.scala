@@ -25,7 +25,7 @@ import play.api.data.Form
 
 class DateFormProvider @Inject()(appConfig: FrontendAppConfig) extends Mappings {
 
-  def withPrefix(prefix: String): Form[LocalDate] =
+  def withConfig(prefix: String, minimumDate: LocalDate = appConfig.minDate): Form[LocalDate] =
     Form(
       "value" ->
         localDate(
@@ -36,7 +36,7 @@ class DateFormProvider @Inject()(appConfig: FrontendAppConfig) extends Mappings 
         ).verifying(
           firstError(
             maxDate(LocalDate.now, s"$prefix.error.future", "day", "month", "year"),
-            minDate(appConfig.minDate, s"$prefix.error.past", "day", "month", "year")
+            minDate(minimumDate, s"$prefix.error.past", "day", "month", "year")
           )
         )
     )

@@ -81,15 +81,15 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
 
     "submitting" ignore {
 
-      val mockTrustConnector = mock[EstatesConnector]
-      when(mockTrustConnector.addBusinessPersonalRep(any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK)))
+      val mockEstatesConnector = mock[EstatesConnector]
+      when(mockEstatesConnector.addBusinessPersonalRep(any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK)))
 
       "individual" must {
         "redirect to declaration page" in {
 
           val application =
             applicationBuilder(userAnswers = Some(userAnswers))
-              .overrides(bind[EstatesConnector].toInstance(mockTrustConnector))
+              .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
               .build()
 
           val request = FakeRequest(POST, submitDetailsRoute)
@@ -109,7 +109,7 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
 
           val application =
             applicationBuilder(userAnswers = Some(userAnswers))
-              .overrides(bind[EstatesConnector].toInstance(mockTrustConnector))
+              .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
               .build()
 
           val request = FakeRequest(POST, submitDetailsRoute)

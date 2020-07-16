@@ -16,6 +16,8 @@
 
 package generators
 
+import java.time.LocalDate
+
 import models.UserAnswers
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues
@@ -43,6 +45,7 @@ trait UserAnswersGenerator extends TryValues {
       } yield UserAnswers (
         id = id,
         utr = utr,
+        dateOfDeath = LocalDate.now(),
         data = data.foldLeft(Json.obj()) {
           case (obj, (path, value)) =>
             obj.setObject(path.path, value).get

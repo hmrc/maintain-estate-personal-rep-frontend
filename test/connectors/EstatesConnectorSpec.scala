@@ -26,10 +26,13 @@ import generators.Generators
 import models.{BusinessPersonalRep, UkAddress}
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Inside}
+import play.api.libs.json.Json
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
 
+import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits._
+import scala.concurrent.duration.Duration
 
 class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
   with Inside with BeforeAndAfterAll with BeforeAndAfterEach with IntegrationPatience {
@@ -122,6 +125,32 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
         application.stop()
       }
 
+    }
+
+    "get date of death" in {
+
+      val utr = "1000000008"
+
+      val expectedJson = Json.toJson("1996-02-03")
+
+      val application = applicationBuilder()
+        .configure(
+          Seq(
+            "microservice.services.estates.port" -> server.port(),
+            "auditing.enabled" -> false
+          ): _*
+        ).build()
+
+      val connector = application.injector.instanceOf[EstatesConnector]
+
+      server.stubFor(
+        get(urlEqualTo(s"/estates/$utr/date-of-death"))
+          .willReturn(okJson(expectedJson.toString))
+      )
+
+
+      val result  = Await.result(connector.getDateOfDeath(utr), Duration.Inf)
+      result mustBe expectedJson
     }
 
   }

@@ -16,10 +16,15 @@
 
 package controllers
 
+import java.time.LocalDate
+
+import config.FrontendAppConfig
+import connectors.EstatesConnector
 import controllers.actions.Actions
 import javax.inject.Inject
 import models.{NormalMode, UserAnswers}
 import play.api.i18n.I18nSupport
+import play.api.libs.json.JsString
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -29,16 +34,23 @@ import scala.concurrent.{ExecutionContext, Future}
 class IndexController @Inject()(
                                  val controllerComponents: MessagesControllerComponents,
                                  actions: Actions,
-                                 repository: SessionRepository
+                                 repository: SessionRepository,
+                                 connector: EstatesConnector,
+                                 config: FrontendAppConfig
                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(utr: String): Action[AnyContent] = actions.authWithSession.async {
     implicit request =>
       for {
+        dateOfDeath <- connector.getDateOfDeath(utr)
         ua <- Future.successful(request.userAnswers.getOrElse(
           UserAnswers(
             id = request.internalId,
-            utr = utr
+            utr = utr,
+            dateOfDeath = dateOfDeath match {
+              case JsString(date) => LocalDate.parse(date)
+              case _ => config.minDate
+            }
           )
         ))
         _ <- repository.set(ua)

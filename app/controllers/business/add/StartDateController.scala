@@ -44,10 +44,10 @@ class StartDateController @Inject()(
                                      view: StartDateView
                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[LocalDate] = formProvider.withPrefix("business.startDate")
-
   def onPageLoad(): Action[AnyContent] = actions.authWithBusinessName {
     implicit request =>
+
+      val form: Form[LocalDate] = formProvider.withConfig("business.startDate", request.userAnswers.dateOfDeath)
 
       val preparedForm = request.userAnswers.get(StartDatePage) match {
         case None => form
@@ -59,6 +59,8 @@ class StartDateController @Inject()(
 
   def onSubmit(): Action[AnyContent] = actions.authWithBusinessName.async {
     implicit request =>
+
+      val form: Form[LocalDate] = formProvider.withConfig("business.startDate", request.userAnswers.dateOfDeath)
 
       form.bindFromRequest().fold(
         formWithErrors =>
