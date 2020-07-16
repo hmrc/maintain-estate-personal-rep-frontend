@@ -66,7 +66,7 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
     "add business personal rep" must {
 
       def addBusinessPersonalRepUrl(utr: String) =
-        s"/estates/personal-rep/add-business/$utr"
+        s"/estates/personal-rep/add/organisation/$utr"
 
       val business = BusinessPersonalRep(
         name = "Name",
