@@ -27,7 +27,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class EstatesConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
 
-  private def addBusinessPersonalRepUrl(utr: String) = s"${config.estatesUrl}/estates/personal-rep/add-business/$utr"
+  private def addBusinessPersonalRepUrl(utr: String) = s"${config.estatesUrl}/estates/personal-rep/add/organisation/$utr"
 
   def addBusinessPersonalRep(utr: String, business: BusinessPersonalRep)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
     http.POST[JsValue, HttpResponse](addBusinessPersonalRepUrl(utr), Json.toJson(business))
