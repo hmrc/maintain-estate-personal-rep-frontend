@@ -33,19 +33,15 @@ class BusinessPrintHelper @Inject()(answerRowConverter: AnswerRowConverter,
 
     val bound = answerRowConverter.bind(userAnswers, name, countryOptions)
 
-    val ukRegPrefix = userAnswers.get(UkRegisteredCompanyYesNoPage).map(if (_) {"uk"} else {"nonUk"}).getOrElse("uk")
-
-    val companyNameChangeRoute = userAnswers.get(UkRegisteredCompanyYesNoPage).map{
-      if (_) {rts.UkCompanyNameController.onPageLoad(NormalMode).url
-      } else {
-        rts.NonUkCompanyNameController.onPageLoad(NormalMode).url
-      }
-    }.getOrElse(rts.UkCompanyNameController.onPageLoad(NormalMode).url)
-
     val add: Seq[AnswerRow] = Seq(
       bound.enumQuestion(IndividualOrBusinessPage, "individualOrBusiness", controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode).url),
       bound.yesNoQuestion(UkRegisteredCompanyYesNoPage, "business.ukRegisteredCompanyYesNo", rts.UkRegisteredCompanyYesNoController.onPageLoad(NormalMode).url),
-      bound.stringQuestion(NamePage, s"business.${ukRegPrefix}CompanyName", companyNameChangeRoute),
+      bound.conditionalStringQuestion(
+        NamePage,
+        UkRegisteredCompanyYesNoPage,
+        ("business.ukCompanyName", "business.nonUkCompanyName"),
+        (rts.UkCompanyNameController.onPageLoad(NormalMode).url, rts.NonUkCompanyNameController.onPageLoad(NormalMode).url)
+      ),
       bound.stringQuestion(UtrPage, "business.utr", rts.UtrController.onPageLoad(NormalMode).url),
       bound.yesNoQuestion(AddressUkYesNoPage, "business.addressUkYesNo", rts.AddressUkYesNoController.onPageLoad(NormalMode).url),
       bound.addressQuestion(UkAddressPage, "business.ukAddress", rts.UkAddressController.onPageLoad(NormalMode).url),

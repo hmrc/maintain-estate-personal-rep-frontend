@@ -21,6 +21,7 @@ import java.time.LocalDate
 import com.google.inject.Inject
 import models.{Address, UserAnswers}
 import pages.QuestionPage
+import pages.business.NamePage
 import play.api.i18n.Messages
 import play.api.libs.json.Reads
 import play.twirl.api.HtmlFormat
@@ -95,6 +96,21 @@ class AnswerRowConverter @Inject()() {
           HtmlFormat.escape(messages(s"$labelKey.$x")),
           changeUrl
         )
+      }
+    }
+
+    def conditionalStringQuestion(query: QuestionPage[String],
+                                  condition: QuestionPage[Boolean],
+                                  labelKey: (String, String),
+                                  changeUrl: (String, String)): Option[AnswerRow] = {
+
+      userAnswers.get(condition) match {
+        case Some(true) =>
+          stringQuestion(query, labelKey._1, changeUrl._1)
+        case Some(false) =>
+          stringQuestion(query, labelKey._2, changeUrl._2)
+        case _ =>
+          None
       }
     }
   }
