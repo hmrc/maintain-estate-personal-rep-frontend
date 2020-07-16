@@ -19,7 +19,7 @@ package navigation
 import javax.inject.Inject
 import models.{Mode, UserAnswers}
 import pages.Page
-import pages.business._
+import pages.individual._
 import play.api.mvc.Call
 
 class IndividualNavigator @Inject()() extends Navigator {
@@ -27,20 +27,22 @@ class IndividualNavigator @Inject()() extends Navigator {
   override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = routes(mode)(page)(userAnswers)
 
   private def simpleNavigation(mode: Mode): PartialFunction[Page, Call] = {
-    case UtrPage => ???
+    case NamePage => ???
+    case DateOfBirthPage => ???
+    case NationalInsuranceNumberPage => ???
+    case IdCardDetailsPage => ???
+    case PassportDetailsPage => ???
     case UkAddressPage => ???
     case NonUkAddressPage => ???
-    case TelephoneNumberPage => ???
-
   }
 
   private def conditionalNavigation(mode: Mode): PartialFunction[Page, UserAnswers => Call] = {
-    case UkRegisteredCompanyYesNoPage => ua =>
-      yesNoNav(ua, UkRegisteredCompanyYesNoPage, ???, ???)
-    case NamePage => ua =>
-      yesNoNav(ua, UkRegisteredCompanyYesNoPage, ???, ???)
-    case AddressUkYesNoPage => ua =>
-      yesNoNav(ua, AddressUkYesNoPage, ???, ???)
+    case NationalInsuranceNumberYesNoPage => ua =>
+      yesNoNav(ua, NationalInsuranceNumberYesNoPage, ???, ???)
+    case PassportOrIdCardDetailsYesNoPage => ua =>
+      yesNoNav(ua, PassportOrIdCardDetailsYesNoPage, ???, ???)
+    case LiveInTheUkYesNoPage => ua =>
+      yesNoNav(ua, LiveInTheUkYesNoPage, ???, ???)
   }
 
   private def routes(mode: Mode): PartialFunction[Page, UserAnswers => Call] =
