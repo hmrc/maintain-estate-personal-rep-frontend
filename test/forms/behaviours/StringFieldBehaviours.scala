@@ -16,8 +16,11 @@
 
 package forms.behaviours
 
+import forms.mappings.Validation
 import org.scalacheck.Gen
 import play.api.data.{Form, FormError}
+import uk.gov.hmrc.domain.Nino
+import wolfendale.scalacheck.regexp.RegexpGen
 
 trait StringFieldBehaviours extends FieldBehaviours with OptionalFieldBehaviours {
 
@@ -80,4 +83,21 @@ trait StringFieldBehaviours extends FieldBehaviours with OptionalFieldBehaviours
       }
     }
   }
+
+  def ninoField(form: Form[_],
+                fieldName: String,
+                requiredError: FormError): Unit = {
+
+    s"not bind strings which do not match valid nino format " in {
+      val generator = RegexpGen.from(Validation.validNinoFormat)
+      forAll(generator) {
+        string =>
+          whenever(!Nino.isValid(string)) {
+            val result = form.bind(Map(fieldName -> string)).apply(fieldName)
+            result.errors shouldEqual Seq(requiredError)
+          }
+      }
+    }
+  }
+
 }
