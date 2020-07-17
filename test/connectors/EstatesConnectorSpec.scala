@@ -23,7 +23,7 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import generators.Generators
-import models.{BusinessPersonalRep, UkAddress}
+import models.{BusinessPersonalRep, IndividualPersonalRep, Name, NationalInsuranceNumber, PersonalRep, UkAddress}
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Inside}
 import play.api.libs.json.Json
@@ -63,66 +63,133 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
 
   "estates connector" when {
 
-    "add business personal rep" must {
+    "add or amend personal rep" when {
 
-      def addBusinessPersonalRepUrl(utr: String) =
-        s"/estates/personal-rep/add/organisation/$utr"
+      def addOrAmendPersonalRepUrl(utr: String) =
+        s"/estates/personal-rep/add-or-amend/$utr"
 
       val business = BusinessPersonalRep(
         name = "Name",
         phoneNumber = "999",
         utr = None,
         address = UkAddress("Line 1", "Line 2", None, None, "POSTCODE"),
-        entityStart = LocalDate.parse("2020-03-27"),
-        provisional = true
+        entityStart = LocalDate.parse("2020-03-27")
       )
 
-      "return OK when the request is successful" in {
+      val individual = IndividualPersonalRep(
+        name = Name("First", None, "Last"),
+        dateOfBirth = LocalDate.parse("2019-02-03"),
+        identification = NationalInsuranceNumber("nino"),
+        address = UkAddress("Line 1", "Line 2", None, None, "POSTCODE"),
+        phoneNumber = "tel",
+        email = None,
+        entityStart = LocalDate.parse("2020-03-27")
+      )
 
-        val application = applicationBuilder()
-          .configure(
-            Seq(
-              "microservice.services.estates.port" -> server.port(),
-              "auditing.enabled" -> false
-            ): _*
-          ).build()
+      "business" must {
 
-        val connector = application.injector.instanceOf[EstatesConnector]
+        val personalRep = PersonalRep(None, Some(business))
 
-        server.stubFor(
-          post(urlEqualTo(addBusinessPersonalRepUrl(utr)))
-            .willReturn(ok)
-        )
+        "return OK when the request is successful" in {
 
-        val result = connector.addBusinessPersonalRep(utr, business)
+          val application = applicationBuilder()
+            .configure(
+              Seq(
+                "microservice.services.estates.port" -> server.port(),
+                "auditing.enabled" -> false
+              ): _*
+            ).build()
 
-        result.futureValue.status mustBe OK
+          val connector = application.injector.instanceOf[EstatesConnector]
 
-        application.stop()
+          server.stubFor(
+            post(urlEqualTo(addOrAmendPersonalRepUrl(utr)))
+              .willReturn(ok)
+          )
+
+          val result = connector.addOrAmendPersonalRep(utr, personalRep)
+
+          result.futureValue.status mustBe OK
+
+          application.stop()
+        }
+
+        "return Bad Request when the request is unsuccessful" in {
+
+          val application = applicationBuilder()
+            .configure(
+              Seq(
+                "microservice.services.estates.port" -> server.port(),
+                "auditing.enabled" -> false
+              ): _*
+            ).build()
+
+          val connector = application.injector.instanceOf[EstatesConnector]
+
+          server.stubFor(
+            post(urlEqualTo(addOrAmendPersonalRepUrl(utr)))
+              .willReturn(badRequest)
+          )
+
+          val result = connector.addOrAmendPersonalRep(utr, personalRep)
+
+          result.map(response => response.status mustBe BAD_REQUEST)
+
+          application.stop()
+        }
       }
 
-      "return Bad Request when the request is unsuccessful" in {
+      "individual" must {
 
-        val application = applicationBuilder()
-          .configure(
-            Seq(
-              "microservice.services.estates.port" -> server.port(),
-              "auditing.enabled" -> false
-            ): _*
-          ).build()
+        val personalRep = PersonalRep(Some(individual), None)
 
-        val connector = application.injector.instanceOf[EstatesConnector]
+        "return OK when the request is successful" in {
 
-        server.stubFor(
-          post(urlEqualTo(addBusinessPersonalRepUrl(utr)))
-            .willReturn(badRequest)
-        )
+          val application = applicationBuilder()
+            .configure(
+              Seq(
+                "microservice.services.estates.port" -> server.port(),
+                "auditing.enabled" -> false
+              ): _*
+            ).build()
 
-        val result = connector.addBusinessPersonalRep(utr, business)
+          val connector = application.injector.instanceOf[EstatesConnector]
 
-        result.map(response => response.status mustBe BAD_REQUEST)
+          server.stubFor(
+            post(urlEqualTo(addOrAmendPersonalRepUrl(utr)))
+              .willReturn(ok)
+          )
 
-        application.stop()
+          val result = connector.addOrAmendPersonalRep(utr, personalRep)
+
+          result.futureValue.status mustBe OK
+
+          application.stop()
+        }
+
+        "return Bad Request when the request is unsuccessful" in {
+
+          val application = applicationBuilder()
+            .configure(
+              Seq(
+                "microservice.services.estates.port" -> server.port(),
+                "auditing.enabled" -> false
+              ): _*
+            ).build()
+
+          val connector = application.injector.instanceOf[EstatesConnector]
+
+          server.stubFor(
+            post(urlEqualTo(addOrAmendPersonalRepUrl(utr)))
+              .willReturn(badRequest)
+          )
+
+          val result = connector.addOrAmendPersonalRep(utr, personalRep)
+
+          result.map(response => response.status mustBe BAD_REQUEST)
+
+          application.stop()
+        }
       }
 
     }
