@@ -19,19 +19,16 @@ package controllers.business.amend
 import config.FrontendAppConfig
 import connectors.EstatesConnector
 import controllers.actions.Actions
-import controllers.actions.business.NameRequiredAction
-import extractors.{BusinessExtractor, IndividualExtractor}
 import handlers.ErrorHandler
 import javax.inject.Inject
-import models.{PersonalRep, UserAnswers}
+import models.PersonalRepresentative
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-import repositories.SessionRepository
-import services.EstatesService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.mappers.BusinessMapper
 import utils.print.BusinessPrintHelper
 import viewmodels.AnswerSection
+import views.html.business.amend.CheckBusinessDetailsView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -39,7 +36,7 @@ class CheckDetailsController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         actions: Actions,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: BusinessCheckDetailsView,
+                                        view: CheckBusinessDetailsView,
                                         connector: EstatesConnector,
                                         val appConfig: FrontendAppConfig,
                                         businessPrintHelper: BusinessPrintHelper,
@@ -58,9 +55,9 @@ class CheckDetailsController @Inject()(
 
       mapper(request.userAnswers).map {
         business =>
-          connector.addOrAmendPersonalRep(request.userAnswers.utr, PersonalRep(None, Some(business))).map(_ =>
-            // TODO - add User to request, pattern match on AffinityGroup and redirect to relevant declaration
-            Redirect(controllers.business.amend.routes.CheckDetailsController.renderBusinessFromUserAnswers())
+          connector.addOrAmendPersonalRep(request.userAnswers.utr, PersonalRepresentative(None, Some(business))).map(_ =>
+            // TODO - pattern match on AffinityGroup and redirect to relevant declaration
+            Redirect(controllers.business.amend.routes.CheckDetailsController.renderFromUserAnswers())
           )
       }.getOrElse(Future.successful(InternalServerError(errorHandler.internalServerErrorTemplate)))
   }

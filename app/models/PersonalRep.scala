@@ -16,24 +16,26 @@
 
 package models
 
-import play.api.libs.json.{Format, JsPath, JsSuccess, Json, Reads}
+import play.api.libs.json._
 
-case class PersonalRep(estatePerRepInd : Option[IndividualPersonalRep] = None,
-                       estatePerRepOrg : Option[BusinessPersonalRep] = None) {
+case class PersonalRepresentative(estatePerRepInd : Option[IndividualPersonalRep] = None,
+                                  estatePerRepOrg : Option[BusinessPersonalRep] = None)
 
-  def readAtSubPath[T: Reads](subPath: JsPath): Reads[T] = Reads (
-    _.transform(subPath.json.pick)
-      .flatMap(_.validate[T])
-  )
-
-  def readNullableAtSubPath[T: Reads](subPath: JsPath): Reads[Option[T]] = Reads (
-    _.transform(subPath.json.pick)
-      .flatMap(_.validate[T])
-      .map(Some(_))
-      .recoverWith(_ => JsSuccess(None))
-  )
+object PersonalRepresentative {
+  implicit val personalRepFormats: Format[PersonalRepresentative] = Json.format[PersonalRepresentative]
 }
 
+trait PersonalRep
+
 object PersonalRep {
-  implicit val personalRepFormats :Format[PersonalRep] = Json.format[PersonalRep]
+
+  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
+    def or[B >: A](b: Reads[B]): Reads[B] =
+      a.map[B](identity).orElse(b)
+  }
+
+  implicit val reads: Reads[PersonalRep] =
+    __.read[BusinessPersonalRep](BusinessPersonalRep.reads).widen[PersonalRep] orElse
+      __.read[IndividualPersonalRep](IndividualPersonalRep.reads).widen[PersonalRep]
+
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package extractors
+package utils.extractors
 
 import com.google.inject.Inject
 import models.{Address, CombinedPassportOrIdCard, IdCard, IndividualPersonalRep, NationalInsuranceNumber, NonUkAddress, Passport, UkAddress, UserAnswers}
@@ -24,7 +24,7 @@ import scala.util.Try
 
 class IndividualExtractor @Inject()() {
 
-  def apply(answers: UserAnswers, individual : IndividualPersonalRep): Try[UserAnswers] =
+  def apply(answers: UserAnswers, individual: IndividualPersonalRep): Try[UserAnswers] =
     answers.deleteAtPath(pages.individual.basePath)
       .flatMap(_.set(NamePage, individual.name))
       .flatMap(_.set(TelephoneNumberPage, individual.phoneNumber))
@@ -45,27 +45,26 @@ class IndividualExtractor @Inject()() {
   }
 
   private def extractIdentification(individual: IndividualPersonalRep,
-                                    answers: UserAnswers) : Try[UserAnswers] =
-  {
-    ??? ///TODO: Fix Identification extraction
-//    individual.identification match {
-//      case Some(NationalInsuranceNumber(nino)) =>
-//        answers.set(NationalInsuranceNumberYesNoPage, true)
-//          .flatMap(_.set(NationalInsuranceNumberPage, nino))
-//      case Some(p : Passport) =>
-//        answers.set(NationalInsuranceNumberYesNoPage, false)
-//          .flatMap(_.set(PassportOrIdCardDetailsYesNoPage, true))
-//          .flatMap(_.set(PassportDetailsPage, p))
-//      case Some(id: IdCard) =>
-//        answers.set(NationalInsuranceNumberYesNoPage, false)
-//          .flatMap(_.set(PassportOrIdCardDetailsYesNoPage, false))
-//          .flatMap(_.set(IdCardDetailsPage, id))
-//      case Some(combined: CombinedPassportOrIdCard) =>
-//        answers.set(NationalInsuranceNumberYesNoPage, false)
-//          .flatMap(_.set(PassportOrIdCardDetailsYesNoPage, true))
-//          .flatMap(_.set(PassportOrIdCardDetailsPage, combined))
-//      case _ =>
-//        answers.set(NationalInsuranceNumberYesNoPage, false)
-//    }
+                                    answers: UserAnswers) : Try[UserAnswers] = {
+
+    individual.identification match {
+      case NationalInsuranceNumber(nino) =>
+        answers.set(NationalInsuranceNumberYesNoPage, true)
+          .flatMap(_.set(NationalInsuranceNumberPage, nino))
+      case p : Passport =>
+        answers.set(NationalInsuranceNumberYesNoPage, false)
+          .flatMap(_.set(PassportOrIdCardDetailsYesNoPage, true))
+          .flatMap(_.set(PassportDetailsPage, p))
+      case id: IdCard =>
+        answers.set(NationalInsuranceNumberYesNoPage, false)
+          .flatMap(_.set(PassportOrIdCardDetailsYesNoPage, false))
+          .flatMap(_.set(IdCardDetailsPage, id))
+      /*case combined: CombinedPassportOrIdCard =>
+        answers.set(NationalInsuranceNumberYesNoPage, false)
+          .flatMap(_.set(PassportOrIdCardDetailsYesNoPage, true))
+          .flatMap(_.set(PassportOrIdCardDetailsPage, combined))*/
+      case _ =>
+        answers.set(NationalInsuranceNumberYesNoPage, false)
+    }
   }
 }

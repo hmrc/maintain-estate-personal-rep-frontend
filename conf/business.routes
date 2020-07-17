@@ -45,3 +45,6 @@ POST       /start-date                                  controllers.business.add
 
 GET        /check-details                               controllers.business.add.CheckDetailsController.onPageLoad()
 POST       /check-details                               controllers.business.add.CheckDetailsController.onSubmit()
+
+GET        /change-details                              controllers.business.amend.CheckDetailsController.renderFromUserAnswers()
+GET        /change-details                              controllers.business.amend.CheckDetailsController.onSubmit()

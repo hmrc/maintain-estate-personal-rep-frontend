@@ -25,9 +25,9 @@ final case class BusinessPersonalRep(name: String,
                                      phoneNumber: String,
                                      utr: Option[String],
                                      address: Address,
-                                     entityStart: LocalDate)
+                                     entityStart: LocalDate) extends PersonalRep
 
-object BusinessPersonalRep extends PersonalRep {
+object BusinessPersonalRep extends EntityReads {
 
   implicit val reads: Reads[BusinessPersonalRep] =
     ((__ \ 'orgName).read[String] and

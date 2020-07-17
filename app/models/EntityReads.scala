@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-package services
+package models
 
-import connectors.EstatesConnector
-import javax.inject.Inject
-import models.PersonalRep
-import uk.gov.hmrc.http.HeaderCarrier
+import play.api.libs.json.{JsPath, JsSuccess, Reads}
 
-import scala.concurrent.{ExecutionContext, Future}
+trait EntityReads {
 
-class EstatesService @Inject()(connector: EstatesConnector) {
+  def readAtSubPath[T: Reads](subPath: JsPath): Reads[T] = Reads (
+    _.transform(subPath.json.pick)
+      .flatMap(_.validate[T])
+  )
 
-  def getPersonalRep(utr: String)(implicit hc: HeaderCarrier, ex: ExecutionContext): Future[PersonalRep] =
-    connector.getPersonalRep(utr)
+  def readNullableAtSubPath[T: Reads](subPath: JsPath): Reads[Option[T]] = Reads (
+    _.transform(subPath.json.pick)
+      .flatMap(_.validate[T])
+      .map(Some(_))
+      .recoverWith(_ => JsSuccess(None))
+  )
 
 }

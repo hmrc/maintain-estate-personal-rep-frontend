@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package extractors
+package utils.extractors
 
 import com.google.inject.Inject
 import models.{Address, BusinessPersonalRep, NonUkAddress, UkAddress, UserAnswers}
@@ -24,7 +24,7 @@ import scala.util.Try
 
 class BusinessExtractor @Inject()() {
 
-  def apply(answers: UserAnswers, business : BusinessPersonalRep): Try[UserAnswers] =
+  def apply(answers: UserAnswers, business: BusinessPersonalRep): Try[UserAnswers] =
     answers.deleteAtPath(pages.business.basePath)
       .flatMap(_.set(NamePage, business.name))
       .flatMap(_.set(TelephoneNumberPage, business.phoneNumber))

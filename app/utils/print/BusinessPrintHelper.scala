@@ -50,9 +50,25 @@ class BusinessPrintHelper @Inject()(answerRowConverter: AnswerRowConverter,
       bound.dateQuestion(StartDatePage, "business.startDate", addRts.StartDateController.onPageLoad().url)
     ).flatten
 
+    val amend: Seq[AnswerRow] = Seq(
+      bound.enumQuestion(IndividualOrBusinessPage, "individualOrBusiness", controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode).url),
+      bound.yesNoQuestion(UkRegisteredCompanyYesNoPage, "business.ukRegisteredCompanyYesNo", rts.UkRegisteredCompanyYesNoController.onPageLoad(NormalMode).url),
+      bound.conditionalStringQuestion(
+        NamePage,
+        UkRegisteredCompanyYesNoPage,
+        ("business.ukCompanyName", "business.nonUkCompanyName"),
+        (rts.UkCompanyNameController.onPageLoad(NormalMode).url, rts.NonUkCompanyNameController.onPageLoad(NormalMode).url)
+      ),
+      bound.stringQuestion(UtrPage, "business.utr", rts.UtrController.onPageLoad(NormalMode).url),
+      bound.yesNoQuestion(AddressUkYesNoPage, "business.addressUkYesNo", rts.AddressUkYesNoController.onPageLoad(NormalMode).url),
+      bound.addressQuestion(UkAddressPage, "business.ukAddress", rts.UkAddressController.onPageLoad(NormalMode).url),
+      bound.addressQuestion(NonUkAddressPage, "business.nonUkAddress", rts.NonUkAddressController.onPageLoad(NormalMode).url),
+      bound.stringQuestion(TelephoneNumberPage, "business.telephoneNumber", rts.TelephoneNumberController.onPageLoad(NormalMode).url)
+    ).flatten
+
     AnswerSection(
       None,
-      add
+      if (provisional) add else amend
     )
   }
 }

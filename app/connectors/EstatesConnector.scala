@@ -18,7 +18,7 @@ package connectors
 
 import config.FrontendAppConfig
 import javax.inject.Inject
-import models.PersonalRep
+import models.{PersonalRep, PersonalRepresentative}
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
@@ -27,16 +27,15 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class EstatesConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
 
-
   private def getPersonalRepUrl(utr: String) = s"${config.estatesUrl}/estates/$utr/transformed/personal-representative"
 
-  def getPersonalRep(utr: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[PersonalRep] = {
+  def getPersonalRep(utr: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[PersonalRep] = {
     http.GET[PersonalRep](getPersonalRepUrl(utr))
   }
 
   private def addOrAmendPersonalRepUrl(utr: String) = s"${config.estatesUrl}/estates/personal-rep/add-or-amend/$utr"
 
-  def addOrAmendPersonalRep(utr: String, personalRep: PersonalRep)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
+  def addOrAmendPersonalRep(utr: String, personalRep: PersonalRepresentative)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
     http.POST[JsValue, HttpResponse](addOrAmendPersonalRepUrl(utr), Json.toJson(personalRep))
   }
 
