@@ -27,6 +27,13 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class EstatesConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
 
+
+  private def getPersonalRepUrl(utr: String) = s"${config.estatesUrl}/estates/$utr/transformed/personal-representative"
+
+  def getPersonalRep(utr: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[PersonalRep] = {
+    http.GET[PersonalRep](getPersonalRepUrl(utr))
+  }
+
   private def addOrAmendPersonalRepUrl(utr: String) = s"${config.estatesUrl}/estates/personal-rep/add-or-amend/$utr"
 
   def addOrAmendPersonalRep(utr: String, personalRep: PersonalRep)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
