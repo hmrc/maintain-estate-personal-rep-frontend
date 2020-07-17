@@ -16,9 +16,10 @@
 
 package models
 
-import play.api.libs.json.{JsPath, JsSuccess, Reads}
+import play.api.libs.json.{Format, JsPath, JsSuccess, Json, Reads}
 
-trait PersonalRep {
+case class PersonalRep(estatePerRepInd : Option[IndividualPersonalRep] = None,
+                       estatePerRepOrg : Option[BusinessPersonalRep] = None) {
 
   def readAtSubPath[T: Reads](subPath: JsPath): Reads[T] = Reads (
     _.transform(subPath.json.pick)
@@ -31,5 +32,8 @@ trait PersonalRep {
       .map(Some(_))
       .recoverWith(_ => JsSuccess(None))
   )
+}
 
+object PersonalRep {
+  implicit val personalRepFormats :Format[PersonalRep] = Json.format[PersonalRep]
 }
