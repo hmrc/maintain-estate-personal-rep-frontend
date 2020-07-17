@@ -182,3 +182,8 @@ individual.dateOfBirth.error.required = Date of birth must include a {0}
 individual.dateOfBirth.error.invalid = Enter a real date of birth
 individual.dateOfBirth.error.future = Date of birth must be today or in the past
 individual.dateOfBirth.error.past = Date of birth must be after 31 December 1499
+
+individual.nationalInsuranceNumberYesNo.checkYourAnswersLabel = Does {0} have a National Insurance number?
+individual.nationalInsuranceNumberYesNo.title = Does the personal representative have a National Insurance number?
+individual.nationalInsuranceNumberYesNo.heading = Does {0} have a National Insurance number?
+individual.nationalInsuranceNumberYesNo.error.required = Select yes if you know the personal representative’s National Insurance number

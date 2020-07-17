@@ -9,3 +9,8 @@ GET        /date-of-birth                               controllers.individual.D
 POST       /date-of-birth                               controllers.individual.DateOfBirthController.onSubmit(mode: Mode = NormalMode)
 GET        /change-date-of-birth                        controllers.individual.DateOfBirthController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-date-of-birth                        controllers.individual.DateOfBirthController.onSubmit(mode: Mode = CheckMode)
+
+GET        /has-national-insurance-number                   controllers.individual.NationalInsuranceNumberYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /has-national-insurance-number                   controllers.individual.NationalInsuranceNumberYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /change-has-national-insurance-number            controllers.individual.NationalInsuranceNumberYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-has-national-insurance-number            controllers.individual.NationalInsuranceNumberYesNoController.onSubmit(mode: Mode = CheckMode)
