@@ -25,8 +25,7 @@ final case class BusinessPersonalRep(name: String,
                                      phoneNumber: String,
                                      utr: Option[String],
                                      address: Address,
-                                     entityStart: LocalDate,
-                                     provisional: Boolean)
+                                     entityStart: LocalDate)
 
 object BusinessPersonalRep extends PersonalRep {
 
@@ -35,11 +34,10 @@ object BusinessPersonalRep extends PersonalRep {
       (__ \ 'phoneNumber).read[String] and
       __.lazyRead(readNullableAtSubPath[String](__ \ 'identification \ 'utr)) and
       __.lazyRead(readAtSubPath[Address](__ \ 'identification \ 'address)) and
-      (__ \ 'entityStart).read[LocalDate] and
-      (__ \ "provisional").readWithDefault(false)).tupled.map {
+      (__ \ 'entityStart).read[LocalDate]).tupled.map {
 
-      case (name, phoneNumber, utr, address, date, provisional) =>
-        BusinessPersonalRep(name, phoneNumber, utr, address, date, provisional)
+      case (name, phoneNumber, utr, address, date) =>
+        BusinessPersonalRep(name, phoneNumber, utr, address, date)
     }
 
   implicit val writes: Writes[BusinessPersonalRep] =
@@ -47,8 +45,7 @@ object BusinessPersonalRep extends PersonalRep {
       (__ \ 'phoneNumber).write[String] and
       (__ \ 'identification \ 'utr).writeNullable[String] and
       (__ \ 'identification \ 'address).write[Address] and
-      (__ \ 'entityStart).write[LocalDate] and
-      (__ \ "provisional").write[Boolean]
+      (__ \ 'entityStart).write[LocalDate]
       ).apply(unlift(BusinessPersonalRep.unapply))
 
 }
