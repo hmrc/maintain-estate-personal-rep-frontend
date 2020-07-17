@@ -35,8 +35,7 @@ class BusinessMapper {
           TelephoneNumberPage.path.read[String] and
           UtrPage.path.readNullable[String] and
           readAddress and
-          StartDatePage.path.read[LocalDate] and
-          Reads(_ => JsSuccess(true))
+          StartDatePage.path.read[LocalDate]
         ) (BusinessPersonalRep.apply _)
 
     answers.data.validate[BusinessPersonalRep](readFromUserAnswers) match {
