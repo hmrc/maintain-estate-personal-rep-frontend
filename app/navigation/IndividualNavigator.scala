@@ -33,7 +33,8 @@ class IndividualNavigator @Inject()() extends Navigator {
   private def simpleNavigation(mode: Mode): PartialFunction[Page, Call] = {
     case NamePage => rts.DateOfBirthController.onPageLoad(mode)
     case DateOfBirthPage => rts.NationalInsuranceNumberYesNoController.onPageLoad(mode)
-    case NationalInsuranceNumberPage | IdCardDetailsPage | PassportDetailsPage => rts.LiveInTheUkYesNoController.onPageLoad(mode)
+    case NationalInsuranceNumberPage | IdCardDetailsPage | PassportDetailsPage | PassportOrIdCardDetailsPage =>
+      rts.LiveInTheUkYesNoController.onPageLoad(mode)
     case UkAddressPage | NonUkAddressPage => rts.TelephoneNumberController.onPageLoad(mode)
     case TelephoneNumberPage => telephoneNumberRoute(mode)
     case StartDatePage => addRts.CheckDetailsController.onPageLoad()
@@ -41,7 +42,7 @@ class IndividualNavigator @Inject()() extends Navigator {
 
   private def conditionalNavigation(mode: Mode): PartialFunction[Page, UserAnswers => Call] = {
     case NationalInsuranceNumberYesNoPage => ua =>
-      yesNoNav(ua, NationalInsuranceNumberYesNoPage, rts.NationalInsuranceNumberController.onPageLoad(mode), rts.PassportOrIdCardController.onPageLoad(mode))
+      yesNoNav(ua, NationalInsuranceNumberYesNoPage, rts.NationalInsuranceNumberController.onPageLoad(mode), passportOrIdCardDetailsRoute(mode))
     case PassportOrIdCardPage => ua =>
       ua.get(PassportOrIdCardPage) match {
         case Some(PassportOrIdCard.IdCard) => rts.IdCardDetailsController.onPageLoad(mode)
@@ -54,6 +55,13 @@ class IndividualNavigator @Inject()() extends Navigator {
   private def routes(mode: Mode): PartialFunction[Page, UserAnswers => Call] =
     simpleNavigation(mode) andThen (c => (_:UserAnswers) => c) orElse
       conditionalNavigation(mode)
+
+  private def passportOrIdCardDetailsRoute(mode: Mode): Call = {
+    mode match {
+      case NormalMode => rts.PassportOrIdCardController.onPageLoad(mode)
+      case CheckMode => amendRts.PassportOrIdCardDetailsController.onPageLoad()
+    }
+  }
 
   private def telephoneNumberRoute(mode: Mode): Call = {
     mode match {
