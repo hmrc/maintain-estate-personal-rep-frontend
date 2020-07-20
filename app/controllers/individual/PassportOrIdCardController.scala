@@ -20,7 +20,7 @@ import controllers.actions.Actions
 import forms.PassportOrIdCardFormProvider
 import javax.inject.Inject
 import models.PassportOrIdCard.{IdCard, Passport}
-import models.{Enumerable, Mode, PassportOrIdCard}
+import models.{Enumerable, Mode, NormalMode, PassportOrIdCard}
 import pages.individual.PassportOrIdCardPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -67,9 +67,9 @@ class PassportOrIdCardController @Inject()(
           } yield {
             value match {
               case Passport =>
-                Redirect(???)
+                Redirect(controllers.individual.routes.PassportDetailsController.onPageLoad(NormalMode))
               case IdCard =>
-                Redirect(???)
+                Redirect(controllers.individual.routes.IdCardDetailsController.onPageLoad(NormalMode))
             }
           }
         }
