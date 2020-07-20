@@ -18,6 +18,7 @@ package navigation
 
 import controllers.individual.{routes => rts}
 import controllers.individual.add.{routes => addRts}
+import controllers.individual.amend.{routes => amendRts}
 import javax.inject.Inject
 import models.{CheckMode, Mode, NormalMode, PassportOrIdCard, UserAnswers}
 import pages.Page
@@ -57,7 +58,7 @@ class IndividualNavigator @Inject()() extends Navigator {
   private def telephoneNumberRoute(mode: Mode): Call = {
     mode match {
       case NormalMode => addRts.StartDateController.onPageLoad()
-      case CheckMode => ???
+      case CheckMode => amendRts.CheckDetailsController.renderFromUserAnswers()
     }
   }
 

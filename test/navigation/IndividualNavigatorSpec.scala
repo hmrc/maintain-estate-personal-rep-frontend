@@ -17,11 +17,10 @@
 package navigation
 
 import base.SpecBase
-import models.{CheckMode, NormalMode}
+import models.{CheckMode, NormalMode, PassportOrIdCard}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.individual._
-import models.PassportOrIdCard
-import pages.individual.add.{PassportDetailsPage, IdCardDetailsPage}
+import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage}
 
 class IndividualNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks  {
 
@@ -121,18 +120,24 @@ class IndividualNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks  {
           .mustBe(controllers.individual.routes.TelephoneNumberController.onPageLoad(mode))
       }
 
-      "Telephone number" when {
+      "Telephone number page" when {
 
-        "Normal mode" in {
+        "Normal mode" must {
           val mode = NormalMode
 
-          navigator.nextPage(TelephoneNumberPage, mode, emptyUserAnswers)
-            .mustBe(controllers.individual.add.routes.StartDateController.onPageLoad())
+          "-> Start date page" in {
+            navigator.nextPage(TelephoneNumberPage, mode, emptyUserAnswers)
+              .mustBe(controllers.individual.add.routes.StartDateController.onPageLoad())
+          }
         }
 
-        "Check mode" ignore {
-          navigator.nextPage(TelephoneNumberPage, CheckMode, emptyUserAnswers)
-            .mustBe(new NotImplementedError("an implementation is missing"))
+        "Check mode" must {
+          val mode = CheckMode
+
+          "-> Check amended answers page" in {
+            navigator.nextPage(TelephoneNumberPage, CheckMode, emptyUserAnswers)
+              .mustBe(controllers.individual.amend.routes.CheckDetailsController.renderFromUserAnswers())
+          }
         }
       }
 
