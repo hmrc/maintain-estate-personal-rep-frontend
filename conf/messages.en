@@ -243,6 +243,25 @@ individual.idCardDetails.expiryDate.error.invalid = Enter a real date when the p
 individual.idCardDetails.expiryDate.error.future = ID card expiry date must be after 31 December 1499 and before 01 January 2100
 individual.idCardDetails.expiryDate.error.past = ID card expiry date must be after 31 December 1499 and before 01 January 2100
 
+individual.passportOrIdCardDetails.title = What are the personal representative’s passport or ID card details?
+individual.passportOrIdCardDetails.heading = What are {0}’s passport or ID card details?
+individual.passportOrIdCardDetails.checkYourAnswersLabel = What are {0}’s passport or ID card details?
+individual.passportOrIdCardDetails.country = Country of issue
+individual.passportOrIdCardDetails.country.error.required = Enter the personal representative’s passport or ID card country of issue
+individual.passportOrIdCardDetails.country.error.length = The personal representative’s passport or ID card country of issue must be 100 characters or less
+individual.passportOrIdCardDetails.number = Passport or ID card number
+individual.passportOrIdCardDetails.number.error.required = Enter the personal representative’s passport or ID card number
+individual.passportOrIdCardDetails.number.error.length = Passport or ID card number must be 30 characters or less
+individual.passportOrIdCardDetails.number.error.invalid = Passport or ID card number can only include letters and numbers
+individual.passportOrIdCardDetails.expiryDate.title = Expiry date
+individual.passportOrIdCardDetails.expiryDate.hint = Expiry date can be in the past. For example, 31 3 1980
+individual.passportOrIdCardDetails.expiryDate.error.required.all = Enter the passport or ID card expiry date
+individual.passportOrIdCardDetails.expiryDate.error.required.two = Passport or ID card expiry date must include a {0} and {1}
+individual.passportOrIdCardDetails.expiryDate.error.required = Passport or ID card expiry date must include a {0}
+individual.passportOrIdCardDetails.expiryDate.error.invalid = Enter a real date when the personal representative’s passport or ID card expires
+individual.passportOrIdCardDetails.expiryDate.error.past = Passport or ID card expiry date must be after 31 December 1499 and before 01 January 2100
+individual.passportOrIdCardDetails.expiryDate.error.future = Passport or ID card expiry date must be after 31 December 1499 and before 01 January 2100
+
 individual.liveInTheUkYesNo.checkYourAnswersLabel = Does {0} live in the UK?
 individual.liveInTheUkYesNo.title = Does the personal representative live in the UK?
 individual.liveInTheUkYesNo.heading = Does {0} live in the UK?
