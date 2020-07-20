@@ -135,7 +135,7 @@ class IndividualNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks  {
           val mode = CheckMode
 
           "-> Check amended answers page" in {
-            navigator.nextPage(TelephoneNumberPage, CheckMode, emptyUserAnswers)
+            navigator.nextPage(TelephoneNumberPage, mode, emptyUserAnswers)
               .mustBe(controllers.individual.amend.routes.CheckDetailsController.renderFromUserAnswers())
           }
         }
