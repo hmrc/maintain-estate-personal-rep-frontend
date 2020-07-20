@@ -54,3 +54,6 @@ GET        /telephone-number                                controllers.individu
 POST       /telephone-number                                controllers.individual.TelephoneNumberController.onSubmit(mode: Mode = NormalMode)
 GET        /change-telephone-number                         controllers.individual.TelephoneNumberController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-telephone-number                         controllers.individual.TelephoneNumberController.onSubmit(mode: Mode = CheckMode)
+
+GET        /start-date                                      controllers.individual.add.StartDateController.onPageLoad()
+POST       /start-date                                      controllers.individual.add.StartDateController.onSubmit()

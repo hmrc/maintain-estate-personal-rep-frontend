@@ -258,3 +258,14 @@ individual.telephoneNumber.heading = What is {0}’s telephone number?
 individual.telephoneNumber.hint = For international numbers include the country code
 individual.telephoneNumber.error.required = Enter the personal representative’s telephone number
 individual.telephoneNumber.error.invalid = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
+
+individual.startDate.checkYourAnswersLabel = When did {0} become the new personal representative?
+individual.startDate.title = When did the individual become the new personal representative?
+individual.startDate.heading = When did {0} become the new personal representative?
+individual.startDate.hint = For example, 31 3 1980
+individual.startDate.error.required.all = Enter the date the individual became the new personal representative
+individual.startDate.error.required.two = The date the individual became the new personal representative must include a {0} and a {1}
+individual.startDate.error.required = The date the individual became the new personal representative must include a {0}
+individual.startDate.error.invalid = Enter a real date
+individual.startDate.error.future = The date the individual became the new personal representative must be today or in the past
+individual.startDate.error.past = The date the individual became the new personal representative cannot be before the start date of the estate
