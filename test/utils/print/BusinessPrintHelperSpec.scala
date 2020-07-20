@@ -20,7 +20,7 @@ import java.time.LocalDate
 
 import base.SpecBase
 import models.IndividualOrBusiness.Business
-import models.{NonUkAddress, NormalMode, UkAddress}
+import models.{CheckMode, NonUkAddress, NormalMode, UkAddress}
 import pages.IndividualOrBusinessPage
 import pages.business._
 import play.twirl.api.Html
@@ -42,6 +42,7 @@ class BusinessPrintHelperSpec extends SpecBase {
     "generate add business personal rep section" when {
 
       val mode = NormalMode
+      val isProvisional = true
 
       val baseAnswers = emptyUserAnswers
         .set(IndividualOrBusinessPage, Business).success.value
@@ -57,7 +58,7 @@ class BusinessPrintHelperSpec extends SpecBase {
           .set(AddressUkYesNoPage, true).success.value
           .set(UkAddressPage, ukAddress).success.value
 
-        val result = helper(userAnswers, provisional = true, name)
+        val result = helper(userAnswers, isProvisional, name)
 
         result mustBe AnswerSection(
           headingKey = None,
@@ -81,7 +82,7 @@ class BusinessPrintHelperSpec extends SpecBase {
           .set(AddressUkYesNoPage, false).success.value
           .set(NonUkAddressPage, nonUkAddress).success.value
 
-        val result = helper(userAnswers, provisional = true, name)
+        val result = helper(userAnswers, isProvisional, name)
 
         result mustBe AnswerSection(
           headingKey = None,
@@ -93,6 +94,64 @@ class BusinessPrintHelperSpec extends SpecBase {
             AnswerRow(label = Html(messages("business.nonUkAddress.checkYourAnswersLabel", name)), answer = Html("value 1<br />value 2<br />Germany"), changeUrl = controllers.business.routes.NonUkAddressController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("business.telephoneNumber.checkYourAnswersLabel", name)), answer = Html("999"), changeUrl = controllers.business.routes.TelephoneNumberController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("business.startDate.checkYourAnswersLabel", name)), answer = Html("1 January 2020"), changeUrl = controllers.business.add.routes.StartDateController.onPageLoad().url)
+          )
+        )
+      }
+    }
+
+    "generate amend business personal rep section" when {
+
+      val mode = CheckMode
+      val isProvisional = false
+
+      val baseAnswers = emptyUserAnswers
+        .set(IndividualOrBusinessPage, Business).success.value
+        .set(NamePage, name).success.value
+        .set(TelephoneNumberPage, telephoneNumber).success.value
+        .set(StartDatePage, startDate).success.value
+
+      "UK registered company with UK address" in {
+
+        val userAnswers = baseAnswers
+          .set(UkRegisteredCompanyYesNoPage, true).success.value
+          .set(UtrPage, utr).success.value
+          .set(AddressUkYesNoPage, true).success.value
+          .set(UkAddressPage, ukAddress).success.value
+
+        val result = helper(userAnswers, isProvisional, name)
+
+        result mustBe AnswerSection(
+          headingKey = None,
+          rows = Seq(
+            AnswerRow(label = Html(messages("individualOrBusiness.checkYourAnswersLabel")), answer = Html("Business"), changeUrl = controllers.routes.IndividualOrBusinessController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("business.ukRegisteredCompanyYesNo.checkYourAnswersLabel")), answer = Html("Yes"), changeUrl = controllers.business.routes.UkRegisteredCompanyYesNoController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("business.ukCompanyName.checkYourAnswersLabel")), answer = Html("Name"), changeUrl = controllers.business.routes.UkCompanyNameController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("business.utr.checkYourAnswersLabel", name)), answer = Html("1234567890"), changeUrl = controllers.business.routes.UtrController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("business.addressUkYesNo.checkYourAnswersLabel", name)), answer = Html("Yes"), changeUrl = controllers.business.routes.AddressUkYesNoController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("business.ukAddress.checkYourAnswersLabel", name)), answer = Html("value 1<br />value 2<br />AB1 1AB"), changeUrl = controllers.business.routes.UkAddressController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("business.telephoneNumber.checkYourAnswersLabel", name)), answer = Html("999"), changeUrl = controllers.business.routes.TelephoneNumberController.onPageLoad(mode).url)
+          )
+        )
+      }
+
+      "Non-UK registered company with Non-UK address" in {
+
+        val userAnswers = baseAnswers
+          .set(UkRegisteredCompanyYesNoPage, false).success.value
+          .set(AddressUkYesNoPage, false).success.value
+          .set(NonUkAddressPage, nonUkAddress).success.value
+
+        val result = helper(userAnswers, isProvisional, name)
+
+        result mustBe AnswerSection(
+          headingKey = None,
+          rows = Seq(
+            AnswerRow(label = Html(messages("individualOrBusiness.checkYourAnswersLabel")), answer = Html("Business"), changeUrl = controllers.routes.IndividualOrBusinessController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("business.ukRegisteredCompanyYesNo.checkYourAnswersLabel")), answer = Html("No"), changeUrl = controllers.business.routes.UkRegisteredCompanyYesNoController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("business.nonUkCompanyName.checkYourAnswersLabel")), answer = Html("Name"), changeUrl = controllers.business.routes.NonUkCompanyNameController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("business.addressUkYesNo.checkYourAnswersLabel", name)), answer = Html("No"), changeUrl = controllers.business.routes.AddressUkYesNoController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("business.nonUkAddress.checkYourAnswersLabel", name)), answer = Html("value 1<br />value 2<br />Germany"), changeUrl = controllers.business.routes.NonUkAddressController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("business.telephoneNumber.checkYourAnswersLabel", name)), answer = Html("999"), changeUrl = controllers.business.routes.TelephoneNumberController.onPageLoad(mode).url)
           )
         )
       }
