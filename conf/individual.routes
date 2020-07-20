@@ -24,3 +24,8 @@ GET        /passport-or-idcard                              controllers.individu
 POST       /passport-or-idcard                              controllers.individual.PassportOrIdCardController.onSubmit(mode: Mode = NormalMode)
 GET        /change-passport-or-idcard                       controllers.individual.PassportOrIdCardController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-passport-or-idcard                       controllers.individual.PassportOrIdCardController.onSubmit(mode: Mode = CheckMode)
+
+GET        /passport                                        controllers.individual.PassportDetailsController.onPageLoad(mode: Mode = NormalMode)
+POST       /passport                                        controllers.individual.PassportDetailsController.onSubmit(mode: Mode = NormalMode)
+GET        /change-passport                                 controllers.individual.PassportDetailsController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-passport                                 controllers.individual.PassportDetailsController.onSubmit(mode: Mode = CheckMode)

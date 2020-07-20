@@ -20,6 +20,7 @@ import javax.inject.Inject
 import models.{Mode, UserAnswers}
 import pages.Page
 import pages.individual._
+import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage}
 import play.api.mvc.Call
 
 class IndividualNavigator @Inject()() extends Navigator {

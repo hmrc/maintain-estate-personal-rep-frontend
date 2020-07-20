@@ -19,7 +19,7 @@ package controllers.individual
 import base.SpecBase
 import controllers.routes._
 import forms.PassportOrIdCardFormProvider
-import models.{IndividualOrBusiness, NormalMode, PassportOrIdCard}
+import models.{NormalMode, PassportOrIdCard}
 import pages.individual.PassportOrIdCardPage
 import play.api.data.Form
 import play.api.test.FakeRequest
@@ -151,7 +151,7 @@ class PassportOrIdCardControllerSpec extends SpecBase {
 
       val request =
         FakeRequest(POST, PassportOrIdCardRoute)
-          .withFormUrlEncodedBody(("value", IndividualOrBusiness.values.head.toString))
+          .withFormUrlEncodedBody(("value", PassportOrIdCard.values.head.toString))
 
       val result = route(application, request).value
 
