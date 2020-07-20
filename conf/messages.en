@@ -251,3 +251,10 @@ individual.liveInTheUkYesNo.error.required = Select yes if the personal represen
 individual.ukAddress.checkYourAnswersLabel = What is {0}’s address?
 individual.ukAddress.title = What is the personal representative’s address?
 individual.ukAddress.heading = What is {0}’s address?
+
+individual.telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
+individual.telephoneNumber.title = What is the personal representative’s telephone number?
+individual.telephoneNumber.heading = What is {0}’s telephone number?
+individual.telephoneNumber.hint = For international numbers include the country code
+individual.telephoneNumber.error.required = Enter the personal representative’s telephone number
+individual.telephoneNumber.error.invalid = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192

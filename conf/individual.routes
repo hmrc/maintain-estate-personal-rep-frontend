@@ -49,3 +49,8 @@ GET        /non-uk-address                                  controllers.individu
 POST       /non-uk-address                                  controllers.individual.NonUkAddressController.onSubmit(mode: Mode = NormalMode)
 GET        /change-non-uk-address                           controllers.individual.NonUkAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-non-uk-address                           controllers.individual.NonUkAddressController.onSubmit(mode: Mode = CheckMode)
+
+GET        /telephone-number                                controllers.individual.TelephoneNumberController.onPageLoad(mode: Mode = NormalMode)
+POST       /telephone-number                                controllers.individual.TelephoneNumberController.onSubmit(mode: Mode = NormalMode)
+GET        /change-telephone-number                         controllers.individual.TelephoneNumberController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-telephone-number                         controllers.individual.TelephoneNumberController.onSubmit(mode: Mode = CheckMode)
