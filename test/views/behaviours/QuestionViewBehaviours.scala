@@ -88,6 +88,96 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
     }
   }
 
+  def pageWithPassportOrIDCardDetailsFields(form: Form[A],
+                                            createView: Form[A] => HtmlFormat.Appendable,
+                                            messageKeyPrefix: String,
+                                            expectedFormAction: String,
+                                            textFields: Seq[(String, Option[String])],
+                                            dateKey : String,
+                                            args: String*) = {
+
+    val dateFields = Seq(s"${dateKey}_day", s"${dateKey}_month", s"${dateKey}_year")
+
+    "behave like a passportOrIDCard page" when {
+
+      "rendered" must {
+
+        for (field <- textFields) {
+
+          s"contain an input for $field" in {
+            val doc = asDocument(createView(form))
+            assertRenderedById(doc, field._1)
+          }
+        }
+
+        for (field <- dateFields) {
+
+          s"contain an input for $field" in {
+            val doc = asDocument(createView(form))
+            assertRenderedById(doc, field)
+          }
+        }
+
+        "not render an error summary" in {
+
+          val doc = asDocument(createView(form))
+          assertNotRenderedById(doc, "error-summary-heading")
+        }
+      }
+
+      "rendered with any error" must {
+
+        "show an error prefix in the browser title" in {
+
+          val doc = asDocument(createView(form.withError(error)))
+          assertEqualsValue(doc, "title", s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title", args: _*)}""")
+        }
+      }
+
+      for (field <- textFields) {
+
+        s"rendered with an error with field '$field'" must {
+
+          "show an error summary" in {
+
+            val doc = asDocument(createView(form.withError(FormError(field._1, "error"))))
+            assertRenderedById(doc, "error-summary-heading")
+          }
+
+          s"show an error in the label for field '$field'" in {
+
+            val doc = asDocument(createView(form.withError(FormError(field._1, "error"))))
+            val errorSpan = doc.getElementsByClass("error-message").first
+            errorSpan.parent.getElementsByClass("form-label").attr("for") mustBe field._1
+          }
+
+          s"contains a label and optional hint text for the field '$field'" in {
+            val doc = asDocument(createView(form))
+            val fieldName = field._1
+            val fieldHint = field._2 map (k => messages(k))
+            assertContainsLabel(doc, fieldName, messages(s"$messageKeyPrefix.$fieldName"), fieldHint)
+          }
+        }
+      }
+
+      "rendered with any date field error" must {
+
+        "show an error in the legend" in {
+
+          val doc = asDocument(createView(form.withError(FormError(dateKey, "error"))))
+          assertRenderedById(doc, s"error-message-$dateKey-input")
+        }
+
+        "show an error prefix in the browser title" in {
+
+          val doc = asDocument(createView(form.withError(error)))
+          assertEqualsValue(doc, "title", s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title", args: _*)}""")
+        }
+      }
+
+    }
+  }
+
   def pageWithDateFields(form: Form[A],
                          createView: Form[A] => HtmlFormat.Appendable,
                          messageKeyPrefix: String,
