@@ -247,3 +247,7 @@ individual.liveInTheUkYesNo.checkYourAnswersLabel = Does {0} live in the UK?
 individual.liveInTheUkYesNo.title = Does the personal representative live in the UK?
 individual.liveInTheUkYesNo.heading = Does {0} live in the UK?
 individual.liveInTheUkYesNo.error.required = Select yes if the personal representative lives in the UK
+
+individual.ukAddress.checkYourAnswersLabel = What is {0}’s address?
+individual.ukAddress.title = What is the personal representative’s address?
+individual.ukAddress.heading = What is {0}’s address?
