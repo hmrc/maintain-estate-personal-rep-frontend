@@ -16,10 +16,8 @@
 
 package pages.individual
 
-import models.{NonUkAddress, UkAddress, UserAnswers}
+import models.{NonUkAddress, UkAddress}
 import pages.behaviours.PageBehaviours
-import pages.business.NonUkAddressPage
-
 
 class LiveInTheUkYesNoPageSpec extends PageBehaviours {
 
