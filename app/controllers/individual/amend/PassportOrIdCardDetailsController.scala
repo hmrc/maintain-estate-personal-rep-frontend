@@ -46,7 +46,7 @@ class PassportOrIdCardDetailsController @Inject()(
 
   val form: Form[CombinedPassportOrIdCard] = formProvider.withPrefix("individual.passportOrIdCardDetails")
 
-  def onPageLoad(): Action[AnyContent] = actions.authWithIndividualName  {
+  def onPageLoad(): Action[AnyContent] = actions.authWithIndividualName {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(PassportOrIdCardDetailsPage) match {
