@@ -16,14 +16,11 @@
 
 package models
 
-import play.api.libs.json.{Reads, __}
+import play.api.libs.json._
 
-trait PersonalRep
+case class PersonalRepresentative(estatePerRepInd : Option[IndividualPersonalRep] = None,
+                                  estatePerRepOrg : Option[BusinessPersonalRep] = None)
 
-object PersonalRep {
-
-  implicit val reads: Reads[PersonalRep] =
-    __.read[BusinessPersonalRep](BusinessPersonalRep.reads).widen[PersonalRep] orElse
-      __.read[IndividualPersonalRep](IndividualPersonalRep.reads).widen[PersonalRep]
-
+object PersonalRepresentative {
+  implicit val personalRepFormats: Format[PersonalRepresentative] = Json.format[PersonalRepresentative]
 }
