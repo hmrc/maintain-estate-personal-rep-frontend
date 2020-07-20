@@ -18,6 +18,7 @@ package utils.print
 
 import com.google.inject.Inject
 import controllers.individual.add.{routes => addRts}
+import controllers.individual.amend.{routes => amendRts}
 import controllers.individual.{routes => rts}
 import models.{CheckMode, NormalMode, UserAnswers}
 import pages.IndividualOrBusinessPage
@@ -50,13 +51,13 @@ class IndividualPrintHelper @Inject()(answerRowConverter: AnswerRowConverter,
       bound.dateQuestion(StartDatePage, "individual.startDate", addRts.StartDateController.onPageLoad().url)
     ).flatten
 
-    lazy val amend: Seq[AnswerRow] = Seq(
+    val amend: Seq[AnswerRow] = Seq(
       bound.enumQuestion(IndividualOrBusinessPage, "individualOrBusiness", controllers.routes.IndividualOrBusinessController.onPageLoad(CheckMode).url),
       bound.nameQuestion(NamePage, "individual.name", rts.NameController.onPageLoad(CheckMode).url),
       bound.dateQuestion(DateOfBirthPage, "individual.dateOfBirth", rts.DateOfBirthController.onPageLoad(CheckMode).url),
       bound.yesNoQuestion(NationalInsuranceNumberYesNoPage, "individual.nationalInsuranceNumberYesNo", rts.NationalInsuranceNumberYesNoController.onPageLoad(CheckMode).url),
       bound.ninoQuestion(NationalInsuranceNumberPage, "individual.nationalInsuranceNumber", rts.NationalInsuranceNumberController.onPageLoad(CheckMode).url),
-      // combined passport or ID card details
+      bound.passportOrIdCardDetailsQuestion(PassportOrIdCardDetailsPage, "individual.passportOrIdCardDetails", amendRts.PassportOrIdCardDetailsController.onPageLoad().url),
       bound.yesNoQuestion(LiveInTheUkYesNoPage, "individual.liveInTheUkYesNo", rts.LiveInTheUkYesNoController.onPageLoad(CheckMode).url),
       bound.addressQuestion(UkAddressPage, "individual.ukAddress", rts.UkAddressController.onPageLoad(CheckMode).url),
       bound.addressQuestion(NonUkAddressPage, "individual.nonUkAddress", rts.NonUkAddressController.onPageLoad(CheckMode).url),

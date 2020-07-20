@@ -19,7 +19,7 @@ package utils.print
 import java.time.LocalDate
 
 import com.google.inject.Inject
-import models.{Address, IdCard, Name, Passport, UserAnswers}
+import models.{Address, CombinedPassportOrIdCard, IdCard, Name, Passport, UserAnswers}
 import pages.QuestionPage
 import pages.business.NamePage
 import play.api.i18n.Messages
@@ -129,6 +129,18 @@ class AnswerRowConverter @Inject()() {
         AnswerRow(
           HtmlFormat.escape(messages(s"$labelKey.checkYourAnswersLabel", name)),
           formatIdCardDetails(x, countryOptions),
+          changeUrl
+        )
+      }
+    }
+
+    def passportOrIdCardDetailsQuestion(query: QuestionPage[CombinedPassportOrIdCard],
+                                        labelKey: String,
+                                        changeUrl: String): Option[AnswerRow] = {
+      userAnswers.get(query) map {x =>
+        AnswerRow(
+          HtmlFormat.escape(messages(s"$labelKey.checkYourAnswersLabel", name)),
+          formatPassportOrIdCardDetails(x, countryOptions),
           changeUrl
         )
       }

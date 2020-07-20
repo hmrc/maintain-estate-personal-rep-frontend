@@ -20,7 +20,7 @@ import java.time.LocalDate
 
 import base.SpecBase
 import models.IndividualOrBusiness.Individual
-import models.{CombinedPassportOrIdCard, IdCard, Name, NonUkAddress, NormalMode, Passport, PassportOrIdCard, UkAddress}
+import models.{CheckMode, CombinedPassportOrIdCard, IdCard, Name, NonUkAddress, NormalMode, Passport, PassportOrIdCard, UkAddress}
 import pages.IndividualOrBusinessPage
 import pages.individual._
 import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage}
@@ -135,6 +135,69 @@ class IndividualPrintHelperSpec extends SpecBase {
             AnswerRow(label = Html(messages("individual.nonUkAddress.checkYourAnswersLabel", displayName)), answer = Html("value 1<br />value 2<br />France"), changeUrl = controllers.individual.routes.NonUkAddressController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("individual.telephoneNumber.checkYourAnswersLabel", displayName)), answer = Html("999"), changeUrl = controllers.individual.routes.TelephoneNumberController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("individual.startDate.checkYourAnswersLabel", displayName)), answer = Html("1 January 2020"), changeUrl = controllers.individual.add.routes.StartDateController.onPageLoad().url)
+          )
+        )
+      }
+    }
+
+    "generate amend individual personal rep section" when {
+
+      val mode = CheckMode
+      val isProvisional = false
+
+      val baseAnswers = emptyUserAnswers
+        .set(IndividualOrBusinessPage, Individual).success.value
+        .set(NamePage, name).success.value
+        .set(DateOfBirthPage, dateOfBirth).success.value
+        .set(TelephoneNumberPage, telephoneNumber).success.value
+        .set(StartDatePage, startDate).success.value
+
+      "NINO and UK address" in {
+
+        val userAnswers = baseAnswers
+          .set(NationalInsuranceNumberYesNoPage, true).success.value
+          .set(NationalInsuranceNumberPage, nino).success.value
+          .set(LiveInTheUkYesNoPage, true).success.value
+          .set(UkAddressPage, ukAddress).success.value
+
+        val result = helper(userAnswers, isProvisional, displayName)
+
+        result mustBe AnswerSection(
+          headingKey = None,
+          rows = Seq(
+            AnswerRow(label = Html(messages("individualOrBusiness.checkYourAnswersLabel")), answer = Html("Individual"), changeUrl = controllers.routes.IndividualOrBusinessController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.name.checkYourAnswersLabel")), answer = Html("John Doe"), changeUrl = controllers.individual.routes.NameController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.dateOfBirth.checkYourAnswersLabel", displayName)), answer = Html("9 March 1996"), changeUrl = controllers.individual.routes.DateOfBirthController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.nationalInsuranceNumberYesNo.checkYourAnswersLabel", displayName)), answer = Html("Yes"), changeUrl = controllers.individual.routes.NationalInsuranceNumberYesNoController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.nationalInsuranceNumber.checkYourAnswersLabel", displayName)), answer = Html("AA 00 00 00 A"), changeUrl = controllers.individual.routes.NationalInsuranceNumberController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.liveInTheUkYesNo.checkYourAnswersLabel", displayName)), answer = Html("Yes"), changeUrl = controllers.individual.routes.LiveInTheUkYesNoController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.ukAddress.checkYourAnswersLabel", displayName)), answer = Html("value 1<br />value 2<br />AB1 1AB"), changeUrl = controllers.individual.routes.UkAddressController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.telephoneNumber.checkYourAnswersLabel", displayName)), answer = Html("999"), changeUrl = controllers.individual.routes.TelephoneNumberController.onPageLoad(mode).url)
+          )
+        )
+      }
+
+      "Passport/ID card and non-UK address" in {
+
+        val userAnswers = baseAnswers
+          .set(NationalInsuranceNumberYesNoPage, false).success.value
+          .set(PassportOrIdCardDetailsPage, passportOrIdCard).success.value
+          .set(LiveInTheUkYesNoPage, false).success.value
+          .set(NonUkAddressPage, nonUkAddress).success.value
+
+        val result = helper(userAnswers, isProvisional, name.displayFullName)
+
+        result mustBe AnswerSection(
+          headingKey = None,
+          rows = Seq(
+            AnswerRow(label = Html(messages("individualOrBusiness.checkYourAnswersLabel")), answer = Html("Individual"), changeUrl = controllers.routes.IndividualOrBusinessController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.name.checkYourAnswersLabel")), answer = Html("John Doe"), changeUrl = controllers.individual.routes.NameController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.dateOfBirth.checkYourAnswersLabel", displayName)), answer = Html("9 March 1996"), changeUrl = controllers.individual.routes.DateOfBirthController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.nationalInsuranceNumberYesNo.checkYourAnswersLabel", displayName)), answer = Html("No"), changeUrl = controllers.individual.routes.NationalInsuranceNumberYesNoController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.passportOrIdCardDetails.checkYourAnswersLabel", displayName)), answer = Html("France<br />123<br />3 February 2022"), changeUrl = controllers.individual.amend.routes.PassportOrIdCardDetailsController.onPageLoad().url),
+            AnswerRow(label = Html(messages("individual.liveInTheUkYesNo.checkYourAnswersLabel", displayName)), answer = Html("No"), changeUrl = controllers.individual.routes.LiveInTheUkYesNoController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.nonUkAddress.checkYourAnswersLabel", displayName)), answer = Html("value 1<br />value 2<br />France"), changeUrl = controllers.individual.routes.NonUkAddressController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.telephoneNumber.checkYourAnswersLabel", displayName)), answer = Html("999"), changeUrl = controllers.individual.routes.TelephoneNumberController.onPageLoad(mode).url)
           )
         )
       }
