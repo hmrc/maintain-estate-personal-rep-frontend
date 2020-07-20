@@ -269,3 +269,6 @@ individual.startDate.error.required = The date the individual became the new per
 individual.startDate.error.invalid = Enter a real date
 individual.startDate.error.future = The date the individual became the new personal representative must be today or in the past
 individual.startDate.error.past = The date the individual became the new personal representative cannot be before the start date of the estate
+
+individual.checkDetails.title = Check personal representative’s details
+individual.checkDetails.heading = Check personal representative’s details

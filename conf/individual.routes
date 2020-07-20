@@ -57,3 +57,6 @@ POST       /change-telephone-number                         controllers.individu
 
 GET        /start-date                                      controllers.individual.add.StartDateController.onPageLoad()
 POST       /start-date                                      controllers.individual.add.StartDateController.onSubmit()
+
+GET        /check-details                                   controllers.individual.add.CheckDetailsController.onPageLoad()
+POST       /check-details                                   controllers.individual.add.CheckDetailsController.onSubmit()
