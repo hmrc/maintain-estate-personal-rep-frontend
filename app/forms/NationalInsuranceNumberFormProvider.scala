@@ -14,16 +14,22 @@
  * limitations under the License.
  */
 
-package pages.individual
+package forms
 
-import models.IdCard
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
+import javax.inject.Inject
+import play.api.data.Form
 
-case object IdCardDetailsPage extends QuestionPage[IdCard] {
+class NationalInsuranceNumberFormProvider @Inject() extends Mappings {
 
-  override def path: JsPath = basePath \ toString
-
-  override def toString: String = "idCardDetails"
-
+  def withPrefix(messagePrefix: String): Form[String] =
+    Form(
+      "value" -> nino(s"$messagePrefix.error.required")
+        .verifying(
+          firstError(
+            nonEmptyString("value", s"$messagePrefix.error.required"),
+            isNinoValid("value", s"$messagePrefix.error.invalidFormat")
+          ))
+    )
 }
+

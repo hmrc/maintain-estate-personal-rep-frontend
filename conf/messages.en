@@ -40,6 +40,8 @@ site.continue = Continue
 site.service_name = Register and Maintain an Estate
 site.textarea.char_limit = (Limit is {0} characters)
 site.sign_out = Sign out
+site.error = Error:
+site.date.hint = For example, 31 3 1980
 
 site.address.uk.title = What is the address?
 site.address.uk.heading = What is {0}’s address?
@@ -155,3 +157,118 @@ business.startDate.error.past = The date the business became the new personal re
 
 business.checkDetails.title = Check personal representative’s details
 business.checkDetails.heading = Check personal representative’s details
+
+individual.name.checkYourAnswersLabel = What is the personal representative name?
+individual.name.title = What is the personal representative name?
+individual.name.heading = What is the personal representative name?
+individual.name.firstName = First name
+individual.name.middleName = Middle names (optional)
+individual.name.lastName = Last name
+individual.name.error.firstName.required = Enter the personal representative’s first name
+individual.name.error.lastName.required = Enter the personal representative’s last name
+individual.name.error.firstName.length = Personal representative first name must be 35 characters or less
+individual.name.error.middleName.length = Personal representative middle name must be 35 characters or less
+individual.name.error.lastName.length = Personal representative last name must be 35 characters or less
+individual.name.error.firstName.invalid = Personal representative’s first name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+individual.name.error.middleName.invalid = Personal representative’s middle name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+individual.name.error.lastName.invalid = Personal representative’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+
+individual.dateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
+individual.dateOfBirth.title = What is the personal representative’s date of birth?
+individual.dateOfBirth.heading = What is {0}’s date of birth?
+individual.dateOfBirth.error.required.all = Enter a date of birth
+individual.dateOfBirth.error.required.two = Date of birth must include a {0} and a {1}
+individual.dateOfBirth.error.required = Date of birth must include a {0}
+individual.dateOfBirth.error.invalid = Enter a real date of birth
+individual.dateOfBirth.error.future = Date of birth must be today or in the past
+individual.dateOfBirth.error.past = Date of birth must be after 31 December 1499
+
+individual.nationalInsuranceNumberYesNo.checkYourAnswersLabel = Does {0} have a National Insurance number?
+individual.nationalInsuranceNumberYesNo.title = Does the personal representative have a National Insurance number?
+individual.nationalInsuranceNumberYesNo.heading = Does {0} have a National Insurance number?
+individual.nationalInsuranceNumberYesNo.error.required = Select yes if you know the personal representative’s National Insurance number
+
+individual.nationalInsuranceNumber.checkYourAnswersLabel = What is {0}’s National Insurance number?
+individual.nationalInsuranceNumber.title = What is the personal representative’s National Insurance number?
+individual.nationalInsuranceNumber.heading = What is {0}’s National Insurance number?
+individual.nationalInsuranceNumber.hint = It is on their National Insurance card, benefit letter, payslip or P60. For example, ‘QQ 12 34 56 C’.
+individual.nationalInsuranceNumber.error.required = Enter the personal representative’s National Insurance number
+individual.nationalInsuranceNumber.error.invalidFormat = Enter the personal representative’s National Insurance number in the correct format
+
+individual.passportOrIdCard.checkYourAnswersLabel = Is the personal representative an individual or a business?
+individual.passportOrIdCard.title = Is the personal representative an individual or a business?
+individual.passportOrIdCard.heading = Is the personal representative an individual or a business?
+individual.passportOrIdCard.hint = The personal representative can be the estate’s administrator or executor
+individual.passportOrIdCard.passport = Passport
+individual.passportOrIdCard.idCard = ID Card
+individual.passportOrIdCard.error.required = Select if the personal representative is an individual or business
+
+individual.passportDetails.checkYourAnswersLabel = What are {0}’s passport details?
+individual.passportDetails.title = What are the personal representative’s passport details?
+individual.passportDetails.heading = What are {0}’s passport details?
+individual.passportDetails.country = Passport country of issue
+individual.passportDetails.country.error.required = Enter the personal representative’s passport country of issue
+individual.passportDetails.country.error.length = The personal representative’s passport country must be 100 characters or less
+individual.passportDetails.number = Passport number
+individual.passportDetails.number.hint = For example, 502135326
+individual.passportDetails.number.error.required = Enter the personal representative’s passport number
+individual.passportDetails.number.error.length = The personal representative’s passport number must be 30 characters or less
+individual.passportDetails.number.error.invalid = Passport number can only include letters and numbers
+individual.passportDetails.expiryDate = Expiry date
+individual.passportDetails.expiryDate.hint = Expiry date can be in the past. For example, 31 3 1980
+individual.passportDetails.expiryDate.error.required.all = Enter the passport expiry date
+individual.passportDetails.expiryDate.error.required.two = Passport expiry date must include a {0} and {1}
+individual.passportDetails.expiryDate.error.required = Passport expiry date must include {0}
+individual.passportDetails.expiryDate.error.invalid = Enter a real date when the personal representative’s passport expires
+individual.passportDetails.expiryDate.error.future = Passport expiry date must be after 31 December 1499 and before 01 January 2100
+individual.passportDetails.expiryDate.error.past = Passport expiry date must be after 31 December 1499 and before 01 January 2100
+
+individual.idCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
+individual.idCardDetails.title = What are the personal representative’s ID card details?
+individual.idCardDetails.heading = What are {0}’s ID card details?
+individual.idCardDetails.country = ID card country of issue
+individual.idCardDetails.country.error.required = Enter the personal representative’s ID card country of issue
+individual.idCardDetails.country.error.length = The personal representative’s ID card country must be 100 characters or less
+individual.idCardDetails.number = ID card number
+individual.idCardDetails.number.hint = For example, 502135326
+individual.idCardDetails.number.error.required = Enter the personal representative’s ID card number
+individual.idCardDetails.number.error.length = The personal representative’s ID card number must be 30 characters or less
+individual.idCardDetails.number.error.invalid = ID card number can only include letters and numbers
+individual.idCardDetails.expiryDate = Expiry date
+individual.idCardDetails.expiryDate.hint = Expiry date can be in the past. For example, 31 3 1980
+individual.idCardDetails.expiryDate.error.required.all = Enter the ID card expiry date
+individual.idCardDetails.expiryDate.error.required.two = ID card expiry date must include a {0} and {1}
+individual.idCardDetails.expiryDate.error.required = ID card expiry date must include a {0}
+individual.idCardDetails.expiryDate.error.invalid = Enter a real date when the personal representative’s ID card expires
+individual.idCardDetails.expiryDate.error.future = ID card expiry date must be after 31 December 1499 and before 01 January 2100
+individual.idCardDetails.expiryDate.error.past = ID card expiry date must be after 31 December 1499 and before 01 January 2100
+
+individual.liveInTheUkYesNo.checkYourAnswersLabel = Does {0} live in the UK?
+individual.liveInTheUkYesNo.title = Does the personal representative live in the UK?
+individual.liveInTheUkYesNo.heading = Does {0} live in the UK?
+individual.liveInTheUkYesNo.error.required = Select yes if the personal representative lives in the UK
+
+individual.ukAddress.checkYourAnswersLabel = What is {0}’s address?
+individual.ukAddress.title = What is the personal representative’s address?
+individual.ukAddress.heading = What is {0}’s address?
+
+individual.telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
+individual.telephoneNumber.title = What is the personal representative’s telephone number?
+individual.telephoneNumber.heading = What is {0}’s telephone number?
+individual.telephoneNumber.hint = For international numbers include the country code
+individual.telephoneNumber.error.required = Enter the personal representative’s telephone number
+individual.telephoneNumber.error.invalid = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
+
+individual.startDate.checkYourAnswersLabel = When did {0} become the new personal representative?
+individual.startDate.title = When did the individual become the new personal representative?
+individual.startDate.heading = When did {0} become the new personal representative?
+individual.startDate.hint = For example, 31 3 1980
+individual.startDate.error.required.all = Enter the date the individual became the new personal representative
+individual.startDate.error.required.two = The date the individual became the new personal representative must include a {0} and a {1}
+individual.startDate.error.required = The date the individual became the new personal representative must include a {0}
+individual.startDate.error.invalid = Enter a real date
+individual.startDate.error.future = The date the individual became the new personal representative must be today or in the past
+individual.startDate.error.past = The date the individual became the new personal representative cannot be before the start date of the estate
+
+individual.checkDetails.title = Check personal representative’s details
+individual.checkDetails.heading = Check personal representative’s details

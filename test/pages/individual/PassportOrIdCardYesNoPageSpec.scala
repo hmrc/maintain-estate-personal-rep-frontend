@@ -18,8 +18,9 @@ package pages.individual
 
 import java.time.LocalDate
 
-import models.{IdCard, Passport, UserAnswers}
+import models.{IdCard, Passport}
 import pages.behaviours.PageBehaviours
+import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage}
 
 
 class PassportOrIdCardYesNoPageSpec extends PageBehaviours {
