@@ -19,7 +19,9 @@ package utils.extractors
 import java.time.LocalDate
 
 import base.SpecBase
+import models.IndividualOrBusiness.Business
 import models.{BusinessPersonalRep, NonUkAddress, UkAddress}
+import pages.IndividualOrBusinessPage
 import pages.business._
 
 class BusinessExtractorSpec extends SpecBase {
@@ -49,6 +51,7 @@ class BusinessExtractorSpec extends SpecBase {
 
         val result = extractor(emptyUserAnswers, personalRep).get
 
+        result.get(IndividualOrBusinessPage).get mustEqual Business
         result.get(UkRegisteredCompanyYesNoPage).get mustEqual true
         result.get(NamePage).get mustEqual name
         result.get(UtrPage).get mustEqual utr
@@ -71,6 +74,7 @@ class BusinessExtractorSpec extends SpecBase {
 
         val result = extractor(emptyUserAnswers, personalRep).get
 
+        result.get(IndividualOrBusinessPage).get mustEqual Business
         result.get(UkRegisteredCompanyYesNoPage).get mustEqual false
         result.get(NamePage).get mustEqual name
         result.get(UtrPage) mustNot be(defined)

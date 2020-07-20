@@ -16,16 +16,18 @@
 
 package utils.extractors
 
-import com.google.inject.Inject
+import models.IndividualOrBusiness.Business
 import models.{Address, BusinessPersonalRep, NonUkAddress, UkAddress, UserAnswers}
+import pages.IndividualOrBusinessPage
 import pages.business._
 
 import scala.util.Try
 
-class BusinessExtractor @Inject()() {
+class BusinessExtractor {
 
   def apply(answers: UserAnswers, business: BusinessPersonalRep): Try[UserAnswers] =
     answers.deleteAtPath(pages.business.basePath)
+      .flatMap(_.set(IndividualOrBusinessPage, Business))
       .flatMap(_.set(NamePage, business.name))
       .flatMap(_.set(TelephoneNumberPage, business.phoneNumber))
       .flatMap(answers => extractAddress(business.address, answers))

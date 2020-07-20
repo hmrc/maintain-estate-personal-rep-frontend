@@ -16,17 +16,19 @@
 
 package utils.extractors
 
-import com.google.inject.Inject
+import models.IndividualOrBusiness.Individual
 import models._
+import pages.IndividualOrBusinessPage
 import pages.individual._
 import pages.individual.add._
 
 import scala.util.Try
 
-class IndividualExtractor @Inject()() {
+class IndividualExtractor {
 
   def apply(answers: UserAnswers, individual: IndividualPersonalRep): Try[UserAnswers] =
     answers.deleteAtPath(pages.individual.basePath)
+      .flatMap(_.set(IndividualOrBusinessPage, Individual))
       .flatMap(_.set(NamePage, individual.name))
       .flatMap(_.set(TelephoneNumberPage, individual.phoneNumber))
       .flatMap(_.set(DateOfBirthPage, individual.dateOfBirth))
