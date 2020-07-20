@@ -17,11 +17,12 @@
 package utils.print
 
 import com.google.inject.Inject
-import controllers.business.add.{routes => addRts}
-import controllers.business.{routes => rts}
-import models.{NormalMode, UserAnswers}
+import controllers.individual.add.{routes => addRts}
+import controllers.individual.{routes => rts}
+import models.{CheckMode, NormalMode, UserAnswers}
 import pages.IndividualOrBusinessPage
-import pages.business._
+import pages.individual._
+import pages.individual.add._
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
@@ -35,24 +36,36 @@ class IndividualPrintHelper @Inject()(answerRowConverter: AnswerRowConverter,
 
     val add: Seq[AnswerRow] = Seq(
       bound.enumQuestion(IndividualOrBusinessPage, "individualOrBusiness", controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode).url),
-      bound.yesNoQuestion(UkRegisteredCompanyYesNoPage, "business.ukRegisteredCompanyYesNo", rts.UkRegisteredCompanyYesNoController.onPageLoad(NormalMode).url),
-      bound.conditionalStringQuestion(
-        NamePage,
-        UkRegisteredCompanyYesNoPage,
-        ("business.ukCompanyName", "business.nonUkCompanyName"),
-        (rts.UkCompanyNameController.onPageLoad(NormalMode).url, rts.NonUkCompanyNameController.onPageLoad(NormalMode).url)
-      ),
-      bound.stringQuestion(UtrPage, "business.utr", rts.UtrController.onPageLoad(NormalMode).url),
-      bound.yesNoQuestion(AddressUkYesNoPage, "business.addressUkYesNo", rts.AddressUkYesNoController.onPageLoad(NormalMode).url),
-      bound.addressQuestion(UkAddressPage, "business.ukAddress", rts.UkAddressController.onPageLoad(NormalMode).url),
-      bound.addressQuestion(NonUkAddressPage, "business.nonUkAddress", rts.NonUkAddressController.onPageLoad(NormalMode).url),
-      bound.stringQuestion(TelephoneNumberPage, "business.telephoneNumber", rts.TelephoneNumberController.onPageLoad(NormalMode).url),
-      bound.dateQuestion(StartDatePage, "business.startDate", addRts.StartDateController.onPageLoad().url)
+      bound.nameQuestion(NamePage, "individual.name", rts.NameController.onPageLoad(NormalMode).url),
+      bound.dateQuestion(DateOfBirthPage, "individual.dateOfBirth", rts.DateOfBirthController.onPageLoad(NormalMode).url),
+      bound.yesNoQuestion(NationalInsuranceNumberYesNoPage, "individual.nationalInsuranceNumberYesNo", rts.NationalInsuranceNumberYesNoController.onPageLoad(NormalMode).url),
+      bound.ninoQuestion(NationalInsuranceNumberPage, "individual.nationalInsuranceNumber", rts.NationalInsuranceNumberController.onPageLoad(NormalMode).url),
+      bound.enumQuestion(PassportOrIdCardPage, "individual.passportOrIdCard", rts.PassportOrIdCardController.onPageLoad(NormalMode).url),
+      bound.passportDetailsQuestion(PassportDetailsPage, "individual.passportDetails", rts.PassportDetailsController.onPageLoad(NormalMode).url),
+      bound.idCardDetailsQuestion(IdCardDetailsPage, "individual.idCardDetails", rts.IdCardDetailsController.onPageLoad(NormalMode).url),
+      bound.yesNoQuestion(LiveInTheUkYesNoPage, "individual.liveInTheUkYesNo", rts.LiveInTheUkYesNoController.onPageLoad(NormalMode).url),
+      bound.addressQuestion(UkAddressPage, "individual.ukAddress", rts.UkAddressController.onPageLoad(NormalMode).url),
+      bound.addressQuestion(NonUkAddressPage, "individual.nonUkAddress", rts.NonUkAddressController.onPageLoad(NormalMode).url),
+      bound.stringQuestion(TelephoneNumberPage, "individual.telephoneNumber", rts.TelephoneNumberController.onPageLoad(NormalMode).url),
+      bound.dateQuestion(StartDatePage, "individual.startDate", addRts.StartDateController.onPageLoad().url)
+    ).flatten
+
+    lazy val amend: Seq[AnswerRow] = Seq(
+      bound.enumQuestion(IndividualOrBusinessPage, "individualOrBusiness", controllers.routes.IndividualOrBusinessController.onPageLoad(CheckMode).url),
+      bound.nameQuestion(NamePage, "individual.name", rts.NameController.onPageLoad(CheckMode).url),
+      bound.dateQuestion(DateOfBirthPage, "individual.dateOfBirth", rts.DateOfBirthController.onPageLoad(CheckMode).url),
+      bound.yesNoQuestion(NationalInsuranceNumberYesNoPage, "individual.nationalInsuranceNumberYesNo", rts.NationalInsuranceNumberYesNoController.onPageLoad(CheckMode).url),
+      bound.ninoQuestion(NationalInsuranceNumberPage, "individual.nationalInsuranceNumber", rts.NationalInsuranceNumberController.onPageLoad(CheckMode).url),
+      // combined passport or ID card details
+      bound.yesNoQuestion(LiveInTheUkYesNoPage, "individual.liveInTheUkYesNo", rts.LiveInTheUkYesNoController.onPageLoad(CheckMode).url),
+      bound.addressQuestion(UkAddressPage, "individual.ukAddress", rts.UkAddressController.onPageLoad(CheckMode).url),
+      bound.addressQuestion(NonUkAddressPage, "individual.nonUkAddress", rts.NonUkAddressController.onPageLoad(CheckMode).url),
+      bound.stringQuestion(TelephoneNumberPage, "individual.telephoneNumber", rts.TelephoneNumberController.onPageLoad(CheckMode).url)
     ).flatten
 
     AnswerSection(
       None,
-      add
+      if (provisional) add else amend
     )
   }
 }

@@ -60,3 +60,6 @@ POST       /start-date                                      controllers.individu
 
 GET        /check-details                                   controllers.individual.add.CheckDetailsController.onPageLoad()
 POST       /check-details                                   controllers.individual.add.CheckDetailsController.onSubmit()
+
+GET        /change-details                                  controllers.individual.amend.CheckDetailsController.renderFromUserAnswers()
+GET        /change-details                                  controllers.individual.amend.CheckDetailsController.onSubmit()

@@ -17,8 +17,9 @@
 package utils.extractors
 
 import com.google.inject.Inject
-import models.{Address, CombinedPassportOrIdCard, IdCard, IndividualPersonalRep, NationalInsuranceNumber, NonUkAddress, Passport, UkAddress, UserAnswers}
+import models._
 import pages.individual._
+import pages.individual.add._
 
 import scala.util.Try
 
@@ -53,11 +54,11 @@ class IndividualExtractor @Inject()() {
           .flatMap(_.set(NationalInsuranceNumberPage, nino))
       case p: Passport =>
         answers.set(NationalInsuranceNumberYesNoPage, false)
-          .flatMap(_.set(PassportOrIdCardDetailsYesNoPage, true))
+          .flatMap(_.set(PassportOrIdCardPage, PassportOrIdCard.Passport))
           .flatMap(_.set(PassportDetailsPage, p))
       case id: IdCard =>
         answers.set(NationalInsuranceNumberYesNoPage, false)
-          .flatMap(_.set(PassportOrIdCardDetailsYesNoPage, false))
+          .flatMap(_.set(PassportOrIdCardPage, PassportOrIdCard.IdCard))
           .flatMap(_.set(IdCardDetailsPage, id))
       case combined: CombinedPassportOrIdCard =>
         answers.set(NationalInsuranceNumberYesNoPage, false)

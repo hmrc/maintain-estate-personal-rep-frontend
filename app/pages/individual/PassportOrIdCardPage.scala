@@ -20,6 +20,7 @@ import models.PassportOrIdCard._
 import models.{PassportOrIdCard, UserAnswers}
 import play.api.libs.json.JsPath
 import pages.QuestionPage
+import pages.individual.add._
 
 import scala.util.Try
 
@@ -32,9 +33,9 @@ object PassportOrIdCardPage extends QuestionPage[PassportOrIdCard] {
   override def cleanup(value: Option[PassportOrIdCard], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
       case Some(Passport) =>
-        userAnswers.deleteAtPath(pages.individual.basePath) // TODO Change
+        userAnswers.remove(IdCardDetailsPage)
       case Some(IdCard) =>
-        userAnswers.deleteAtPath(pages.individual.basePath) // TODO Change
+        userAnswers.remove(PassportDetailsPage)
       case _ =>
         super.cleanup(value, userAnswers)
     }

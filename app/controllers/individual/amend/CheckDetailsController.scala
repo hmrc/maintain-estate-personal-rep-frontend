@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package controllers.individual.add
+package controllers.individual.amend
 
 import config.FrontendAppConfig
 import connectors.EstatesConnector
 import controllers.actions.Actions
+import handlers.ErrorHandler
 import javax.inject.Inject
 import models.PersonalRepresentative
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.mappers.IndividualMapper
 import utils.print.IndividualPrintHelper
 import viewmodels.AnswerSection
-import views.html.individual.add.CheckDetailsView
+import views.html.individual.amend.CheckIndividualDetailsView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -35,31 +36,29 @@ class CheckDetailsController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         actions: Actions,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: CheckDetailsView,
+                                        view: CheckIndividualDetailsView,
+                                        connector: EstatesConnector,
                                         val appConfig: FrontendAppConfig,
                                         printHelper: IndividualPrintHelper,
                                         mapper: IndividualMapper,
-                                        connector: EstatesConnector
+                                        errorHandler: ErrorHandler
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = actions.authWithIndividualName {
+  def renderFromUserAnswers() : Action[AnyContent] = actions.authWithIndividualName {
     implicit request =>
-
-      val section: AnswerSection = printHelper(request.userAnswers, provisional = true, request.individualName)
+      val section: AnswerSection = printHelper(request.userAnswers, provisional = false, request.individualName)
       Ok(view(section))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.authWithIndividualName.async {
+  def onSubmit(): Action[AnyContent] = actions.authWithData.async {
     implicit request =>
 
-      mapper(request.userAnswers) match {
-        case None =>
-          Future.successful(InternalServerError)
-        case Some(individual) =>
+      mapper(request.userAnswers).map {
+        individual =>
           connector.addOrAmendPersonalRep(request.userAnswers.utr, PersonalRepresentative(Some(individual), None)).map(_ =>
-            // TODO - add User to request, pattern match on AffinityGroup and redirect to relevant declaration
-            Redirect(controllers.individual.add.routes.CheckDetailsController.onPageLoad())
+            // TODO - pattern match on AffinityGroup and redirect to relevant declaration
+            Redirect(controllers.individual.amend.routes.CheckDetailsController.renderFromUserAnswers())
           )
-      }
+      }.getOrElse(Future.successful(InternalServerError(errorHandler.internalServerErrorTemplate)))
   }
 }
