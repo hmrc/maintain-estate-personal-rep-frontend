@@ -49,7 +49,7 @@ class CheckDetailsController @Inject()(
             userAnswers <- Future.fromTry(individualExtractor(request.userAnswers, individual))
             _ <- sessionRepository.set(userAnswers)
           } yield {
-            Redirect(???)
+            Redirect(controllers.individual.amend.routes.CheckDetailsController.renderFromUserAnswers())
           }
         case business: BusinessPersonalRep =>
           for {

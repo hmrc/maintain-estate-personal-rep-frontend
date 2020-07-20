@@ -57,7 +57,7 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
         entityStart = date
       )
 
-      "extract answers and redirect" ignore {
+      "extract answers and redirect" in {
 
         val mockEstatesConnector = mock[EstatesConnector]
         when(mockEstatesConnector.getPersonalRep(any())(any(), any())).thenReturn(Future.successful(personalRep))
@@ -73,7 +73,7 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
         status(result) mustEqual SEE_OTHER
 
         redirectLocation(result).value mustEqual
-          ???
+          controllers.individual.amend.routes.CheckDetailsController.renderFromUserAnswers().url
       }
     }
 
