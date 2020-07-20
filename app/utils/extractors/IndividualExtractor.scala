@@ -51,7 +51,7 @@ class IndividualExtractor @Inject()() {
       case NationalInsuranceNumber(nino) =>
         answers.set(NationalInsuranceNumberYesNoPage, true)
           .flatMap(_.set(NationalInsuranceNumberPage, nino))
-      case p : Passport =>
+      case p: Passport =>
         answers.set(NationalInsuranceNumberYesNoPage, false)
           .flatMap(_.set(PassportOrIdCardDetailsYesNoPage, true))
           .flatMap(_.set(PassportDetailsPage, p))
@@ -59,10 +59,9 @@ class IndividualExtractor @Inject()() {
         answers.set(NationalInsuranceNumberYesNoPage, false)
           .flatMap(_.set(PassportOrIdCardDetailsYesNoPage, false))
           .flatMap(_.set(IdCardDetailsPage, id))
-      /*case combined: CombinedPassportOrIdCard =>
+      case combined: CombinedPassportOrIdCard =>
         answers.set(NationalInsuranceNumberYesNoPage, false)
-          .flatMap(_.set(PassportOrIdCardDetailsYesNoPage, true))
-          .flatMap(_.set(PassportOrIdCardDetailsPage, combined))*/
+          .flatMap(_.set(PassportOrIdCardDetailsPage, combined))
       case _ =>
         answers.set(NationalInsuranceNumberYesNoPage, false)
     }
