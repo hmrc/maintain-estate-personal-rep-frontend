@@ -18,42 +18,40 @@ package controllers.individual
 
 import config.annotations.Individual
 import controllers.actions.Actions
-import forms.IdCardDetailsFormProvider
+import forms.YesNoFormProvider
 import javax.inject.Inject
-import models.{Mode, NormalMode}
+import models.Mode
 import navigation.Navigator
-import pages.individual.add.IdCardDetailsPage
+import pages.individual.LiveInTheUkYesNoPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.countryOptions.CountryOptions
-import views.html.individual.IdCardDetailsView
+import views.html.individual.LiveInTheUkYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class IdCardDetailsController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         @Individual navigator: Navigator,
-                                         actions: Actions,
-                                         formProvider: IdCardDetailsFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: IdCardDetailsView,
-                                         val countryOptions: CountryOptions
-                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class LiveInTheUkYesNoController @Inject()(
+                                            override val messagesApi: MessagesApi,
+                                            sessionRepository: SessionRepository,
+                                            @Individual navigator: Navigator,
+                                            actions: Actions,
+                                            formProvider: YesNoFormProvider,
+                                            val controllerComponents: MessagesControllerComponents,
+                                            view: LiveInTheUkYesNoView
+                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider.withPrefix("individual")
+  val form = formProvider.withPrefix("individual.liveInTheUkYesNo")
 
   def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithIndividualName {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(IdCardDetailsPage) match {
+      val preparedForm = request.userAnswers.get(LiveInTheUkYesNoPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, countryOptions.options, request.individualName, mode))
+      Ok(view(preparedForm, mode, request.individualName))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithIndividualName.async {
@@ -61,13 +59,13 @@ class IdCardDetailsController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, request.individualName, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, request.individualName))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(IdCardDetailsPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(LiveInTheUkYesNoPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(IdCardDetailsPage, NormalMode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(LiveInTheUkYesNoPage, mode, updatedAnswers))
       )
   }
 }

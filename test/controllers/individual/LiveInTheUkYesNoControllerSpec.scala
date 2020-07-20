@@ -20,44 +20,45 @@ import base.SpecBase
 import config.annotations.Individual
 import forms.YesNoFormProvider
 import models.{Name, NormalMode}
-import navigation.{FakeNavigator, Navigator}
+import navigation.Navigator
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.individual.{NamePage, NationalInsuranceNumberYesNoPage}
+import pages.individual.{LiveInTheUkYesNoPage, NamePage}
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.individual.NationalInsuranceNumberYesNoView
+import views.html.individual.LiveInTheUkYesNoView
 
 import scala.concurrent.Future
 
-class NationalInsuranceNumberYesNoControllerSpec extends SpecBase with MockitoSugar {
+class LiveInTheUkYesNoControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new YesNoFormProvider()
-  val form = formProvider.withPrefix("individual.nationalInsuranceNumberYesNo")
+  val form = formProvider.withPrefix("individual.liveInTheUkYesNo")
   val name = Name("FirstName", None, "LastName")
-  val userAnswersWithName = emptyUserAnswers.set(NamePage, name).success.value
+  val userAnswersWithName = emptyUserAnswers.set(NamePage, name)
+    .success.value
 
-  lazy val nationalInsuranceNumberYesNoRoute = routes.NationalInsuranceNumberYesNoController.onPageLoad(NormalMode).url
+  lazy val liveInTheUkYesNoControllerRoute = routes.LiveInTheUkYesNoController.onPageLoad(NormalMode).url
 
-  "NationalInsuranceNumberYesNo Controller" must {
+  "LiveInTheUkYesNoPage Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithName)).build()
 
-      val request = FakeRequest(GET, nationalInsuranceNumberYesNoRoute)
+      val request = FakeRequest(GET, liveInTheUkYesNoControllerRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[NationalInsuranceNumberYesNoView]
+      val view = application.injector.instanceOf[LiveInTheUkYesNoView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, name.displayName, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, name.displayName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -65,19 +66,19 @@ class NationalInsuranceNumberYesNoControllerSpec extends SpecBase with MockitoSu
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithName
-        .set(NationalInsuranceNumberYesNoPage, true).success.value))
+        .set(LiveInTheUkYesNoPage, true).success.value))
         .build()
 
-      val request = FakeRequest(GET, nationalInsuranceNumberYesNoRoute)
+      val request = FakeRequest(GET, liveInTheUkYesNoControllerRoute)
 
-      val view = application.injector.instanceOf[NationalInsuranceNumberYesNoView]
+      val view = application.injector.instanceOf[LiveInTheUkYesNoView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), name.displayName, NormalMode)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, name.displayName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -88,12 +89,13 @@ class NationalInsuranceNumberYesNoControllerSpec extends SpecBase with MockitoSu
 
       when(mockPlaybackRepository.set(any())) thenReturn Future.successful(true)
 
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithName))
-        .overrides(bind[Navigator].qualifiedWith(classOf[Individual]).toInstance(new FakeNavigator(onwardRoute)))
-        .build()
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswersWithName))
+          .overrides(bind[Navigator].qualifiedWith(classOf[Individual]).toInstance(fakeNavigator))
+          .build()
 
       val request =
-        FakeRequest(POST, nationalInsuranceNumberYesNoRoute)
+        FakeRequest(POST, liveInTheUkYesNoControllerRoute)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
@@ -110,19 +112,19 @@ class NationalInsuranceNumberYesNoControllerSpec extends SpecBase with MockitoSu
       val application = applicationBuilder(userAnswers = Some(userAnswersWithName)).build()
 
       val request =
-        FakeRequest(POST, nationalInsuranceNumberYesNoRoute)
+        FakeRequest(POST, liveInTheUkYesNoControllerRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[NationalInsuranceNumberYesNoView]
+      val view = application.injector.instanceOf[LiveInTheUkYesNoView]
 
       val result = route(application, request).value
 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, name.displayName, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, name.displayName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -131,7 +133,7 @@ class NationalInsuranceNumberYesNoControllerSpec extends SpecBase with MockitoSu
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, nationalInsuranceNumberYesNoRoute)
+      val request = FakeRequest(GET, liveInTheUkYesNoControllerRoute)
 
       val result = route(application, request).value
 
@@ -147,7 +149,7 @@ class NationalInsuranceNumberYesNoControllerSpec extends SpecBase with MockitoSu
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, nationalInsuranceNumberYesNoRoute)
+        FakeRequest(POST, liveInTheUkYesNoControllerRoute)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value

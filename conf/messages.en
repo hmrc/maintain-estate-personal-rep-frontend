@@ -242,3 +242,8 @@ individual.idCardDetails.expiryDate.error.required = ID card expiry date must in
 individual.idCardDetails.expiryDate.error.invalid = Enter a real date when the personal representative’s ID card expires
 individual.idCardDetails.expiryDate.error.future = ID card expiry date must be after 31 December 1499 and before 01 January 2100
 individual.idCardDetails.expiryDate.error.past = ID card expiry date must be after 31 December 1499 and before 01 January 2100
+
+individual.liveInTheUkYesNo.checkYourAnswersLabel = Does {0} live in the UK?
+individual.liveInTheUkYesNo.title = Does the personal representative live in the UK?
+individual.liveInTheUkYesNo.heading = Does {0} live in the UK?
+individual.liveInTheUkYesNo.error.required = Select yes if the personal representative lives in the UK
