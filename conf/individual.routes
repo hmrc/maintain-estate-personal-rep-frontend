@@ -25,15 +25,15 @@ POST       /passport-or-idcard                              controllers.individu
 GET        /change-passport-or-idcard                       controllers.individual.PassportOrIdCardController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-passport-or-idcard                       controllers.individual.PassportOrIdCardController.onSubmit(mode: Mode = CheckMode)
 
-GET        /passport                                        controllers.individual.PassportDetailsController.onPageLoad(mode: Mode = NormalMode)
-POST       /passport                                        controllers.individual.PassportDetailsController.onSubmit(mode: Mode = NormalMode)
-GET        /change-passport                                 controllers.individual.PassportDetailsController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-passport                                 controllers.individual.PassportDetailsController.onSubmit(mode: Mode = CheckMode)
+GET        /passport                                        controllers.individual.add.PassportDetailsController.onPageLoad()
+POST       /passport                                        controllers.individual.add.PassportDetailsController.onSubmit()
+GET        /change-passport                                 controllers.individual.add.PassportDetailsController.onPageLoad()
+POST       /change-passport                                 controllers.individual.add.PassportDetailsController.onSubmit()
 
-GET        /id-card                                         controllers.individual.IdCardDetailsController.onPageLoad(mode: Mode = NormalMode)
-POST       /id-card                                         controllers.individual.IdCardDetailsController.onSubmit(mode: Mode = NormalMode)
-GET        /change-id-card                                  controllers.individual.IdCardDetailsController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-id-card                                  controllers.individual.IdCardDetailsController.onSubmit(mode: Mode = CheckMode)
+GET        /id-card                                         controllers.individual.add.IdCardDetailsController.onPageLoad()
+POST       /id-card                                         controllers.individual.add.IdCardDetailsController.onSubmit()
+GET        /change-id-card                                  controllers.individual.add.IdCardDetailsController.onPageLoad()
+POST       /change-id-card                                  controllers.individual.add.IdCardDetailsController.onSubmit()
 
 GET        /passport-or-id-card                             controllers.individual.amend.PassportOrIdCardDetailsController.onPageLoad()
 POST       /passport-or-id-card                             controllers.individual.amend.PassportOrIdCardDetailsController.onSubmit()

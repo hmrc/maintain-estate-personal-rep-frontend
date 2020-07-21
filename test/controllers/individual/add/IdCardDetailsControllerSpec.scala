@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package controllers.individual
+package controllers.individual.add
 
 import java.time.LocalDate
 
 import base.SpecBase
 import config.annotations.Individual
+import controllers.individual.add.{routes => addRts}
 import forms.IdCardDetailsFormProvider
-import models.{IdCard, Name, NormalMode}
+import models.{IdCard, Name}
 import navigation.Navigator
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -34,7 +35,7 @@ import play.api.test.Helpers._
 import repositories.SessionRepository
 import utils.InputOption
 import utils.countryOptions.CountryOptions
-import views.html.individual.IdCardDetailsView
+import views.html.individual.add.IdCardDetailsView
 
 import scala.concurrent.Future
 
@@ -47,7 +48,7 @@ class IdCardDetailsControllerSpec extends SpecBase with MockitoSugar {
 
   val userAnswersWithName = emptyUserAnswers.set(NamePage, name).success.value
 
-  val idCardDetailsRoute: String = routes.IdCardDetailsController.onPageLoad(NormalMode).url
+  val idCardDetailsRoute: String = addRts.IdCardDetailsController.onPageLoad().url
 
   val getRequest = FakeRequest(GET, idCardDetailsRoute)
 
@@ -68,7 +69,7 @@ class IdCardDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, countryOptions, name.displayName, NormalMode)(fakeRequest, messages).toString
+        view(form, countryOptions, name.displayName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -86,7 +87,7 @@ class IdCardDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validData), countryOptions, name.displayName, NormalMode)(fakeRequest, messages).toString
+        view(form.fill(validData), countryOptions, name.displayName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -139,7 +140,7 @@ class IdCardDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, countryOptions, name.displayName, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, name.displayName)(fakeRequest, messages).toString
 
       application.stop()
     }

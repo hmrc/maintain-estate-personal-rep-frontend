@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package controllers.individual
+package controllers.individual.add
 
 import config.annotations.Individual
 import controllers.actions.Actions
 import forms.IdCardDetailsFormProvider
 import javax.inject.Inject
-import models.{Mode, NormalMode}
+import models.NormalMode
 import navigation.Navigator
 import pages.individual.add.IdCardDetailsPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -28,7 +28,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.countryOptions.CountryOptions
-import views.html.individual.IdCardDetailsView
+import views.html.individual.add.IdCardDetailsView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -45,7 +45,7 @@ class IdCardDetailsController @Inject()(
 
   val form = formProvider.withPrefix("individual")
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithIndividualName {
+  def onPageLoad(): Action[AnyContent] = actions.authWithIndividualName {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(IdCardDetailsPage) match {
@@ -53,15 +53,15 @@ class IdCardDetailsController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, countryOptions.options, request.individualName, mode))
+      Ok(view(preparedForm, countryOptions.options, request.individualName))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithIndividualName.async {
+  def onSubmit(): Action[AnyContent] = actions.authWithIndividualName.async {
     implicit request =>
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, request.individualName, mode))),
+          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, request.individualName))),
 
         value =>
           for {

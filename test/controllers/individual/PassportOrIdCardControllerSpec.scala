@@ -18,6 +18,7 @@ package controllers.individual
 
 import base.SpecBase
 import controllers.routes._
+import controllers.individual.add.{routes => addRts}
 import forms.PassportOrIdCardFormProvider
 import models.{Name, NormalMode, PassportOrIdCard}
 import pages.individual.{NamePage, PassportOrIdCardPage}
@@ -29,8 +30,8 @@ import views.html.individual.PassportOrIdCardView
 class PassportOrIdCardControllerSpec extends SpecBase {
 
   lazy val PassportOrIdCardRoute: String = routes.PassportOrIdCardController.onPageLoad(NormalMode).url
-  lazy val PassportDetailsRoute: String = routes.PassportDetailsController.onPageLoad(NormalMode).url
-  lazy val IdCardDetailsRoute: String = routes.IdCardDetailsController.onPageLoad(NormalMode).url
+  lazy val PassportDetailsRoute: String = addRts.PassportDetailsController.onPageLoad().url
+  lazy val IdCardDetailsRoute: String = addRts.IdCardDetailsController.onPageLoad().url
 
   val formProvider = new PassportOrIdCardFormProvider()
   val form: Form[PassportOrIdCard] = formProvider()

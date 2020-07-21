@@ -55,8 +55,8 @@ class IndividualNavigator @Inject()() extends Navigator {
   
   private def passportOrIdCardDetailsRoute(ua: UserAnswers, mode: Mode): Call =
     ua.get(PassportOrIdCardPage) match {
-      case Some(IdCard) => rts.IdCardDetailsController.onPageLoad(mode)
-      case Some(Passport) => rts.PassportDetailsController.onPageLoad(mode)
+      case Some(IdCard) => addRts.IdCardDetailsController.onPageLoad()
+      case Some(Passport) => addRts.PassportDetailsController.onPageLoad()
       case _ => controllers.routes.SessionExpiredController.onPageLoad()
     }
 

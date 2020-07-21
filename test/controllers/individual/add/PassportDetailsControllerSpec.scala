@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package controllers.individual
+package controllers.individual.add
 
 import java.time.LocalDate
 
 import base.SpecBase
 import config.annotations.Individual
+import controllers.individual.add.{routes => addRts}
 import forms.PassportDetailsFormProvider
-import models.{Name, NormalMode, Passport}
+import models.{Name, Passport}
 import navigation.Navigator
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -34,7 +35,7 @@ import play.api.test.Helpers._
 import repositories.SessionRepository
 import utils.InputOption
 import utils.countryOptions.CountryOptions
-import views.html.individual.PassportDetailsView
+import views.html.individual.add.PassportDetailsView
 
 import scala.concurrent.Future
 
@@ -46,7 +47,7 @@ class PassportDetailsControllerSpec extends SpecBase with MockitoSugar {
   val name: Name = Name("FirstName", None, "LastName")
   val userAnswersWithName = emptyUserAnswers.set(NamePage, name).success.value
 
-  val passportDetailsRoute: String = routes.PassportDetailsController.onPageLoad(NormalMode).url
+  val passportDetailsRoute: String = addRts.PassportDetailsController.onPageLoad().url
 
   val getRequest = FakeRequest(GET, passportDetailsRoute)
 
@@ -67,7 +68,7 @@ class PassportDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, countryOptions, name.displayName, NormalMode)(fakeRequest, messages).toString
+        view(form, countryOptions, name.displayName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -85,7 +86,7 @@ class PassportDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validData), countryOptions, name.displayName, NormalMode)(fakeRequest, messages).toString
+        view(form.fill(validData), countryOptions, name.displayName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -137,7 +138,7 @@ class PassportDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, countryOptions, name.displayName, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, name.displayName)(fakeRequest, messages).toString
 
       application.stop()
     }

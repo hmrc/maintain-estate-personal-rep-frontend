@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.individual.routes._
+@import controllers.individual.add.routes._
 @import utils.InputOption
 
 @this(
@@ -22,13 +22,13 @@
         formHelper: FormWithCSRF
 )
 
-@(form: Form[_], countryOptions: Seq[InputOption], name: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], countryOptions: Seq[InputOption], name: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("individual.idCardDetails.title")}"
 ) {
 
-    @formHelper(action = IdCardDetailsController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = IdCardDetailsController.onSubmit(), 'autoComplete -> "off") {
 
         @components.back_link()
 
