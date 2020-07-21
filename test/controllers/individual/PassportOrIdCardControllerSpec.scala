@@ -19,8 +19,8 @@ package controllers.individual
 import base.SpecBase
 import controllers.routes._
 import forms.PassportOrIdCardFormProvider
-import models.{NormalMode, PassportOrIdCard}
-import pages.individual.PassportOrIdCardPage
+import models.{Name, NormalMode, PassportOrIdCard}
+import pages.individual.{NamePage, PassportOrIdCardPage}
 import play.api.data.Form
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
@@ -33,11 +33,15 @@ class PassportOrIdCardControllerSpec extends SpecBase {
   val formProvider = new PassportOrIdCardFormProvider()
   val form: Form[PassportOrIdCard] = formProvider()
 
+  val name = Name("FirstName", None, "LastName")
+  val userAnswersWithName = emptyUserAnswers.set(NamePage, name)
+    .success.value
+
   "PassportOrIdCard Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithName)).build()
 
       val request = FakeRequest(GET, PassportOrIdCardRoute)
 
@@ -48,16 +52,16 @@ class PassportOrIdCardControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, name.displayName, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(PassportOrIdCardPage, PassportOrIdCard.values.head).success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithName
+        .set(PassportOrIdCardPage, PassportOrIdCard.values.head).success.value))
+        .build()
 
       val request = FakeRequest(GET, PassportOrIdCardRoute)
 
@@ -68,7 +72,7 @@ class PassportOrIdCardControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(PassportOrIdCard.values.head), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(PassportOrIdCard.values.head), name.displayName, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -76,7 +80,7 @@ class PassportOrIdCardControllerSpec extends SpecBase {
     "redirect to Passport controller when Passport is submitted" ignore {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        applicationBuilder(userAnswers = Some(userAnswersWithName)).build()
 
       val request =
         FakeRequest(POST, PassportOrIdCardRoute)
@@ -86,7 +90,7 @@ class PassportOrIdCardControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual ???  // TODO
+      redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
     }
@@ -94,7 +98,7 @@ class PassportOrIdCardControllerSpec extends SpecBase {
     "redirect to IdCard controller when IdCard is submitted" ignore {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        applicationBuilder(userAnswers = Some(userAnswersWithName)).build()
 
       val request =
         FakeRequest(POST, PassportOrIdCardRoute)
@@ -104,14 +108,14 @@ class PassportOrIdCardControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual ???  // TODO
+      redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithName)).build()
 
       val request =
         FakeRequest(POST, PassportOrIdCardRoute)
@@ -126,7 +130,7 @@ class PassportOrIdCardControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, name.displayName, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }

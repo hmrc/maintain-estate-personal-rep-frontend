@@ -25,7 +25,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.mappers.BusinessMapper
-import utils.print.BusinessPrintHelper
+import utils.print.IndividualPrintHelper
 import viewmodels.AnswerSection
 import views.html.individual.add.CheckDetailsView
 
@@ -37,7 +37,7 @@ class CheckDetailsController @Inject()(
                                         val controllerComponents: MessagesControllerComponents,
                                         view: CheckDetailsView,
                                         val appConfig: FrontendAppConfig,
-                                        printHelper: BusinessPrintHelper,
+                                        printHelper: IndividualPrintHelper,
                                         mapper: BusinessMapper,
                                         connector: EstatesConnector
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {

@@ -42,7 +42,7 @@ class PassportOrIdCardController @Inject()(
 
   val form: Form[PassportOrIdCard] = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithData {
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithIndividualName {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(PassportOrIdCardPage) match {
@@ -50,15 +50,15 @@ class PassportOrIdCardController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, request.individualName, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithData.async {
+  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithIndividualName.async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, request.individualName, mode))),
 
         value => {
           for {

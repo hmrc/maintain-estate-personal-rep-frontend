@@ -17,7 +17,7 @@
 package views.individual
 
 import forms.PassportOrIdCardFormProvider
-import models.{NormalMode, PassportOrIdCard}
+import models.{Name, NormalMode, PassportOrIdCard}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.OptionsViewBehaviours
@@ -26,17 +26,18 @@ import views.html.individual.PassportOrIdCardView
 class PassportOrIdCardViewSpec extends OptionsViewBehaviours {
 
   val messageKeyPrefix = "individual.passportOrIdCard"
+  val name: Name = Name("First", Some("Middle"), "Last")
 
   val form = new PassportOrIdCardFormProvider()()
 
   val view: PassportOrIdCardView = viewFor[PassportOrIdCardView](Some(emptyUserAnswers))
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode)(fakeRequest, messages)
+    view.apply(form, name.displayName, NormalMode)(fakeRequest, messages)
 
   "PassportOrIdCardView" must {
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.displayName)
 
     behave like pageWithBackLink(applyView(form))
 

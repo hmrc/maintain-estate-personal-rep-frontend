@@ -176,12 +176,12 @@ individual.name.error.lastName.invalid = Personal representative’s last name m
 individual.dateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
 individual.dateOfBirth.title = What is the personal representative’s date of birth?
 individual.dateOfBirth.heading = What is {0}’s date of birth?
-individual.dateOfBirth.error.required.all = Enter a date of birth
-individual.dateOfBirth.error.required.two = Date of birth must include a {0} and a {1}
-individual.dateOfBirth.error.required = Date of birth must include a {0}
+individual.dateOfBirth.error.required.all = Enter the personal representative’s date of birth
+individual.dateOfBirth.error.required.two = Personal representative’s date of birth must include a {0} and a {1}
+individual.dateOfBirth.error.required = Personal representative’s date of birth must include a {0}
 individual.dateOfBirth.error.invalid = Enter a real date of birth
-individual.dateOfBirth.error.future = Date of birth must be today or in the past
-individual.dateOfBirth.error.past = Date of birth must be after 31 December 1499
+individual.dateOfBirth.error.future = Personal representative’s date of birth must be today or in the past
+individual.dateOfBirth.error.past = Personal representative’s date of birth must be after 31 December 1499
 
 individual.nationalInsuranceNumberYesNo.checkYourAnswersLabel = Does {0} have a National Insurance number?
 individual.nationalInsuranceNumberYesNo.title = Does the personal representative have a National Insurance number?
@@ -195,13 +195,13 @@ individual.nationalInsuranceNumber.hint = It is on their National Insurance card
 individual.nationalInsuranceNumber.error.required = Enter the personal representative’s National Insurance number
 individual.nationalInsuranceNumber.error.invalidFormat = Enter the personal representative’s National Insurance number in the correct format
 
-individual.passportOrIdCard.checkYourAnswersLabel = Is the personal representative an individual or a business?
-individual.passportOrIdCard.title = Is the personal representative an individual or a business?
-individual.passportOrIdCard.heading = Is the personal representative an individual or a business?
+individual.passportOrIdCard.checkYourAnswersLabel = Which of {0}’s details can you provide?
+individual.passportOrIdCard.title = Which of the personal representative’s details can you provide?
+individual.passportOrIdCard.heading = Which of {0}’s details can you provide?
 individual.passportOrIdCard.hint = The personal representative can be the estate’s administrator or executor
 individual.passportOrIdCard.passport = Passport
 individual.passportOrIdCard.idCard = ID Card
-individual.passportOrIdCard.error.required = Select if the personal representative is an individual or business
+individual.passportOrIdCard.error.required = Select the personal representative’s passport or ID card
 
 individual.passportDetails.checkYourAnswersLabel = What are {0}’s passport details?
 individual.passportDetails.title = What are the personal representative’s passport details?

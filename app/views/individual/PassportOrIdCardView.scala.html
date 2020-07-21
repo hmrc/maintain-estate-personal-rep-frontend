@@ -25,7 +25,7 @@
 )
 
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], name: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("individual.passportOrIdCard.title")}"
@@ -39,12 +39,11 @@
 
         @components.input_radio(
             field = form("value"),
-            legend = messages("individual.passportOrIdCard.heading"),
+            legend = messages("individual.passportOrIdCard.heading", name),
             legendClass = Some("heading-large"),
             fieldSetClass = Some("inline"),
             inputs = PassportOrIdCard.options.toSeq,
-            headingIsLegend = true,
-            hint = Some(messages("individual.passportOrIdCard.hint"))
+            headingIsLegend = true
         )
 
         @components.submit_button()
