@@ -20,11 +20,11 @@ import config.FrontendAppConfig
 import connectors.EstatesConnector
 import controllers.actions.Actions
 import javax.inject.Inject
-import models.PersonalRep
+import models.PersonalRepresentative
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.mappers.BusinessMapper
+import utils.mappers.IndividualMapper
 import utils.print.IndividualPrintHelper
 import viewmodels.AnswerSection
 import views.html.individual.add.CheckDetailsView
@@ -38,7 +38,7 @@ class CheckDetailsController @Inject()(
                                         view: CheckDetailsView,
                                         val appConfig: FrontendAppConfig,
                                         printHelper: IndividualPrintHelper,
-                                        mapper: BusinessMapper,
+                                        mapper: IndividualMapper,
                                         connector: EstatesConnector
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
@@ -56,9 +56,9 @@ class CheckDetailsController @Inject()(
         case None =>
           Future.successful(InternalServerError)
         case Some(individual) =>
-          connector.addOrAmendPersonalRep(request.userAnswers.utr, PersonalRep(None, Some(individual))).map(_ =>
+          connector.addOrAmendPersonalRep(request.userAnswers.utr, PersonalRepresentative(Some(individual), None)).map(_ =>
             // TODO - add User to request, pattern match on AffinityGroup and redirect to relevant declaration
-            Redirect(controllers.business.add.routes.CheckDetailsController.onPageLoad())
+            Redirect(controllers.individual.add.routes.CheckDetailsController.onPageLoad())
           )
       }
   }

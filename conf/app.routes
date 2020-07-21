@@ -20,4 +20,7 @@ POST       /individual-or-business                      controllers.IndividualOr
 GET        /change-individual-or-business               controllers.IndividualOrBusinessController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-individual-or-business               controllers.IndividualOrBusinessController.onSubmit(mode: Mode = CheckMode)
 
-GET        /:utr                                        controllers.IndexController.onPageLoad(utr: String)
+GET        /check-details                               controllers.amend.CheckDetailsController.extractAndRender()
+
+GET        /:utr/add-new-personal-rep                   controllers.IndexController.onPageLoad(utr: String, mode: Mode = NormalMode)
+GET        /:utr/amend-existing-personal-rep            controllers.IndexController.onPageLoad(utr: String, mode: Mode = CheckMode)

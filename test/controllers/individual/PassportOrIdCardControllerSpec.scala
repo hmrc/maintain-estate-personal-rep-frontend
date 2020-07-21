@@ -29,6 +29,8 @@ import views.html.individual.PassportOrIdCardView
 class PassportOrIdCardControllerSpec extends SpecBase {
 
   lazy val PassportOrIdCardRoute: String = routes.PassportOrIdCardController.onPageLoad(NormalMode).url
+  lazy val PassportDetailsRoute: String = routes.PassportDetailsController.onPageLoad(NormalMode).url
+  lazy val IdCardDetailsRoute: String = routes.IdCardDetailsController.onPageLoad(NormalMode).url
 
   val formProvider = new PassportOrIdCardFormProvider()
   val form: Form[PassportOrIdCard] = formProvider()
@@ -77,7 +79,7 @@ class PassportOrIdCardControllerSpec extends SpecBase {
       application.stop()
     }
 
-    "redirect to Passport controller when Passport is submitted" ignore {
+    "redirect to Passport controller when Passport is submitted" in {
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswersWithName)).build()
@@ -90,12 +92,12 @@ class PassportOrIdCardControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual PassportDetailsRoute
 
       application.stop()
     }
 
-    "redirect to IdCard controller when IdCard is submitted" ignore {
+    "redirect to IdCard controller when IdCard is submitted" in {
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswersWithName)).build()
@@ -108,7 +110,7 @@ class PassportOrIdCardControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual IdCardDetailsRoute
 
       application.stop()
     }

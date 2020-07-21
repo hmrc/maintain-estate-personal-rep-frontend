@@ -20,7 +20,7 @@ import config.FrontendAppConfig
 import connectors.EstatesConnector
 import controllers.actions.Actions
 import javax.inject.Inject
-import models.PersonalRep
+import models.PersonalRepresentative
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -56,8 +56,8 @@ class CheckDetailsController @Inject()(
         case None =>
           Future.successful(InternalServerError)
         case Some(business) =>
-          connector.addOrAmendPersonalRep(request.userAnswers.utr, PersonalRep(None, Some(business))).map(_ =>
-            // TODO - add User to request, pattern match on AffinityGroup and redirect to relevant declaration
+          connector.addOrAmendPersonalRep(request.userAnswers.utr, PersonalRepresentative(None, Some(business))).map(_ =>
+            // TODO - pattern match on AffinityGroup and redirect to relevant declaration
             Redirect(controllers.business.add.routes.CheckDetailsController.onPageLoad())
           )
       }

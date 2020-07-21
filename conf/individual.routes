@@ -35,6 +35,9 @@ POST       /id-card                                         controllers.individu
 GET        /change-id-card                                  controllers.individual.IdCardDetailsController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-id-card                                  controllers.individual.IdCardDetailsController.onSubmit(mode: Mode = CheckMode)
 
+GET        /passport-or-id-card                             controllers.individual.amend.PassportOrIdCardDetailsController.onPageLoad()
+POST       /passport-or-id-card                             controllers.individual.amend.PassportOrIdCardDetailsController.onSubmit()
+
 GET        /has-uk-address                                  controllers.individual.LiveInTheUkYesNoController.onPageLoad(mode: Mode = NormalMode)
 POST       /has-uk-address                                  controllers.individual.LiveInTheUkYesNoController.onSubmit(mode: Mode = NormalMode)
 GET        /change-has-uk-address                           controllers.individual.LiveInTheUkYesNoController.onPageLoad(mode: Mode = CheckMode)
@@ -60,3 +63,6 @@ POST       /start-date                                      controllers.individu
 
 GET        /check-details                                   controllers.individual.add.CheckDetailsController.onPageLoad()
 POST       /check-details                                   controllers.individual.add.CheckDetailsController.onSubmit()
+
+GET        /change-details                                  controllers.individual.amend.CheckDetailsController.renderFromUserAnswers()
+GET        /change-details                                  controllers.individual.amend.CheckDetailsController.onSubmit()

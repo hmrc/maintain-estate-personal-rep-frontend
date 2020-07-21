@@ -16,10 +16,12 @@
 
 package navigation
 
-import controllers.individual.{routes => rts}
 import controllers.individual.add.{routes => addRts}
+import controllers.individual.amend.{routes => amendRts}
+import controllers.individual.{routes => rts}
 import javax.inject.Inject
-import models.{CheckMode, Mode, NormalMode, PassportOrIdCard, UserAnswers}
+import models.PassportOrIdCard._
+import models.{CheckMode, Mode, NormalMode, UserAnswers}
 import pages.Page
 import pages.individual._
 import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage}
@@ -32,7 +34,8 @@ class IndividualNavigator @Inject()() extends Navigator {
   private def simpleNavigation(mode: Mode): PartialFunction[Page, Call] = {
     case NamePage => rts.DateOfBirthController.onPageLoad(mode)
     case DateOfBirthPage => rts.NationalInsuranceNumberYesNoController.onPageLoad(mode)
-    case NationalInsuranceNumberPage | IdCardDetailsPage | PassportDetailsPage => rts.LiveInTheUkYesNoController.onPageLoad(mode)
+    case NationalInsuranceNumberPage | IdCardDetailsPage | PassportDetailsPage | PassportOrIdCardDetailsPage =>
+      rts.LiveInTheUkYesNoController.onPageLoad(mode)
     case UkAddressPage | NonUkAddressPage => rts.TelephoneNumberController.onPageLoad(mode)
     case TelephoneNumberPage => telephoneNumberRoute(mode)
     case StartDatePage => addRts.CheckDetailsController.onPageLoad()
@@ -40,12 +43,8 @@ class IndividualNavigator @Inject()() extends Navigator {
 
   private def conditionalNavigation(mode: Mode): PartialFunction[Page, UserAnswers => Call] = {
     case NationalInsuranceNumberYesNoPage => ua =>
-      yesNoNav(ua, NationalInsuranceNumberYesNoPage, rts.NationalInsuranceNumberController.onPageLoad(mode), rts.PassportOrIdCardController.onPageLoad(mode))
-    case PassportOrIdCardPage => ua =>
-      ua.get(PassportOrIdCardPage) match {
-        case Some(PassportOrIdCard.IdCard) => rts.IdCardDetailsController.onPageLoad(mode)
-        case Some(PassportOrIdCard.Passport) => rts.PassportDetailsController.onPageLoad(mode)
-      }
+      yesNoNav(ua, NationalInsuranceNumberYesNoPage, rts.NationalInsuranceNumberController.onPageLoad(mode), combinedOrSeparateDetailsRoute(mode))
+    case PassportOrIdCardPage => ua => passportOrIdCardDetailsRoute(ua, mode)
     case LiveInTheUkYesNoPage => ua =>
       yesNoNav(ua, LiveInTheUkYesNoPage, rts.UkAddressController.onPageLoad(mode), rts.NonUkAddressController.onPageLoad(mode))
   }
@@ -53,12 +52,24 @@ class IndividualNavigator @Inject()() extends Navigator {
   private def routes(mode: Mode): PartialFunction[Page, UserAnswers => Call] =
     simpleNavigation(mode) andThen (c => (_:UserAnswers) => c) orElse
       conditionalNavigation(mode)
+  
+  private def passportOrIdCardDetailsRoute(ua: UserAnswers, mode: Mode): Call =
+    ua.get(PassportOrIdCardPage) match {
+      case Some(IdCard) => rts.IdCardDetailsController.onPageLoad(mode)
+      case Some(Passport) => rts.PassportDetailsController.onPageLoad(mode)
+      case _ => controllers.routes.SessionExpiredController.onPageLoad()
+    }
 
-  private def telephoneNumberRoute(mode: Mode): Call = {
+  private def combinedOrSeparateDetailsRoute(mode: Mode): Call =
+    mode match {
+      case NormalMode => rts.PassportOrIdCardController.onPageLoad(mode)
+      case CheckMode => amendRts.PassportOrIdCardDetailsController.onPageLoad()
+    }
+
+  private def telephoneNumberRoute(mode: Mode): Call =
     mode match {
       case NormalMode => addRts.StartDateController.onPageLoad()
-      case CheckMode => ???
+      case CheckMode => amendRts.CheckDetailsController.renderFromUserAnswers()
     }
-  }
 
 }

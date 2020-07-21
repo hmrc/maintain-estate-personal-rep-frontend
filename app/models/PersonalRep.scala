@@ -16,24 +16,14 @@
 
 package models
 
-import play.api.libs.json.{Format, JsPath, JsSuccess, Json, Reads}
+import play.api.libs.json.{Reads, __}
 
-case class PersonalRep(estatePerRepInd : Option[IndividualPersonalRep] = None,
-                       estatePerRepOrg : Option[BusinessPersonalRep] = None) {
-
-  def readAtSubPath[T: Reads](subPath: JsPath): Reads[T] = Reads (
-    _.transform(subPath.json.pick)
-      .flatMap(_.validate[T])
-  )
-
-  def readNullableAtSubPath[T: Reads](subPath: JsPath): Reads[Option[T]] = Reads (
-    _.transform(subPath.json.pick)
-      .flatMap(_.validate[T])
-      .map(Some(_))
-      .recoverWith(_ => JsSuccess(None))
-  )
-}
+trait PersonalRep
 
 object PersonalRep {
-  implicit val personalRepFormats :Format[PersonalRep] = Json.format[PersonalRep]
+
+  implicit val reads: Reads[PersonalRep] =
+    __.read[BusinessPersonalRep](BusinessPersonalRep.reads).widen[PersonalRep] orElse
+      __.read[IndividualPersonalRep](IndividualPersonalRep.reads).widen[PersonalRep]
+
 }

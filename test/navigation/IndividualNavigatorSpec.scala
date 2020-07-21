@@ -17,11 +17,10 @@
 package navigation
 
 import base.SpecBase
-import models.{CheckMode, NormalMode}
+import models.{CheckMode, NormalMode, PassportOrIdCard}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.individual._
-import models.PassportOrIdCard
-import pages.individual.add.{PassportDetailsPage, IdCardDetailsPage}
+import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage}
 
 class IndividualNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks  {
 
@@ -121,19 +120,10 @@ class IndividualNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks  {
           .mustBe(controllers.individual.routes.TelephoneNumberController.onPageLoad(mode))
       }
 
-      "Telephone number" when {
+      "Telephone number page -> Start date page" in {
 
-        "Normal mode" in {
-          val mode = NormalMode
-
-          navigator.nextPage(TelephoneNumberPage, mode, emptyUserAnswers)
-            .mustBe(controllers.individual.add.routes.StartDateController.onPageLoad())
-        }
-
-        "Check mode" ignore {
-          navigator.nextPage(TelephoneNumberPage, CheckMode, emptyUserAnswers)
-            .mustBe(new NotImplementedError("an implementation is missing"))
-        }
+        navigator.nextPage(TelephoneNumberPage, mode, emptyUserAnswers)
+          .mustBe(controllers.individual.add.routes.StartDateController.onPageLoad())
       }
 
       "Start date page -> Check details" in {
@@ -141,6 +131,82 @@ class IndividualNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks  {
           .mustBe(controllers.individual.add.routes.CheckDetailsController.onPageLoad())
       }
 
+    }
+
+    "amend journey navigation" must {
+
+      val mode = CheckMode
+
+      "name page -> date of birth page" in {
+
+        navigator.nextPage(NamePage, mode, emptyUserAnswers)
+          .mustBe(controllers.individual.routes.DateOfBirthController.onPageLoad(mode))
+      }
+
+      "date of birth page -> Nino Yes No page" in {
+
+        navigator.nextPage(DateOfBirthPage, mode, emptyUserAnswers)
+          .mustBe(controllers.individual.routes.NationalInsuranceNumberYesNoController.onPageLoad(mode))
+      }
+
+      "Nino Yes No page -> Yes -> Nino page" in {
+        val answers = emptyUserAnswers
+          .set(NationalInsuranceNumberYesNoPage, true).success.value
+
+        navigator.nextPage(NationalInsuranceNumberYesNoPage, mode, answers)
+          .mustBe(controllers.individual.routes.NationalInsuranceNumberController.onPageLoad(mode))
+      }
+
+      "Nino Yes No page -> No -> Passport Or ID Card details page" in {
+        val answers = emptyUserAnswers
+          .set(NationalInsuranceNumberYesNoPage, false).success.value
+
+        navigator.nextPage(NationalInsuranceNumberYesNoPage, mode, answers)
+          .mustBe(controllers.individual.amend.routes.PassportOrIdCardDetailsController.onPageLoad())
+      }
+
+      "Passport or ID card details page -> LiveInTheUK Yes No page" in {
+
+        navigator.nextPage(PassportOrIdCardDetailsPage, mode, emptyUserAnswers)
+          .mustBe(controllers.individual.routes.LiveInTheUkYesNoController.onPageLoad(mode))
+      }
+
+      "Nino page -> LiveInTheUK Yes No page" in {
+
+        navigator.nextPage(NationalInsuranceNumberPage, mode, emptyUserAnswers)
+          .mustBe(controllers.individual.routes.LiveInTheUkYesNoController.onPageLoad(mode))
+      }
+
+      "Live In UK page -> Yes -> UK Address page" in {
+        val answers = emptyUserAnswers
+          .set(LiveInTheUkYesNoPage, true).success.value
+
+        navigator.nextPage(LiveInTheUkYesNoPage, mode, answers)
+          .mustBe(controllers.individual.routes.UkAddressController.onPageLoad(mode))
+      }
+
+      "Live In UK page -> No -> Non UK Address page" in {
+        val answers = emptyUserAnswers
+          .set(LiveInTheUkYesNoPage, false).success.value
+
+        navigator.nextPage(LiveInTheUkYesNoPage, mode, answers)
+          .mustBe(controllers.individual.routes.NonUkAddressController.onPageLoad(mode))
+      }
+
+      "UK Address page -> Telephone number page" in {
+        navigator.nextPage(UkAddressPage, mode, emptyUserAnswers)
+          .mustBe(controllers.individual.routes.TelephoneNumberController.onPageLoad(mode))
+      }
+
+      "None UK Address page -> Telephone number page" in {
+        navigator.nextPage(NonUkAddressPage, mode, emptyUserAnswers)
+          .mustBe(controllers.individual.routes.TelephoneNumberController.onPageLoad(mode))
+      }
+
+      "Telephone number page -> Check details" in {
+        navigator.nextPage(TelephoneNumberPage, mode, emptyUserAnswers)
+          .mustBe(controllers.individual.amend.routes.CheckDetailsController.renderFromUserAnswers())
+      }
     }
   }
 }

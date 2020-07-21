@@ -20,7 +20,7 @@ import models.PassportOrIdCard._
 import models.{PassportOrIdCard, UserAnswers}
 import play.api.libs.json.JsPath
 import pages.QuestionPage
-import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage}
+import pages.individual.add._
 
 import scala.util.Try
 

@@ -23,7 +23,7 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import generators.Generators
-import models.{BusinessPersonalRep, IndividualPersonalRep, Name, NationalInsuranceNumber, PersonalRep, UkAddress}
+import models.{BusinessPersonalRep, IndividualPersonalRep, Name, NationalInsuranceNumber, PersonalRepresentative, UkAddress}
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Inside}
 import play.api.libs.json.Json
@@ -88,7 +88,7 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
 
       "business" must {
 
-        val personalRep = PersonalRep(None, Some(business))
+        val personalRep = PersonalRepresentative(None, Some(business))
 
         "return OK when the request is successful" in {
 
@@ -141,7 +141,7 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
 
       "individual" must {
 
-        val personalRep = PersonalRep(Some(individual), None)
+        val personalRep = PersonalRepresentative(Some(individual), None)
 
         "return OK when the request is successful" in {
 
@@ -215,9 +215,84 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
           .willReturn(okJson(expectedJson.toString))
       )
 
-
       val result  = Await.result(connector.getDateOfDeath(utr), Duration.Inf)
       result mustBe expectedJson
+    }
+
+    "get personal rep" when {
+
+      val orgName = "Org"
+      val name = Name("John", None, "Doe")
+      val utr = "1234567890"
+      val nino = "AA000000A"
+      val ukAddress: UkAddress = UkAddress("Line 1", "Line 2", None, None, "POSTCODE")
+      val telephoneNumber: String = "999"
+      val date = LocalDate.parse("2010-02-03")
+
+      "individual" in {
+
+        val personalRep: IndividualPersonalRep = IndividualPersonalRep(
+          name = name,
+          dateOfBirth = date,
+          identification = NationalInsuranceNumber(nino),
+          address = ukAddress,
+          phoneNumber = telephoneNumber,
+          email = None,
+          entityStart = date
+        )
+
+        val expectedJson = Json.toJson(personalRep)
+
+        val application = applicationBuilder()
+          .configure(
+            Seq(
+              "microservice.services.estates.port" -> server.port(),
+              "auditing.enabled" -> false
+            ): _*
+          ).build()
+
+        val connector = application.injector.instanceOf[EstatesConnector]
+
+        server.stubFor(
+          get(urlEqualTo(s"/estates/$utr/transformed/personal-representative"))
+            .willReturn(okJson(expectedJson.toString))
+        )
+
+        val result  = Await.result(connector.getPersonalRep(utr), Duration.Inf)
+        result mustBe personalRep
+      }
+
+      "business" in {
+
+        val personalRep: BusinessPersonalRep = BusinessPersonalRep(
+          name = orgName,
+          phoneNumber = telephoneNumber,
+          utr = Some(utr),
+          address = ukAddress,
+          entityStart = date
+        )
+
+        val expectedJson = Json.toJson(personalRep)
+
+        val application = applicationBuilder()
+          .configure(
+            Seq(
+              "microservice.services.estates.port" -> server.port(),
+              "auditing.enabled" -> false
+            ): _*
+          ).build()
+
+        val connector = application.injector.instanceOf[EstatesConnector]
+
+        server.stubFor(
+          get(urlEqualTo(s"/estates/$utr/transformed/personal-representative"))
+            .willReturn(okJson(expectedJson.toString))
+        )
+
+        val result  = Await.result(connector.getPersonalRep(utr), Duration.Inf)
+        result mustBe personalRep
+      }
+
     }
 
   }

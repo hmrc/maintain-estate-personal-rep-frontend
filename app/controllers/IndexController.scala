@@ -22,9 +22,9 @@ import config.FrontendAppConfig
 import connectors.EstatesConnector
 import controllers.actions.Actions
 import javax.inject.Inject
-import models.{NormalMode, UserAnswers}
+import models.{Mode, NormalMode, UserAnswers}
 import play.api.i18n.I18nSupport
-import play.api.libs.json.JsString
+import play.api.libs.json.{JsString, JsValue}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -39,23 +39,34 @@ class IndexController @Inject()(
                                  config: FrontendAppConfig
                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(utr: String): Action[AnyContent] = actions.authWithSession.async {
+  def onPageLoad(utr: String, mode: Mode): Action[AnyContent] = actions.authWithSession.async {
     implicit request =>
+
+      def userAnswers(dateOfDeath: JsValue): UserAnswers = UserAnswers(
+        id = request.internalId,
+        utr = utr,
+        dateOfDeath = dateOfDeath match {
+          case JsString(date) => LocalDate.parse(date)
+          case _ => config.minDate
+        }
+      )
+
       for {
         dateOfDeath <- connector.getDateOfDeath(utr)
-        ua <- Future.successful(request.userAnswers.getOrElse(
-          UserAnswers(
-            id = request.internalId,
-            utr = utr,
-            dateOfDeath = dateOfDeath match {
-              case JsString(date) => LocalDate.parse(date)
-              case _ => config.minDate
-            }
-          )
-        ))
+        ua <- Future.successful(
+          if (mode == NormalMode) {
+            userAnswers(dateOfDeath)
+          } else {
+            request.userAnswers.getOrElse(userAnswers(dateOfDeath))
+          }
+        )
         _ <- repository.set(ua)
       } yield {
-        Redirect(controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode))
+        if (mode == NormalMode) {
+          Redirect(controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode))
+        } else {
+          Redirect(controllers.amend.routes.CheckDetailsController.extractAndRender())
+        }
       }
   }
 }

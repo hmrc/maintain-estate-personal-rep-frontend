@@ -19,14 +19,15 @@ package utils.print
 import java.time.LocalDate
 
 import com.google.inject.Inject
-import models.{Address, UserAnswers}
+import models.{Address, CombinedPassportOrIdCard, IdCard, Name, Passport, UserAnswers}
 import pages.QuestionPage
 import pages.business.NamePage
 import play.api.i18n.Messages
 import play.api.libs.json.Reads
 import play.twirl.api.HtmlFormat
+import queries.Gettable
 import utils.countryOptions.CountryOptions
-import utils.print.CheckAnswersFormatters._
+import utils.print.CheckAnswersFormatters.{formatIdCardDetails, formatNino, formatPassportDetails, _}
 import viewmodels.AnswerRow
 
 class AnswerRowConverter @Inject()() {
@@ -35,6 +36,18 @@ class AnswerRowConverter @Inject()() {
           (implicit messages: Messages): Bound = new Bound(userAnswers, name, countryOptions)
 
   class Bound(userAnswers: UserAnswers, name: String, countryOptions: CountryOptions)(implicit messages: Messages) {
+
+    def nameQuestion(query: QuestionPage[Name],
+                     labelKey: String,
+                     changeUrl: String): Option[AnswerRow] = {
+      userAnswers.get(query) map {x =>
+        AnswerRow(
+          HtmlFormat.escape(messages(s"$labelKey.checkYourAnswersLabel")),
+          HtmlFormat.escape(x.displayFullName),
+          changeUrl
+        )
+      }
+    }
 
     def stringQuestion(query: QuestionPage[String],
                        labelKey: String,
@@ -72,6 +85,18 @@ class AnswerRowConverter @Inject()() {
       }
     }
 
+    def ninoQuestion(query: QuestionPage[String],
+                     labelKey: String,
+                     changeUrl: String): Option[AnswerRow] = {
+      userAnswers.get(query) map {x =>
+        AnswerRow(
+          HtmlFormat.escape(messages(s"$labelKey.checkYourAnswersLabel", name)),
+          formatNino(x),
+          changeUrl
+        )
+      }
+    }
+
     def addressQuestion[T <: Address](query: QuestionPage[T],
                                       labelKey: String,
                                       changeUrl: String)
@@ -80,6 +105,42 @@ class AnswerRowConverter @Inject()() {
         AnswerRow(
           HtmlFormat.escape(messages(s"$labelKey.checkYourAnswersLabel", name)),
           formatAddress(x, countryOptions),
+          changeUrl
+        )
+      }
+    }
+
+    def passportDetailsQuestion(query: QuestionPage[Passport],
+                                labelKey: String,
+                                changeUrl: String): Option[AnswerRow] = {
+      userAnswers.get(query) map {x =>
+        AnswerRow(
+          HtmlFormat.escape(messages(s"$labelKey.checkYourAnswersLabel", name)),
+          formatPassportDetails(x, countryOptions),
+          changeUrl
+        )
+      }
+    }
+
+    def idCardDetailsQuestion(query: QuestionPage[IdCard],
+                              labelKey: String,
+                              changeUrl: String): Option[AnswerRow] = {
+      userAnswers.get(query) map {x =>
+        AnswerRow(
+          HtmlFormat.escape(messages(s"$labelKey.checkYourAnswersLabel", name)),
+          formatIdCardDetails(x, countryOptions),
+          changeUrl
+        )
+      }
+    }
+
+    def passportOrIdCardDetailsQuestion(query: QuestionPage[CombinedPassportOrIdCard],
+                                        labelKey: String,
+                                        changeUrl: String): Option[AnswerRow] = {
+      userAnswers.get(query) map {x =>
+        AnswerRow(
+          HtmlFormat.escape(messages(s"$labelKey.checkYourAnswersLabel", name)),
+          formatPassportOrIdCardDetails(x, countryOptions),
           changeUrl
         )
       }
