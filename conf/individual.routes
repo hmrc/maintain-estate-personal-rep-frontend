@@ -27,13 +27,9 @@ POST       /change-passport-or-idcard                       controllers.individu
 
 GET        /passport                                        controllers.individual.add.PassportDetailsController.onPageLoad()
 POST       /passport                                        controllers.individual.add.PassportDetailsController.onSubmit()
-GET        /change-passport                                 controllers.individual.add.PassportDetailsController.onPageLoad()
-POST       /change-passport                                 controllers.individual.add.PassportDetailsController.onSubmit()
 
 GET        /id-card                                         controllers.individual.add.IdCardDetailsController.onPageLoad()
 POST       /id-card                                         controllers.individual.add.IdCardDetailsController.onSubmit()
-GET        /change-id-card                                  controllers.individual.add.IdCardDetailsController.onPageLoad()
-POST       /change-id-card                                  controllers.individual.add.IdCardDetailsController.onSubmit()
 
 GET        /passport-or-id-card                             controllers.individual.amend.PassportOrIdCardDetailsController.onPageLoad()
 POST       /passport-or-id-card                             controllers.individual.amend.PassportOrIdCardDetailsController.onSubmit()
