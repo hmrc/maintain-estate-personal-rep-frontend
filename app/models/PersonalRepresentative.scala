@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package pages.individual
+package models
 
-import models.IdCard
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import play.api.libs.json._
 
-case object IdCardDetailsPage extends QuestionPage[IdCard] {
+case class PersonalRepresentative(estatePerRepInd : Option[IndividualPersonalRep] = None,
+                                  estatePerRepOrg : Option[BusinessPersonalRep] = None)
 
-  override def path: JsPath = basePath \ toString
-
-  override def toString: String = "idCardDetails"
-
+object PersonalRepresentative {
+  implicit val personalRepFormats: Format[PersonalRepresentative] = Json.format[PersonalRepresentative]
 }

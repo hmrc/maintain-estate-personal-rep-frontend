@@ -18,16 +18,41 @@ package models
 
 import java.time.LocalDate
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
 
-case class IndividualPersonalRep(name: Name,
-                                 dateOfBirth: LocalDate,
-                                 identification: IndividualIdentification,
-                                 address : Address,
-                                 phoneNumber: String,
-                                 email: Option[String],
-                                 entityStart: LocalDate)
+final case class IndividualPersonalRep(name: Name,
+                                       dateOfBirth: LocalDate,
+                                       identification: IndividualIdentification,
+                                       address : Address,
+                                       phoneNumber: String,
+                                       email: Option[String],
+                                       entityStart: LocalDate) extends PersonalRep
 
-object IndividualPersonalRep extends PersonalRep {
-  implicit val formats: Format[IndividualPersonalRep] = Json.format[IndividualPersonalRep]
+object IndividualPersonalRep extends EntityReads {
+
+  implicit val reads: Reads[IndividualPersonalRep] =
+    ((__ \ 'name).read[Name] and
+      (__ \ 'dateOfBirth).read[LocalDate] and
+      __.lazyRead(readAtSubPath[IndividualIdentification](__ \ 'identification)) and
+      __.lazyRead(readAtSubPath[Address](__ \ 'identification \ 'address)) and
+      (__ \ 'phoneNumber).read[String] and
+      (__ \ 'email).readNullable[String] and
+      (__ \ "entityStart").read[LocalDate]).tupled.map{
+
+      case (name, dob, nino, identification, phoneNumber, email, entityStart) =>
+        IndividualPersonalRep(name, dob, nino, identification, phoneNumber, email, entityStart)
+
+    }
+
+  implicit val writes: Writes[IndividualPersonalRep] =
+    ((__ \ 'name).write[Name] and
+      (__ \ 'dateOfBirth).write[LocalDate] and
+      (__ \ 'identification).write[IndividualIdentification] and
+      (__ \ 'identification \ 'address).write[Address] and
+      (__ \ 'phoneNumber).write[String] and
+      (__ \ 'email).writeNullable[String] and
+      (__ \ "entityStart").write[LocalDate]
+      ).apply(unlift(IndividualPersonalRep.unapply))
+
 }

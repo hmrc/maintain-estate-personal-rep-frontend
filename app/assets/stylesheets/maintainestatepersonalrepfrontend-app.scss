@@ -27,3 +27,15 @@
 @import 'conditionals';
 
 @import 'location-autocomplete.min';
+
+#value__listbox, #country__listbox {
+    @media (min-width: 641px) {
+      width: calc(75% - 4px;)
+    }
+}
+
+#country {
+    @media (min-width: 641px) {
+      width:75%;
+    }
+}

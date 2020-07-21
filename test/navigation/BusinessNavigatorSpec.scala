@@ -94,24 +94,87 @@ class BusinessNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks  {
           .mustBe(controllers.business.routes.TelephoneNumberController.onPageLoad(mode))
       }
 
-      "Telephone number" when {
-
-        "Normal mode" in {
-          val mode = NormalMode
-
-          navigator.nextPage(TelephoneNumberPage, mode, emptyUserAnswers)
-            .mustBe(controllers.business.add.routes.StartDateController.onPageLoad())
-        }
-
-        "Check mode" ignore {
-          navigator.nextPage(TelephoneNumberPage, CheckMode, emptyUserAnswers)
-            .mustBe(new NotImplementedError("an implementation is missing"))
-        }
+      "Telephone number page -> Start date page" in {
+        navigator.nextPage(TelephoneNumberPage, mode, emptyUserAnswers)
+          .mustBe(controllers.business.add.routes.StartDateController.onPageLoad())
       }
 
       "Start date page -> Check details" in {
         navigator.nextPage(StartDatePage, mode, emptyUserAnswers)
           .mustBe(controllers.business.add.routes.CheckDetailsController.onPageLoad())
+      }
+    }
+
+    "amend journey navigation" must {
+
+      val mode = CheckMode
+
+      "Uk Registered Yes/No page -> Yes -> Uk Company Name page" in {
+        val answers = emptyUserAnswers
+          .set(UkRegisteredCompanyYesNoPage, true).success.value
+
+        navigator.nextPage(UkRegisteredCompanyYesNoPage, mode, answers)
+          .mustBe(controllers.business.routes.UkCompanyNameController.onPageLoad(mode))
+      }
+
+      "Uk Registered Yes/No page -> No -> Non Uk Company Name page" in {
+        val answers = emptyUserAnswers
+          .set(UkRegisteredCompanyYesNoPage, false).success.value
+
+        navigator.nextPage(UkRegisteredCompanyYesNoPage, mode, answers)
+          .mustBe(controllers.business.routes.NonUkCompanyNameController.onPageLoad(mode))
+      }
+
+      "Uk Company Name page -> UTR page" in {
+        val answers = emptyUserAnswers
+          .set(UkRegisteredCompanyYesNoPage, true).success.value
+
+        navigator.nextPage(NamePage, mode, answers)
+          .mustBe(controllers.business.routes.UtrController.onPageLoad(mode))
+      }
+
+      "Non Uk Company Name page -> Is address in UK page" in {
+        val answers = emptyUserAnswers
+          .set(UkRegisteredCompanyYesNoPage, false).success.value
+
+        navigator.nextPage(NamePage, mode, answers)
+          .mustBe(controllers.business.routes.AddressUkYesNoController.onPageLoad(mode))
+      }
+
+      "UTR page -> Is address in UK page" in {
+        navigator.nextPage(UtrPage, mode, emptyUserAnswers)
+          .mustBe(controllers.business.routes.AddressUkYesNoController.onPageLoad(mode))
+      }
+
+      "Is address in UK page -> Yes -> UK address page" in {
+        val answers = emptyUserAnswers
+          .set(AddressUkYesNoPage, true).success.value
+
+        navigator.nextPage(AddressUkYesNoPage, mode, answers)
+          .mustBe(controllers.business.routes.UkAddressController.onPageLoad(mode))
+      }
+
+      "Is address in UK page -> No -> Non-UK address page" in {
+        val answers = emptyUserAnswers
+          .set(AddressUkYesNoPage, false).success.value
+
+        navigator.nextPage(AddressUkYesNoPage, mode, answers)
+          .mustBe(controllers.business.routes.NonUkAddressController.onPageLoad(mode))
+      }
+
+      "UK address page -> Telephone number page" in {
+        navigator.nextPage(UkAddressPage, mode, emptyUserAnswers)
+          .mustBe(controllers.business.routes.TelephoneNumberController.onPageLoad(mode))
+      }
+
+      "Non-UK address page -> Telephone number page" in {
+        navigator.nextPage(NonUkAddressPage, mode, emptyUserAnswers)
+          .mustBe(controllers.business.routes.TelephoneNumberController.onPageLoad(mode))
+      }
+
+      "Telephone number page -> Check details" in {
+        navigator.nextPage(TelephoneNumberPage, mode, emptyUserAnswers)
+          .mustBe(controllers.business.amend.routes.CheckDetailsController.renderFromUserAnswers())
       }
     }
   }

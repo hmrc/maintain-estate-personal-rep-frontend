@@ -19,7 +19,7 @@ package utils.print
 import com.google.inject.Inject
 import controllers.business.{routes => rts}
 import controllers.business.add.{routes => addRts}
-import models.{NormalMode, UserAnswers}
+import models.{CheckMode, NormalMode, UserAnswers}
 import pages.IndividualOrBusinessPage
 import pages.business._
 import play.api.i18n.Messages
@@ -50,9 +50,25 @@ class BusinessPrintHelper @Inject()(answerRowConverter: AnswerRowConverter,
       bound.dateQuestion(StartDatePage, "business.startDate", addRts.StartDateController.onPageLoad().url)
     ).flatten
 
+    val amend: Seq[AnswerRow] = Seq(
+      bound.enumQuestion(IndividualOrBusinessPage, "individualOrBusiness", controllers.routes.IndividualOrBusinessController.onPageLoad(CheckMode).url),
+      bound.yesNoQuestion(UkRegisteredCompanyYesNoPage, "business.ukRegisteredCompanyYesNo", rts.UkRegisteredCompanyYesNoController.onPageLoad(CheckMode).url),
+      bound.conditionalStringQuestion(
+        NamePage,
+        UkRegisteredCompanyYesNoPage,
+        ("business.ukCompanyName", "business.nonUkCompanyName"),
+        (rts.UkCompanyNameController.onPageLoad(CheckMode).url, rts.NonUkCompanyNameController.onPageLoad(CheckMode).url)
+      ),
+      bound.stringQuestion(UtrPage, "business.utr", rts.UtrController.onPageLoad(CheckMode).url),
+      bound.yesNoQuestion(AddressUkYesNoPage, "business.addressUkYesNo", rts.AddressUkYesNoController.onPageLoad(CheckMode).url),
+      bound.addressQuestion(UkAddressPage, "business.ukAddress", rts.UkAddressController.onPageLoad(CheckMode).url),
+      bound.addressQuestion(NonUkAddressPage, "business.nonUkAddress", rts.NonUkAddressController.onPageLoad(CheckMode).url),
+      bound.stringQuestion(TelephoneNumberPage, "business.telephoneNumber", rts.TelephoneNumberController.onPageLoad(CheckMode).url)
+    ).flatten
+
     AnswerSection(
       None,
-      add
+      if (provisional) add else amend
     )
   }
 }

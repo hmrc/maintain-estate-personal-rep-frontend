@@ -18,6 +18,7 @@ package pages.individual
 
 import models.UserAnswers
 import pages.QuestionPage
+import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage}
 import play.api.libs.json.JsPath
 
 import scala.util.Try

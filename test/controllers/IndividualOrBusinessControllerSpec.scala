@@ -73,7 +73,7 @@ class IndividualOrBusinessControllerSpec extends SpecBase {
       application.stop()
     }
 
-    "redirect to individual name controller when INDIVIDUAL is submitted" ignore {
+    "redirect to individual name controller when INDIVIDUAL is submitted" in {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
@@ -86,7 +86,8 @@ class IndividualOrBusinessControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual ???
+      redirectLocation(result).value mustEqual
+      controllers.individual.routes.NameController.onPageLoad(NormalMode).url
 
       application.stop()
     }
@@ -104,7 +105,8 @@ class IndividualOrBusinessControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual controllers.business.routes.UkRegisteredCompanyYesNoController.onPageLoad(NormalMode).url
+      redirectLocation(result).value mustEqual
+        controllers.business.routes.UkRegisteredCompanyYesNoController.onPageLoad(NormalMode).url
 
       application.stop()
     }

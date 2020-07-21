@@ -67,9 +67,9 @@ class IndividualOrBusinessController @Inject()(
           } yield {
             value match {
               case Individual =>
-                Redirect(???)
+                Redirect(controllers.individual.routes.NameController.onPageLoad(mode))
               case Business =>
-                Redirect(controllers.business.routes.UkRegisteredCompanyYesNoController.onPageLoad(NormalMode))
+                Redirect(controllers.business.routes.UkRegisteredCompanyYesNoController.onPageLoad(mode))
             }
           }
         }

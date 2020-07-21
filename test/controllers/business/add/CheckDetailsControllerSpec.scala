@@ -59,7 +59,7 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
     .set(TelephoneNumberPage, telephoneNumber).success.value
     .set(StartDatePage, startDate).success.value
 
-  "CheckDetails Controller" must {
+  "Business Add - CheckDetails Controller" must {
 
     "return OK and the correct view for a GET" in {
 

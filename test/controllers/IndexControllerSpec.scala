@@ -20,7 +20,7 @@ import java.time.LocalDate
 
 import base.SpecBase
 import connectors.EstatesConnector
-import models.{NormalMode, UserAnswers}
+import models.{CheckMode, Mode, NormalMode, UserAnswers}
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{verify, when}
@@ -35,38 +35,80 @@ import scala.concurrent.Future
 
 class IndexControllerSpec extends SpecBase with MockitoSugar {
 
-  "Index Controller" must {
+  "Index Controller" when {
 
-    "populate user answers with UTR and DOD and redirect to Individual or Business" in {
+    "adding new personal rep" must {
 
-      val utr: String = "UTR"
-      val dateOfDeath: String = "1996-02-03"
+      val mode: Mode = NormalMode
 
-      val mockEstatesConnector: EstatesConnector = mock[EstatesConnector]
-      val mockSessionRepository : SessionRepository = mock[SessionRepository]
+      "populate user answers with UTR and DOD and redirect to Individual or Business" in {
 
-      when(mockEstatesConnector.getDateOfDeath(any())(any(), any())).thenReturn(Future.successful(Json.toJson(dateOfDeath)))
-      when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
+        val utr: String = "UTR"
+        val dateOfDeath: String = "1996-02-03"
 
-      val application = applicationBuilder(userAnswers = None)
-        .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
-        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
-        .build()
+        val mockEstatesConnector: EstatesConnector = mock[EstatesConnector]
+        val mockSessionRepository : SessionRepository = mock[SessionRepository]
 
-      val request = FakeRequest(GET, routes.IndexController.onPageLoad(utr).url)
+        when(mockEstatesConnector.getDateOfDeath(any())(any(), any())).thenReturn(Future.successful(Json.toJson(dateOfDeath)))
+        when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
 
-      val result = route(application, request).value
+        val application = applicationBuilder(userAnswers = None)
+          .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
+          .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+          .build()
 
-      status(result) mustEqual SEE_OTHER
+        val request = FakeRequest(GET, routes.IndexController.onPageLoad(utr, mode).url)
 
-      redirectLocation(result) mustBe Some(controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode).url)
+        val result = route(application, request).value
 
-      val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
-      verify(mockSessionRepository).set(uaCaptor.capture)
-      uaCaptor.getValue.utr mustEqual utr
-      uaCaptor.getValue.dateOfDeath mustEqual LocalDate.parse(dateOfDeath)
+        status(result) mustEqual SEE_OTHER
 
-      application.stop()
+        redirectLocation(result) mustBe Some(controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode).url)
+
+        val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+        verify(mockSessionRepository).set(uaCaptor.capture)
+        uaCaptor.getValue.utr mustEqual utr
+        uaCaptor.getValue.dateOfDeath mustEqual LocalDate.parse(dateOfDeath)
+
+        application.stop()
+      }
+    }
+
+    "amending existing personal rep" must {
+
+      val mode: Mode = CheckMode
+
+      "populate user answers with UTR and DOD and redirect to Individual or Business" in {
+
+        val utr: String = "UTR"
+        val dateOfDeath: String = "1996-02-03"
+
+        val mockEstatesConnector: EstatesConnector = mock[EstatesConnector]
+        val mockSessionRepository : SessionRepository = mock[SessionRepository]
+
+        when(mockEstatesConnector.getDateOfDeath(any())(any(), any())).thenReturn(Future.successful(Json.toJson(dateOfDeath)))
+        when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
+
+        val application = applicationBuilder(userAnswers = None)
+          .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
+          .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+          .build()
+
+        val request = FakeRequest(GET, routes.IndexController.onPageLoad(utr, mode).url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result) mustBe Some(controllers.amend.routes.CheckDetailsController.extractAndRender().url)
+
+        val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+        verify(mockSessionRepository).set(uaCaptor.capture)
+        uaCaptor.getValue.utr mustEqual utr
+        uaCaptor.getValue.dateOfDeath mustEqual LocalDate.parse(dateOfDeath)
+
+        application.stop()
+      }
     }
   }
 }

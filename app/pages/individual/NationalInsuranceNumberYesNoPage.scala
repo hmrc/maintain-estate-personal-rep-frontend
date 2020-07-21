@@ -18,6 +18,7 @@ package pages.individual
 
 import models.UserAnswers
 import pages.QuestionPage
+import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage}
 import play.api.libs.json.JsPath
 
 import scala.util.Try
@@ -34,14 +35,8 @@ case object NationalInsuranceNumberYesNoPage extends QuestionPage[Boolean] {
         userAnswers.remove(PassportOrIdCardDetailsYesNoPage)
           .flatMap(_.remove(PassportDetailsPage))
           .flatMap(_.remove(IdCardDetailsPage))
-//          .flatMap(_.remove(LiveInTheUkYesNoPage)) // TODO Check if need to remove
-//          .flatMap(_.remove(UkAddressPage)) // TODO Check if need to remove
-//          .flatMap(_.remove(NonUkAddressPage)) // TODO Check if need to remove
       case Some(false) =>
         userAnswers.remove(NationalInsuranceNumberPage)
-//          .flatMap(_.remove(LiveInTheUkYesNoPage)) // TODO Check if need to remove
-//          .flatMap(_.remove(UkAddressPage)) // TODO Check if need to remove
-//          .flatMap(_.remove(NonUkAddressPage)) // TODO Check if need to remove
       case _ =>
         super.cleanup(value, userAnswers)
     }
