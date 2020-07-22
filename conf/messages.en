@@ -195,13 +195,13 @@ individual.nationalInsuranceNumber.hint = It is on their National Insurance card
 individual.nationalInsuranceNumber.error.required = Enter the personal representative’s National Insurance number
 individual.nationalInsuranceNumber.error.invalidFormat = Enter the personal representative’s National Insurance number in the correct format
 
-individual.passportOrIdCard.checkYourAnswersLabel = Which of {0}’s details can you provide?
-individual.passportOrIdCard.title = Which of the personal representative’s details can you provide?
-individual.passportOrIdCard.heading = Which of {0}’s details can you provide?
-individual.passportOrIdCard.hint = The personal representative can be the estate’s administrator or executor
-individual.passportOrIdCard.passport = Passport
-individual.passportOrIdCard.idCard = ID Card
-individual.passportOrIdCard.error.required = Select the personal representative’s passport or ID card
+passportOrIdCard.checkYourAnswersLabel = Which of {0}’s details can you provide?
+passportOrIdCard.title = Which of the personal representative’s details can you provide?
+passportOrIdCard.heading = Which of {0}’s details can you provide?
+passportOrIdCard.hint = The personal representative can be the estate’s administrator or executor
+passportOrIdCard.passport = Passport
+passportOrIdCard.idCard = ID Card
+passportOrIdCard.error.required = Select the personal representative’s passport or ID card
 
 individual.passportDetails.checkYourAnswersLabel = What are {0}’s passport details?
 individual.passportDetails.title = What are the personal representative’s passport details?

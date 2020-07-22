@@ -25,6 +25,6 @@ class PassportOrIdCardFormProvider @Inject() extends Mappings {
 
   def apply(): Form[PassportOrIdCard] =
     Form(
-      "value" -> enumerable[PassportOrIdCard]("individual.passportOrIdCard.error.required")
+      "value" -> enumerable[PassportOrIdCard]("passportOrIdCard.error.required")
     )
 }

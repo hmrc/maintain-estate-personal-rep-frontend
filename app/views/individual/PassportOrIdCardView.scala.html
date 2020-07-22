@@ -28,7 +28,7 @@
 @(form: Form[_], name: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("individual.passportOrIdCard.title")}"
+    title = s"${errorPrefix(form)} ${messages("passportOrIdCard.title")}"
 ) {
 
     @formHelper(action = PassportOrIdCardController.onSubmit(mode), 'autoComplete -> "off") {
@@ -39,7 +39,7 @@
 
         @components.input_radio(
             field = form("value"),
-            legend = messages("individual.passportOrIdCard.heading", name),
+            legend = messages("passportOrIdCard.heading", name),
             legendClass = Some("heading-large"),
             fieldSetClass = Some("inline"),
             inputs = PassportOrIdCard.options.toSeq,
