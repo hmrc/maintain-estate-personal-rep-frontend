@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package controllers.individual
+package controllers.individual.add
 
 import config.annotations.Individual
 import controllers.actions.Actions
 import forms.PassportOrIdCardFormProvider
 import javax.inject.Inject
-import models.PassportOrIdCard.{IdCard, Passport}
-import models.{Enumerable, Mode, PassportOrIdCard}
+import models.{Enumerable, Mode, NormalMode, PassportOrIdCard}
 import navigation.Navigator
 import pages.individual.PassportOrIdCardPage
 import play.api.data.Form
@@ -29,7 +28,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.individual.PassportOrIdCardView
+import views.html.individual.add.PassportOrIdCardView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -41,11 +40,11 @@ class PassportOrIdCardController @Inject()(
                                             formProvider: PassportOrIdCardFormProvider,
                                             val controllerComponents: MessagesControllerComponents,
                                             view: PassportOrIdCardView
-                                              )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
+                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
   val form: Form[PassportOrIdCard] = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithIndividualName {
+  def onPageLoad(): Action[AnyContent] = actions.authWithIndividualName {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(PassportOrIdCardPage) match {
@@ -53,21 +52,21 @@ class PassportOrIdCardController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, request.individualName, mode))
+      Ok(view(preparedForm, request.individualName))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithIndividualName.async {
+  def onSubmit(): Action[AnyContent] = actions.authWithIndividualName.async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, request.individualName, mode))),
+          Future.successful(BadRequest(view(formWithErrors, request.individualName))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(PassportOrIdCardPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PassportOrIdCardPage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(PassportOrIdCardPage, NormalMode, updatedAnswers))
         }
       )
   }

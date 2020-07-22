@@ -20,10 +20,8 @@ POST       /national-insurance-number                       controllers.individu
 GET        /change-national-insurance-number                controllers.individual.NationalInsuranceNumberController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-national-insurance-number                controllers.individual.NationalInsuranceNumberController.onSubmit(mode: Mode = CheckMode)
 
-GET        /passport-or-idcard                              controllers.individual.PassportOrIdCardController.onPageLoad(mode: Mode = NormalMode)
-POST       /passport-or-idcard                              controllers.individual.PassportOrIdCardController.onSubmit(mode: Mode = NormalMode)
-GET        /change-passport-or-idcard                       controllers.individual.PassportOrIdCardController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-passport-or-idcard                       controllers.individual.PassportOrIdCardController.onSubmit(mode: Mode = CheckMode)
+GET        /passport-or-id-card                             controllers.individual.add.PassportOrIdCardController.onPageLoad()
+POST       /passport-or-id-card                             controllers.individual.add.PassportOrIdCardController.onSubmit()
 
 GET        /passport                                        controllers.individual.add.PassportDetailsController.onPageLoad()
 POST       /passport                                        controllers.individual.add.PassportDetailsController.onSubmit()
@@ -31,8 +29,8 @@ POST       /passport                                        controllers.individu
 GET        /id-card                                         controllers.individual.add.IdCardDetailsController.onPageLoad()
 POST       /id-card                                         controllers.individual.add.IdCardDetailsController.onSubmit()
 
-GET        /passport-or-id-card                             controllers.individual.amend.PassportOrIdCardDetailsController.onPageLoad()
-POST       /passport-or-id-card                             controllers.individual.amend.PassportOrIdCardDetailsController.onSubmit()
+GET        /change-passport-or-id-card                      controllers.individual.amend.PassportOrIdCardDetailsController.onPageLoad()
+POST       /change-passport-or-id-card                      controllers.individual.amend.PassportOrIdCardDetailsController.onSubmit()
 
 GET        /has-uk-address                                  controllers.individual.LiveInTheUkYesNoController.onPageLoad(mode: Mode = NormalMode)
 POST       /has-uk-address                                  controllers.individual.LiveInTheUkYesNoController.onSubmit(mode: Mode = NormalMode)

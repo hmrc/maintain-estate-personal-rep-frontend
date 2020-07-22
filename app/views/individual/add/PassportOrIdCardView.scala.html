@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.individual.routes._
+@import controllers.individual.add.routes._
 @import models.PassportOrIdCard
 @import config.FrontendAppConfig
 
@@ -25,13 +25,13 @@
 )
 
 
-@(form: Form[_], name: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], name: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("individual.passportOrIdCard.title")}"
 ) {
 
-    @formHelper(action = PassportOrIdCardController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = PassportOrIdCardController.onSubmit(), 'autoComplete -> "off") {
 
         @components.back_link()
 
