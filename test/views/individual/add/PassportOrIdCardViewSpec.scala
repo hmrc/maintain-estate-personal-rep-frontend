@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package views.individual
+package views.individual.add
 
 import forms.PassportOrIdCardFormProvider
-import models.{Name, NormalMode, PassportOrIdCard}
+import models.{Name, PassportOrIdCard}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.OptionsViewBehaviours
-import views.html.individual.PassportOrIdCardView
+import views.html.individual.add.PassportOrIdCardView
 
 class PassportOrIdCardViewSpec extends OptionsViewBehaviours {
 
@@ -33,7 +33,7 @@ class PassportOrIdCardViewSpec extends OptionsViewBehaviours {
   val view: PassportOrIdCardView = viewFor[PassportOrIdCardView](Some(emptyUserAnswers))
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, name.displayName, NormalMode)(fakeRequest, messages)
+    view.apply(form, name.displayName)(fakeRequest, messages)
 
   "PassportOrIdCardView" must {
 

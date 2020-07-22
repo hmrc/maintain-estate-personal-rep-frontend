@@ -14,31 +14,31 @@
  * limitations under the License.
  */
 
-package controllers.individual
+package controllers.individual.add
 
 import base.SpecBase
-import controllers.routes._
 import controllers.individual.add.{routes => addRts}
+import controllers.routes._
 import forms.PassportOrIdCardFormProvider
-import models.{Name, NormalMode, PassportOrIdCard}
+import models.{Name, PassportOrIdCard, UserAnswers}
 import pages.individual.{NamePage, PassportOrIdCardPage}
 import play.api.data.Form
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import views.html.individual.PassportOrIdCardView
+import views.html.individual.add.PassportOrIdCardView
 
 class PassportOrIdCardControllerSpec extends SpecBase {
 
-  lazy val PassportOrIdCardRoute: String = routes.PassportOrIdCardController.onPageLoad(NormalMode).url
+  lazy val PassportOrIdCardRoute: String = addRts.PassportOrIdCardController.onPageLoad().url
   lazy val PassportDetailsRoute: String = addRts.PassportDetailsController.onPageLoad().url
   lazy val IdCardDetailsRoute: String = addRts.IdCardDetailsController.onPageLoad().url
 
   val formProvider = new PassportOrIdCardFormProvider()
   val form: Form[PassportOrIdCard] = formProvider()
 
-  val name = Name("FirstName", None, "LastName")
-  val userAnswersWithName = emptyUserAnswers.set(NamePage, name)
-    .success.value
+  val name: Name = Name("FirstName", None, "LastName")
+  val userAnswersWithName: UserAnswers = emptyUserAnswers
+    .set(NamePage, name).success.value
 
   "PassportOrIdCard Controller" must {
 
@@ -55,7 +55,7 @@ class PassportOrIdCardControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, name.displayName, NormalMode)(fakeRequest, messages).toString
+        view(form, name.displayName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -75,7 +75,7 @@ class PassportOrIdCardControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(PassportOrIdCard.values.head), name.displayName, NormalMode)(fakeRequest, messages).toString
+        view(form.fill(PassportOrIdCard.values.head), name.displayName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -133,7 +133,7 @@ class PassportOrIdCardControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, name.displayName, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, name.displayName)(fakeRequest, messages).toString
 
       application.stop()
     }

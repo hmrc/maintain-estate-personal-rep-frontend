@@ -60,7 +60,7 @@ class IndividualNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks  {
           .set(NationalInsuranceNumberYesNoPage, false).success.value
 
         navigator.nextPage(NationalInsuranceNumberYesNoPage, mode, answers)
-          .mustBe(rts.PassportOrIdCardController.onPageLoad(mode))
+          .mustBe(addRts.PassportOrIdCardController.onPageLoad())
       }
 
       "Passport Or ID Card page -> Passport -> Passport page" in {
