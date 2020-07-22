@@ -16,11 +16,13 @@
 
 package controllers.individual
 
+import config.annotations.Individual
 import controllers.actions.Actions
 import forms.PassportOrIdCardFormProvider
 import javax.inject.Inject
 import models.PassportOrIdCard.{IdCard, Passport}
 import models.{Enumerable, Mode, PassportOrIdCard}
+import navigation.Navigator
 import pages.individual.PassportOrIdCardPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -33,7 +35,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class PassportOrIdCardController @Inject()(
                                             override val messagesApi: MessagesApi,
-                                            registrationsRepository: SessionRepository,
+                                            sessionRepository: SessionRepository,
+                                            @Individual navigator: Navigator,
                                             actions: Actions,
                                             formProvider: PassportOrIdCardFormProvider,
                                             val controllerComponents: MessagesControllerComponents,
@@ -63,15 +66,8 @@ class PassportOrIdCardController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(PassportOrIdCardPage, value))
-            _              <- registrationsRepository.set(updatedAnswers)
-          } yield {
-            value match {
-              case Passport =>
-                Redirect(controllers.individual.add.routes.PassportDetailsController.onPageLoad())
-              case IdCard =>
-                Redirect(controllers.individual.add.routes.IdCardDetailsController.onPageLoad())
-            }
-          }
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(PassportOrIdCardPage, mode, updatedAnswers))
         }
       )
   }
