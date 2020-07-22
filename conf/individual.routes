@@ -61,4 +61,4 @@ GET        /check-details                                   controllers.individu
 POST       /check-details                                   controllers.individual.add.CheckDetailsController.onSubmit()
 
 GET        /change-details                                  controllers.individual.amend.CheckDetailsController.renderFromUserAnswers()
-GET        /change-details                                  controllers.individual.amend.CheckDetailsController.onSubmit()
+POST       /change-details                                  controllers.individual.amend.CheckDetailsController.onSubmit()
