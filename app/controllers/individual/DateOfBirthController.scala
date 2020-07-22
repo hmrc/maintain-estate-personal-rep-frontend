@@ -20,7 +20,6 @@ import config.annotations.Individual
 import java.time.LocalDate
 
 import controllers.actions.Actions
-import controllers.actions.individual.NameRequiredAction
 import forms.DateFormProvider
 import javax.inject.Inject
 import models.Mode
