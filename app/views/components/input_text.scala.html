@@ -55,7 +55,7 @@ autocomplete: Option[String] = None
                 id="@{field.id}"
                 name="@{field.name}"
                 value="@{field.value}"
-                autocomplete="@autocomplete"
+                @if(autocomplete.isDefined){autocomplete="@autocomplete"}
                 @if(inputMode.nonEmpty){inputmode="@inputMode"}@if(field.hasErrors || hint.nonEmpty){aria-describedby="@if(field.hasErrors){error-message-@{field.id}-input}@if(field.hasErrors && hint.nonEmpty){ }@if(hint.nonEmpty){hint-@{field.id}}"}
         />
     </div>
