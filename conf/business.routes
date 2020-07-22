@@ -47,4 +47,4 @@ GET        /check-details                               controllers.business.add
 POST       /check-details                               controllers.business.add.CheckDetailsController.onSubmit()
 
 GET        /change-details                              controllers.business.amend.CheckDetailsController.renderFromUserAnswers()
-GET        /change-details                              controllers.business.amend.CheckDetailsController.onSubmit()
+POST       /change-details                              controllers.business.amend.CheckDetailsController.onSubmit()
