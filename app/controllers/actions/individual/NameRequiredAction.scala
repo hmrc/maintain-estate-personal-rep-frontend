@@ -35,8 +35,12 @@ class NameRequiredAction @Inject()(implicit val executionContext: ExecutionConte
         case None =>
           Left(Redirect(controllers.individual.routes.NameController.onPageLoad(NormalMode)))
         case Some(name) =>
-          Right(IndividualNameRequest(request, name.displayFullName))
+          Right(IndividualNameRequest(request, name.displayName))
       }
     )
   }
+
+
+
+
 }
