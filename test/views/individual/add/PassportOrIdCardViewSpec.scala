@@ -25,7 +25,7 @@ import views.html.individual.add.PassportOrIdCardView
 
 class PassportOrIdCardViewSpec extends OptionsViewBehaviours {
 
-  val messageKeyPrefix = "individual.passportOrIdCard"
+  val messageKeyPrefix = "passportOrIdCard"
   val name: Name = Name("First", Some("Middle"), "Last")
 
   val form = new PassportOrIdCardFormProvider()()
