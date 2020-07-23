@@ -18,7 +18,7 @@ package pages.individual
 
 import java.time.LocalDate
 
-import models.{IdCard, Passport}
+import models.{CombinedPassportOrIdCard, IdCard, Passport, PassportOrIdCard}
 import pages.behaviours.PageBehaviours
 import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage}
 
@@ -46,11 +46,15 @@ class NationalInsuranceNumberYesNoPageSpec extends PageBehaviours {
         .set(PassportDetailsPage, Passport("GB", "1", LocalDate.of(2030, 10, 10))).success.value
         .set(IdCardDetailsPage, IdCard("GB", "1", LocalDate.of(2030, 10, 10))).success.value
         .set(PassportOrIdCardDetailsYesNoPage, false).success.value
-        .set(NationalInsuranceNumberYesNoPage, true)
+        .set(PassportOrIdCardDetailsPage, CombinedPassportOrIdCard("GB", "1", LocalDate.of(2030, 10, 10))).success.value
+        .set(PassportOrIdCardPage, PassportOrIdCard.Passport).success.value
+        .set(NationalInsuranceNumberYesNoPage, true).success.value
 
-      userAnswers.get.get(PassportOrIdCardDetailsYesNoPage) mustNot be(defined)
-      userAnswers.get.get(PassportDetailsPage) mustNot be(defined)
-      userAnswers.get.get(IdCardDetailsPage) mustNot be(defined)
+      userAnswers.get(PassportOrIdCardDetailsYesNoPage) mustNot be(defined)
+      userAnswers.get(PassportOrIdCardDetailsPage) mustNot be(defined)
+      userAnswers.get(PassportDetailsPage) mustNot be(defined)
+      userAnswers.get(IdCardDetailsPage) mustNot be(defined)
+      userAnswers.get(PassportOrIdCardPage) mustNot be(defined)
     }
 
   }
