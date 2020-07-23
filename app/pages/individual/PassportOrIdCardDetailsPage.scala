@@ -21,6 +21,7 @@ import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object PassportOrIdCardDetailsPage extends QuestionPage[CombinedPassportOrIdCard] {
+
   override def path: JsPath = basePath \ toString
 
   override def toString: String = "passportOrIdCardDetails"
