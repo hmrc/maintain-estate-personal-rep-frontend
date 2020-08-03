@@ -22,6 +22,7 @@ import base.SpecBase
 import connectors.EstatesConnector
 import models.IndividualOrBusiness.Business
 import models.UkAddress
+import models.requests.AgentUser
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.concurrent.ScalaFutures
@@ -31,6 +32,7 @@ import pages.business._
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.Enrolments
 import uk.gov.hmrc.http.HttpResponse
 import utils.print.BusinessPrintHelper
 import views.html.business.add.CheckDetailsView
@@ -78,7 +80,7 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
         view(answerSection)(fakeRequest, messages).toString
     }
 
-    "submitting" ignore {
+    "submitting" when {
 
       val mockEstatesConnector = mock[EstatesConnector]
       when(mockEstatesConnector.addOrAmendPersonalRep(any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK)))
@@ -107,7 +109,8 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
         "redirect to agent declaration questions" in {
 
           val application =
-            applicationBuilder(userAnswers = Some(userAnswers))
+            applicationBuilderForUser(userAnswers = Some(userAnswers),
+              user = AgentUser("id", Enrolments(Set()), "arn"))
               .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
               .build()
 

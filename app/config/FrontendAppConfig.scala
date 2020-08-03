@@ -23,6 +23,7 @@ import controllers.routes
 import play.api.Configuration
 import play.api.i18n.Lang
 import play.api.mvc.Call
+import uk.gov.hmrc.auth.core.AffinityGroup
 
 @Singleton
 class FrontendAppConfig @Inject() (configuration: Configuration) {
@@ -41,6 +42,9 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
   lazy val loginUrl: String = configuration.get[String]("urls.login")
   lazy val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
   lazy val logoutUrl: String = configuration.get[String]("urls.logout")
+
+  lazy val organisationDeclarationUrl: String = configuration.get[String]("urls.declaration.organisation")
+  lazy val agentDeclarationUrl: String = configuration.get[String]("urls.declaration.agent")
 
   lazy val estatesUrl: String = configuration.get[Service]("microservice.services.estates").baseUrl
   lazy val estatesAuthUrl: String = configuration.get[Service]("microservice.services.estates-auth").baseUrl
@@ -68,4 +72,12 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
   private val maxMonth: Int = configuration.get[Int]("dates.maximum.month")
   private val maxYear: Int = configuration.get[Int]("dates.maximum.year")
   lazy val maxDate: LocalDate = LocalDate.of(maxYear, maxMonth, maxDay)
+
+  def maintainDeclarationUrl(isAgent : Boolean): String = {
+    if (isAgent) {
+      agentDeclarationUrl
+    } else {
+      organisationDeclarationUrl
+    }
+  }
 }
