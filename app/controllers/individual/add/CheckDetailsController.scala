@@ -22,7 +22,7 @@ import controllers.actions.Actions
 import javax.inject.Inject
 import models.PersonalRepresentative
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.mappers.IndividualMapper
 import utils.print.IndividualPrintHelper
@@ -57,8 +57,7 @@ class CheckDetailsController @Inject()(
           Future.successful(InternalServerError)
         case Some(individual) =>
           connector.addOrAmendPersonalRep(request.userAnswers.utr, PersonalRepresentative(Some(individual), None)).map(_ =>
-            // TODO - add User to request, pattern match on AffinityGroup and redirect to relevant declaration
-            Redirect(controllers.individual.add.routes.CheckDetailsController.onPageLoad())
+            Redirect(appConfig.maintainDeclarationUrl(request.request.user.isAgent))
           )
       }
   }

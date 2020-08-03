@@ -16,12 +16,15 @@
 
 package models.requests
 
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 
 sealed trait User {
   val internalId: String
   val affinityGroup: AffinityGroup
   val enrolments: Enrolments
+
+  def isAgent : Boolean = affinityGroup == Agent
 }
 
 case class AgentUser(internalId: String, enrolments: Enrolments, agentReferenceNumber: String) extends User {

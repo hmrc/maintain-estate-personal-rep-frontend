@@ -56,8 +56,7 @@ class CheckDetailsController @Inject()(
       mapper(request.userAnswers).map {
         individual =>
           connector.addOrAmendPersonalRep(request.userAnswers.utr, PersonalRepresentative(Some(individual), None)).map(_ =>
-            // TODO - pattern match on AffinityGroup and redirect to relevant declaration
-            Redirect(controllers.individual.amend.routes.CheckDetailsController.renderFromUserAnswers())
+            Redirect(appConfig.maintainDeclarationUrl(request.request.user.isAgent))
           )
       }.getOrElse(Future.successful(InternalServerError(errorHandler.internalServerErrorTemplate)))
   }
