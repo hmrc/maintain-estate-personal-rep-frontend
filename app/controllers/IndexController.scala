@@ -43,7 +43,7 @@ class IndexController @Inject()(
     implicit request =>
 
       def userAnswers(dateOfDeath: JsValue): UserAnswers = UserAnswers(
-        id = request.internalId,
+        id = request.user.internalId,
         utr = utr,
         dateOfDeath = dateOfDeath match {
           case JsString(date) => LocalDate.parse(date)

@@ -17,8 +17,9 @@
 package base
 
 import config.FrontendAppConfig
-import controllers.actions._
+import controllers.actions.{FakeOrganisationIdentifierAction, UTRAuthenticationAction, _}
 import models.UserAnswers
+import models.requests.User
 import navigation.FakeNavigator
 import org.scalatest.TryValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
@@ -28,7 +29,7 @@ import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{Injector, bind}
 import play.api.libs.json.Json
-import play.api.mvc.Call
+import play.api.mvc.{Call, PlayBodyParsers}
 import play.api.test.FakeRequest
 
 trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with ScalaFutures with IntegrationPatience {
@@ -51,11 +52,29 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
 
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 
-  protected def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder =
+  private def applicationBuilderInterface(userAnswers: Option[UserAnswers] = None,
+                                          fakeIdentifierAction: IdentifierAction,
+                                          utr: String = "utr"
+                                         ) : GuiceApplicationBuilder = {
     new GuiceApplicationBuilder()
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
-        bind[IdentifierAction].to[FakeIdentifierAction],
+        bind[IdentifierAction].to(fakeIdentifierAction),
+        bind[UTRAuthenticationAction].toInstance(new FakeUTRAuthenticationAction(utr)),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers))
       )
+  }
+
+  protected def applicationBuilderForUser(userAnswers: Option[UserAnswers] = None,
+                                          user: User): GuiceApplicationBuilder = {
+    val parsers = injector.instanceOf[PlayBodyParsers]
+    val fakeIdentifierAction = new FakeUserIdentifierAction(parsers)(user)
+
+    applicationBuilderInterface(userAnswers, fakeIdentifierAction)
+  }
+
+  protected def applicationBuilder(userAnswers: Option[UserAnswers] = None, utr: String = "utr"): GuiceApplicationBuilder = {
+    val fakeIdentifierAction = injector.instanceOf[FakeOrganisationIdentifierAction]
+    applicationBuilderInterface(userAnswers, fakeIdentifierAction, utr)
+  }
 }

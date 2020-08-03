@@ -21,6 +21,7 @@ import config.annotations.{Business, Individual}
 import controllers.actions._
 import navigation.{BusinessNavigator, IndividualNavigator, Navigator}
 import repositories.{DefaultSessionRepository, SessionRepository}
+import services.{EstateAuthenticationService, EstateAuthenticationServiceImpl}
 
 class Module extends AbstractModule {
 
@@ -31,6 +32,7 @@ class Module extends AbstractModule {
 
     // For session based storage instead of cred based, change to SessionIdentifierAction
     bind(classOf[IdentifierAction]).to(classOf[AuthenticatedIdentifierAction]).asEagerSingleton()
+    bind(classOf[EstateAuthenticationService]).to(classOf[EstateAuthenticationServiceImpl]).asEagerSingleton()
 
     bind(classOf[SessionRepository]).to(classOf[DefaultSessionRepository]).asEagerSingleton()
 
