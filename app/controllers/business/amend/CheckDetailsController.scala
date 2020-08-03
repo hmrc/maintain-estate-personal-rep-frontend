@@ -50,7 +50,7 @@ class CheckDetailsController @Inject()(
       Ok(view(section))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.authWithData.async {
+  def onSubmit(): Action[AnyContent] = actions.authWithBusinessName.async {
     implicit request =>
 
       mapper(request.userAnswers).map {

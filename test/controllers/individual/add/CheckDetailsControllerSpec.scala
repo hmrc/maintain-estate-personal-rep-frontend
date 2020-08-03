@@ -41,7 +41,6 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
 
   private lazy val checkDetailsRoute = controllers.individual.add.routes.CheckDetailsController.onPageLoad().url
   private lazy val submitDetailsRoute = controllers.individual.add.routes.CheckDetailsController.onSubmit().url
-  private lazy val redirectRoute = checkDetailsRoute
 
   private val name = Name("FirstName", None, "LastName")
   private val nino = "AA000000A"
@@ -100,7 +99,7 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
 
           status(result) mustEqual SEE_OTHER
 
-          redirectLocation(result).value mustEqual redirectRoute
+          redirectLocation(result).value mustEqual "http://localhost:8828/maintain-an-estate/declaration"
 
           application.stop()
         }
@@ -120,7 +119,7 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
 
           status(result) mustEqual SEE_OTHER
 
-          redirectLocation(result).value mustEqual redirectRoute
+          redirectLocation(result).value mustEqual "http://localhost:8828/maintain-an-estate/is-agency-address-in-uk"
 
           application.stop()
         }

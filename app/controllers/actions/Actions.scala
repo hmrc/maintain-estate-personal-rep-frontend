@@ -24,6 +24,7 @@ class Actions @Inject()(
                          identify: IdentifierAction,
                          getData: DataRetrievalAction,
                          requireData: DataRequiredAction,
+                         verifyUtr: UTRAuthenticationAction,
                          requireBusinessName: business.NameRequiredAction,
                          requireIndividualName: individual.NameRequiredAction
                        ) {
@@ -34,10 +35,13 @@ class Actions @Inject()(
   def authWithData: ActionBuilder[DataRequest, AnyContent] =
     authWithSession andThen requireData
 
+  def authenticatedForUtr: ActionBuilder[DataRequest, AnyContent] =
+    authWithData andThen verifyUtr
+
   def authWithBusinessName: ActionBuilder[BusinessNameRequest, AnyContent] =
-    authWithData andThen requireBusinessName
+    authenticatedForUtr andThen requireBusinessName
 
   def authWithIndividualName: ActionBuilder[IndividualNameRequest, AnyContent] =
-    authWithData andThen requireIndividualName
+    authenticatedForUtr andThen requireIndividualName
 
 }

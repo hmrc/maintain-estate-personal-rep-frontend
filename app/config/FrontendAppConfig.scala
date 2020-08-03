@@ -43,6 +43,7 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
   lazy val logoutUrl: String = configuration.get[String]("urls.logout")
 
   lazy val estatesUrl: String = configuration.get[Service]("microservice.services.estates").baseUrl
+  lazy val estatesAuthUrl: String = configuration.get[Service]("microservice.services.estates-auth").baseUrl
 
   lazy val languageTranslationEnabled: Boolean =
     configuration.get[Boolean]("microservice.services.features.welsh-translation")

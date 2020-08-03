@@ -16,7 +16,18 @@
 
 package models.requests
 
-import play.api.mvc.{Request, WrappedRequest}
+import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 
-case class IdentifierRequest[A] (request: Request[A],
-                                 user: User) extends WrappedRequest[A](request)
+sealed trait User {
+  val internalId: String
+  val affinityGroup: AffinityGroup
+  val enrolments: Enrolments
+}
+
+case class AgentUser(internalId: String, enrolments: Enrolments, agentReferenceNumber: String) extends User {
+  override val affinityGroup: AffinityGroup = AffinityGroup.Agent
+}
+
+case class OrganisationUser(internalId: String, enrolments: Enrolments) extends User {
+  override val affinityGroup: AffinityGroup = AffinityGroup.Organisation
+}

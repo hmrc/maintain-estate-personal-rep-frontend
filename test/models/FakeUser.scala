@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
-package models.requests
+package models
 
-import play.api.mvc.{Request, WrappedRequest}
+import models.requests.{AgentUser, OrganisationUser}
+import uk.gov.hmrc.auth.core.Enrolments
 
-case class IdentifierRequest[A] (request: Request[A],
-                                 user: User) extends WrappedRequest[A](request)
+object FakeUser {
+
+  def agent(enrolments: Enrolments) = AgentUser("id", enrolments, "arn")
+
+  def organisation(enrolments: Enrolments) = OrganisationUser("id", enrolments)
+
+}
