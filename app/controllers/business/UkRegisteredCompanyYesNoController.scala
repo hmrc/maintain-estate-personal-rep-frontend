@@ -44,7 +44,7 @@ class UkRegisteredCompanyYesNoController @Inject()(
 
   val form: Form[Boolean] = formProvider.withPrefix("business.ukRegisteredCompanyYesNo")
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithData {
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authenticatedForUtr {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(UkRegisteredCompanyYesNoPage) match {
@@ -55,7 +55,7 @@ class UkRegisteredCompanyYesNoController @Inject()(
       Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithData.async {
+  def onSubmit(mode: Mode): Action[AnyContent] = actions.authenticatedForUtr.async {
     implicit request =>
 
       form.bindFromRequest().fold(

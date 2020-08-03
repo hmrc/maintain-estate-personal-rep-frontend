@@ -43,7 +43,7 @@ class NameController @Inject()(
 
   val form: Form[Name] = formProvider.withPrefix("individual.name")
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithData {
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authenticatedForUtr {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(NamePage) match {
@@ -54,7 +54,7 @@ class NameController @Inject()(
       Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithData.async {
+  def onSubmit(mode: Mode): Action[AnyContent] = actions.authenticatedForUtr.async {
     implicit request =>
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
