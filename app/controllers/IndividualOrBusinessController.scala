@@ -20,11 +20,11 @@ import controllers.actions.Actions
 import forms.IndividualOrBusinessFormProvider
 import javax.inject.Inject
 import models.IndividualOrBusiness._
-import models.{Enumerable, IndividualOrBusiness, Mode, NormalMode}
+import models.{CheckMode, Enumerable, IndividualOrBusiness, Mode, NormalMode}
 import pages.IndividualOrBusinessPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.IndividualOrBusinessView
@@ -65,11 +65,27 @@ class IndividualOrBusinessController @Inject()(
             updatedAnswers <- Future.fromTry(request.userAnswers.set(IndividualOrBusinessPage, value))
             _              <- registrationsRepository.set(updatedAnswers)
           } yield {
-            value match {
-              case Individual =>
-                Redirect(controllers.individual.routes.NameController.onPageLoad(mode))
-              case Business =>
-                Redirect(controllers.business.routes.UkRegisteredCompanyYesNoController.onPageLoad(mode))
+
+            def route(m : Mode): Result = {
+              value match {
+                case Individual =>
+                  Redirect(controllers.individual.routes.NameController.onPageLoad(m))
+                case Business =>
+                  Redirect(controllers.business.routes.UkRegisteredCompanyYesNoController.onPageLoad(m))
+              }
+            }
+
+            val previousAnswer = request.userAnswers.get(IndividualOrBusinessPage)
+
+            mode match {
+              case CheckMode =>
+                if (previousAnswer.contains(value)) {
+                  route(CheckMode)
+                } else {
+                  route(NormalMode)
+                }
+              case NormalMode =>
+                route(mode)
             }
           }
         }
