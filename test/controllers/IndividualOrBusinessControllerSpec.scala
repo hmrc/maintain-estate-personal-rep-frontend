@@ -61,6 +61,29 @@ class IndividualOrBusinessControllerSpec extends SpecBase {
         application.stop()
       }
 
+      "navigate to check mode when updating the same type" in {
+
+        val previousAnswers = emptyUserAnswers
+          .set(IndividualOrBusinessPage, IndividualOrBusiness.Business)
+          .success.value
+
+        val application =
+          applicationBuilder(userAnswers = Some(previousAnswers)).build()
+
+        val request =
+          FakeRequest(POST, individualOrBusinessChangeRoute)
+            .withFormUrlEncodedBody(("value", IndividualOrBusiness.Business.toString))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual
+          controllers.business.routes.UkRegisteredCompanyYesNoController.onPageLoad(CheckMode).url
+
+        application.stop()
+      }
+
     }
 
     "Normal mode" must {
