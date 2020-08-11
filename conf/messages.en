@@ -115,33 +115,33 @@ business.nonUkCompanyName.error.length = Business name must be 53 characters or 
 business.nonUkCompanyName.error.invalid = Business name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
 business.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR)?
-business.utr.title = What is the personal representative’s Unique Taxpayer Reference (UTR)?
+business.utr.title = What is the company’s Unique Taxpayer Reference (UTR)?
 business.utr.heading = What is {0}’s Unique Taxpayer Reference (UTR)?
 business.utr.hint = This is 10 numbers, for example 12345 67890. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’.
 business.utr.p1 = You can
 business.utr.link = find a lost UTR number (opens in a new window or tab)
-business.utr.error.required = Enter the personal representative’s Unique Taxpayer Reference
+business.utr.error.required = Enter the company’s Unique Taxpayer Reference
 business.utr.error.length = Unique Taxpayer Reference must be a 10 digit number
 business.utr.error.invalid = Enter the Unique Taxpayer Reference in the correct format
 
 business.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
-business.addressUkYesNo.title = Is the personal representative’s address in the UK?
+business.addressUkYesNo.title = Is the company’s address in the UK?
 business.addressUkYesNo.heading = Is {0}’s address in the UK?
-business.addressUkYesNo.error.required = Select yes if the personal representative’s address is in the UK
+business.addressUkYesNo.error.required = Select yes if the company’s address is in the UK
 
 business.ukAddress.checkYourAnswersLabel = What is {0}’s address?
-business.ukAddress.title = What is the personal representative’s address?
+business.ukAddress.title = What is the company’s address?
 business.ukAddress.heading = What is {0}’s address?
 
 business.nonUkAddress.checkYourAnswersLabel = What is {0}’s address?
-business.nonUkAddress.title = What is the personal representative’s address?
+business.nonUkAddress.title = What is the company’s address?
 business.nonUkAddress.heading = What is {0}’s address?
 
 business.telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
-business.telephoneNumber.title = What is the personal representative’s telephone number?
+business.telephoneNumber.title = What is the company’s telephone number?
 business.telephoneNumber.heading = What is {0}’s telephone number?
 business.telephoneNumber.hint = For international numbers include the country code
-business.telephoneNumber.error.required = Enter the personal representative’s telephone number
+business.telephoneNumber.error.required = Enter the company’s telephone number
 business.telephoneNumber.error.invalid = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
 
 business.startDate.checkYourAnswersLabel = When did {0} take over as the new personal representative?
