@@ -60,6 +60,7 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
   val index = 0
   val description = "description"
   val date: LocalDate = LocalDate.parse("2019-02-03")
+  val email: String = "email@example.com"
 
   "estates connector" when {
 
@@ -73,6 +74,7 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
         phoneNumber = "999",
         utr = None,
         address = UkAddress("Line 1", "Line 2", None, None, "POSTCODE"),
+        email = Some(email),
         entityStart = LocalDate.parse("2020-03-27")
       )
 
@@ -82,7 +84,7 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
         identification = NationalInsuranceNumber("nino"),
         address = UkAddress("Line 1", "Line 2", None, None, "POSTCODE"),
         phoneNumber = "tel",
-        email = None,
+        email = Some(email),
         entityStart = LocalDate.parse("2020-03-27")
       )
 
@@ -237,7 +239,7 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
           identification = NationalInsuranceNumber(nino),
           address = ukAddress,
           phoneNumber = telephoneNumber,
-          email = None,
+          email = Some(email),
           entityStart = date
         )
 
@@ -269,6 +271,7 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
           phoneNumber = telephoneNumber,
           utr = Some(utr),
           address = ukAddress,
+          email = Some(email),
           entityStart = date
         )
 

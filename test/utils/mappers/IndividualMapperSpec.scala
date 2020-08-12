@@ -38,6 +38,7 @@ class IndividualMapperSpec extends SpecBase {
   private val passport: Passport = Passport("FR", "123", LocalDate.parse("2022-02-03"))
   private val idCard: IdCard = IdCard("FR", "123", LocalDate.parse("2022-02-03"))
   private val passportOrIdCard: CombinedPassportOrIdCard = CombinedPassportOrIdCard("FR", "123", LocalDate.parse("2022-02-03"))
+  private val email: String = "email@example.com"
 
   "Individual mapper" when {
 
@@ -50,13 +51,15 @@ class IndividualMapperSpec extends SpecBase {
       .set(TelephoneNumberPage, telephoneNumber).success.value
       .set(StartDatePage, startDate).success.value
 
-    "generate individual personal rep model with NINO and UK address" in {
+    "generate individual personal rep model with NINO, UK address and an email" in {
 
       val userAnswers = baseAnswers
         .set(NationalInsuranceNumberYesNoPage, true).success.value
         .set(NationalInsuranceNumberPage, nino).success.value
         .set(LiveInTheUkYesNoPage, true).success.value
         .set(UkAddressPage, ukAddress).success.value
+        .set(EmailAddressYesNoPage, true).success.value
+        .set(EmailAddressPage, email).success.value
 
       val result = mapper(userAnswers).get
 
@@ -65,7 +68,7 @@ class IndividualMapperSpec extends SpecBase {
       result.identification mustBe NationalInsuranceNumber(nino)
       result.address mustBe ukAddress
       result.phoneNumber mustBe telephoneNumber
-      result.email mustBe None
+      result.email mustBe Some(email)
       result.entityStart mustBe startDate
     }
 
@@ -77,6 +80,7 @@ class IndividualMapperSpec extends SpecBase {
         .set(PassportDetailsPage, passport).success.value
         .set(LiveInTheUkYesNoPage, true).success.value
         .set(UkAddressPage, ukAddress).success.value
+        .set(EmailAddressYesNoPage, false).success.value
 
       val result = mapper(userAnswers).get
 
@@ -97,6 +101,7 @@ class IndividualMapperSpec extends SpecBase {
         .set(IdCardDetailsPage, idCard).success.value
         .set(LiveInTheUkYesNoPage, false).success.value
         .set(NonUkAddressPage, nonUkAddress).success.value
+        .set(EmailAddressYesNoPage, false).success.value
 
       val result = mapper(userAnswers).get
 
@@ -116,6 +121,7 @@ class IndividualMapperSpec extends SpecBase {
         .set(PassportOrIdCardDetailsPage, passportOrIdCard).success.value
         .set(LiveInTheUkYesNoPage, true).success.value
         .set(UkAddressPage, ukAddress).success.value
+        .set(EmailAddressYesNoPage, false).success.value
 
       val result = mapper(userAnswers).get
 

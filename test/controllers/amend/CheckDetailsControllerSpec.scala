@@ -42,6 +42,7 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
   private val ukAddress: UkAddress = UkAddress("Line 1", "Line 2", None, None, "POSTCODE")
   private val telephoneNumber: String = "999"
   private val date = LocalDate.parse("2010-02-03")
+  private val email: String = "email@example.com"
 
   "CheckDetails Controller" when {
 
@@ -53,7 +54,7 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
         identification = NationalInsuranceNumber(nino),
         address = ukAddress,
         phoneNumber = telephoneNumber,
-        email = None,
+        email = Some(email),
         entityStart = date
       )
 
@@ -84,6 +85,7 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
         phoneNumber = telephoneNumber,
         utr = Some(utr),
         address = ukAddress,
+        email = Some(email),
         entityStart = date
       )
 

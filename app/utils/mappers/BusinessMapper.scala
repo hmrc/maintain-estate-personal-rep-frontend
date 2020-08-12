@@ -36,6 +36,7 @@ class BusinessMapper {
           TelephoneNumberPage.path.read[String] and
           UtrPage.path.readNullable[String] and
           readAddress and
+          readEmailAddress and
           StartDatePage.path.read[LocalDate]
         ) (BusinessPersonalRep.apply _)
 
@@ -52,6 +53,13 @@ class BusinessMapper {
     AddressUkYesNoPage.path.read[Boolean].flatMap[Address] {
       case true => UkAddressPage.path.read[UkAddress].widen[Address]
       case false => NonUkAddressPage.path.read[NonUkAddress].widen[Address]
+    }
+  }
+
+  private def readEmailAddress: Reads[Option[String]] = {
+    EmailAddressYesNoPage.path.read[Boolean].flatMap[Option[String]] {
+      case true => EmailAddressPage.path.read[String].map(Some(_))
+      case false => Reads(_ => JsSuccess(None))
     }
   }
 

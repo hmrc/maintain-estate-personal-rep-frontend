@@ -60,6 +60,7 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
     .set(NationalInsuranceNumberPage, nino).success.value
     .set(LiveInTheUkYesNoPage, true).success.value
     .set(UkAddressPage, ukAddress).success.value
+    .set(EmailAddressYesNoPage, false).success.value
     .set(TelephoneNumberPage, telephoneNumber).success.value
     .set(StartDatePage, startDate).success.value
 

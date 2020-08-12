@@ -33,6 +33,7 @@ class BusinessExtractor {
       .flatMap(_.set(TelephoneNumberPage, business.phoneNumber))
       .flatMap(answers => extractAddress(business.address, answers))
       .flatMap(answers => extractUtr(business.utr, answers))
+      .flatMap(answers => extractEmailAddress(business.email, answers))
       .flatMap(_.set(StartDatePage, business.entityStart))
 
   private def extractUtr(utr: Option[String], answers: UserAnswers) : Try[UserAnswers] = {
@@ -52,6 +53,16 @@ class BusinessExtractor {
       case nonUk: NonUkAddress =>
         answers.set(AddressUkYesNoPage, false)
           .flatMap(_.set(NonUkAddressPage, nonUk))
+    }
+  }
+
+  private def extractEmailAddress(emailAddress: Option[String], userAnswers: UserAnswers): Try[UserAnswers] = {
+    emailAddress match {
+      case Some(email) =>
+        userAnswers.set(EmailAddressYesNoPage, true)
+          .flatMap(_.set(EmailAddressPage, email))
+      case None =>
+        userAnswers.set(EmailAddressYesNoPage, false)
     }
   }
 }
