@@ -114,14 +114,35 @@ class IndividualNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks  {
           .mustBe(rts.NonUkAddressController.onPageLoad(mode))
       }
 
-      "UK Address page -> Telephone number page" in {
+      "UK address page -> Email address yes no page" in {
         navigator.nextPage(UkAddressPage, mode, emptyUserAnswers)
-          .mustBe(rts.TelephoneNumberController.onPageLoad(mode))
+          .mustBe(controllers.individual.routes.EmailAddressYesNoController.onPageLoad(mode))
       }
 
-      "None UK Address page -> Telephone number page" in {
+      "Non-UK address page -> Email address yes no page" in {
         navigator.nextPage(NonUkAddressPage, mode, emptyUserAnswers)
-          .mustBe(rts.TelephoneNumberController.onPageLoad(mode))
+          .mustBe(controllers.individual.routes.EmailAddressYesNoController.onPageLoad(mode))
+      }
+
+      "Email address yes no page -> YES -> Email address page" in {
+        val userAnswers = emptyUserAnswers
+          .set(EmailAddressYesNoPage, true).success.value
+
+        navigator.nextPage(EmailAddressYesNoPage, mode, userAnswers)
+          .mustBe(controllers.individual.routes.EmailAddressController.onPageLoad(mode))
+      }
+
+      "Email address yes no page -> NO -> Telephone number page" in {
+        val userAnswers = emptyUserAnswers
+          .set(EmailAddressYesNoPage, false).success.value
+
+        navigator.nextPage(EmailAddressYesNoPage, mode, userAnswers)
+          .mustBe(controllers.individual.routes.TelephoneNumberController.onPageLoad(mode))
+      }
+
+      "Email address page -> Telephone number page" in {
+        navigator.nextPage(EmailAddressPage, mode, emptyUserAnswers)
+          .mustBe(controllers.individual.routes.TelephoneNumberController.onPageLoad(mode))
       }
 
       "Telephone number page -> Start date page" in {
@@ -197,14 +218,35 @@ class IndividualNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks  {
           .mustBe(rts.NonUkAddressController.onPageLoad(mode))
       }
 
-      "UK Address page -> Telephone number page" in {
+      "UK address page -> Email address yes no page" in {
         navigator.nextPage(UkAddressPage, mode, emptyUserAnswers)
-          .mustBe(rts.TelephoneNumberController.onPageLoad(mode))
+          .mustBe(controllers.individual.routes.EmailAddressYesNoController.onPageLoad(mode))
       }
 
-      "None UK Address page -> Telephone number page" in {
+      "Non-UK address page -> Email address yes no page" in {
         navigator.nextPage(NonUkAddressPage, mode, emptyUserAnswers)
-          .mustBe(rts.TelephoneNumberController.onPageLoad(mode))
+          .mustBe(controllers.individual.routes.EmailAddressYesNoController.onPageLoad(mode))
+      }
+
+      "Email address yes no page -> YES -> Email address page" in {
+        val userAnswers = emptyUserAnswers
+          .set(EmailAddressYesNoPage, true).success.value
+
+        navigator.nextPage(EmailAddressYesNoPage, mode, userAnswers)
+          .mustBe(controllers.individual.routes.EmailAddressController.onPageLoad(mode))
+      }
+
+      "Email address yes no page -> NO -> Telephone number page" in {
+        val userAnswers = emptyUserAnswers
+          .set(EmailAddressYesNoPage, false).success.value
+
+        navigator.nextPage(EmailAddressYesNoPage, mode, userAnswers)
+          .mustBe(controllers.individual.routes.TelephoneNumberController.onPageLoad(mode))
+      }
+
+      "Email address page -> Telephone number page" in {
+        navigator.nextPage(EmailAddressPage, mode, emptyUserAnswers)
+          .mustBe(controllers.individual.routes.TelephoneNumberController.onPageLoad(mode))
       }
 
       "Telephone number page -> Check details" in {

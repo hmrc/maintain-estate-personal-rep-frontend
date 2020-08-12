@@ -37,7 +37,8 @@ class IndividualNavigator @Inject()() extends Navigator {
     case DateOfBirthPage => rts.NationalInsuranceNumberYesNoController.onPageLoad(mode)
     case NationalInsuranceNumberPage | IdCardDetailsPage | PassportDetailsPage | PassportOrIdCardDetailsPage =>
       rts.LiveInTheUkYesNoController.onPageLoad(mode)
-    case UkAddressPage | NonUkAddressPage => rts.TelephoneNumberController.onPageLoad(mode)
+    case UkAddressPage | NonUkAddressPage => rts.EmailAddressYesNoController.onPageLoad(mode)
+    case EmailAddressPage => rts.TelephoneNumberController.onPageLoad(mode)
     case TelephoneNumberPage => telephoneNumberRoute(mode)
     case StartDatePage => addRts.CheckDetailsController.onPageLoad()
   }
@@ -48,6 +49,8 @@ class IndividualNavigator @Inject()() extends Navigator {
     case PassportOrIdCardPage => ua => passportOrIdCardDetailsRoute(ua)
     case LiveInTheUkYesNoPage => ua =>
       yesNoNav(ua, LiveInTheUkYesNoPage, rts.UkAddressController.onPageLoad(mode), rts.NonUkAddressController.onPageLoad(mode))
+    case EmailAddressYesNoPage => ua =>
+      yesNoNav(ua, EmailAddressYesNoPage, rts.EmailAddressController.onPageLoad(mode), rts.TelephoneNumberController.onPageLoad(mode))
   }
 
   private def routes(mode: Mode): PartialFunction[Page, UserAnswers => Call] =
