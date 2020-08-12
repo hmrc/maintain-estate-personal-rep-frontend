@@ -24,6 +24,7 @@ import models.{CheckMode, NormalMode, UserAnswers}
 import pages.IndividualOrBusinessPage
 import pages.individual._
 import pages.individual.add._
+import pages.individual.amend.PassportOrIdCardDetailsPage
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}

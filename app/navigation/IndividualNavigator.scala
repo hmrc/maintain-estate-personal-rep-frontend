@@ -24,7 +24,8 @@ import models.PassportOrIdCard._
 import models.{CheckMode, Mode, NormalMode, UserAnswers}
 import pages.Page
 import pages.individual._
-import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage}
+import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage, PassportOrIdCardPage, StartDatePage}
+import pages.individual.amend.PassportOrIdCardDetailsPage
 import play.api.mvc.Call
 
 class IndividualNavigator @Inject()() extends Navigator {

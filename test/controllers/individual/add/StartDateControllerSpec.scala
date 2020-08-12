@@ -23,7 +23,8 @@ import config.annotations.Individual
 import forms.DateFormProvider
 import models.Name
 import navigation.{FakeNavigator, Navigator}
-import pages.individual.{NamePage, StartDatePage}
+import pages.individual.NamePage
+import pages.individual.add.StartDatePage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.test.FakeRequest

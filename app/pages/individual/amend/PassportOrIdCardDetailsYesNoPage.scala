@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package pages.individual
+package pages.individual.amend
 
 import models.UserAnswers
 import pages.QuestionPage
 import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage}
+import pages.individual.basePath
 import play.api.libs.json.JsPath
 
 import scala.util.Try

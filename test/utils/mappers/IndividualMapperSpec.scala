@@ -24,6 +24,7 @@ import models.{CombinedPassportOrIdCard, IdCard, Name, NationalInsuranceNumber, 
 import pages.IndividualOrBusinessPage
 import pages.individual._
 import pages.individual.add._
+import pages.individual.amend.PassportOrIdCardDetailsPage
 
 class IndividualMapperSpec extends SpecBase {
 

@@ -21,6 +21,7 @@ import models._
 import pages.IndividualOrBusinessPage
 import pages.individual._
 import pages.individual.add._
+import pages.individual.amend.PassportOrIdCardDetailsPage
 
 import scala.util.Try
 

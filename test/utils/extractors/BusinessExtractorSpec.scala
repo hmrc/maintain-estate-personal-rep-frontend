@@ -23,6 +23,7 @@ import models.IndividualOrBusiness.Business
 import models.{BusinessPersonalRep, NonUkAddress, UkAddress}
 import pages.IndividualOrBusinessPage
 import pages.business._
+import pages.business.add.StartDatePage
 
 class BusinessExtractorSpec extends SpecBase {
 

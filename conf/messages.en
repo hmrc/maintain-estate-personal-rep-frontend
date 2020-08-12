@@ -137,6 +137,17 @@ business.nonUkAddress.checkYourAnswersLabel = What is {0}’s address?
 business.nonUkAddress.title = What is the company’s address?
 business.nonUkAddress.heading = What is {0}’s address?
 
+business.emailYesNo.checkYourAnswersLabel = Do you know {0}’s email address?
+business.emailYesNo.title = Do you know the personal representative’s email address?
+business.emailYesNo.heading = Do you know {0}’s email address?
+business.emailYesNo.error.required = Select yes if you know the personal representative’s email address
+
+business.email.checkYourAnswersLabel = What is {0}’s email address?
+business.email.title = What is the personal representative’s email address?
+business.email.heading = What is {0}’s email address?
+business.email.error.required = Enter the personal representative’s email address
+business.email.invalid = Enter a valid email address with no spaces, like name@example.com
+
 business.telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
 business.telephoneNumber.title = What is the company’s telephone number?
 business.telephoneNumber.heading = What is {0}’s telephone number?
@@ -274,6 +285,17 @@ individual.ukAddress.heading = What is {0}’s address?
 individual.nonUkAddress.checkYourAnswersLabel = What is {0}’s address?
 individual.nonUkAddress.title = What is the personal representative’s address?
 individual.nonUkAddress.heading = What is {0}’s address?
+
+individual.emailYesNo.checkYourAnswersLabel = Do you know {0}’s email address?
+individual.emailYesNo.title = Do you know the personal representative’s email address?
+individual.emailYesNo.heading = Do you know {0}’s email address?
+individual.emailYesNo.error.required = Select yes if you know the personal representative’s email address
+
+individual.email.checkYourAnswersLabel = What is {0}’s email address?
+individual.email.title = What is the personal representative’s email address?
+individual.email.heading = What is {0}’s email address?
+individual.email.error.required = Enter the personal representative’s email address
+individual.email.invalid = Enter a valid email address with no spaces, like name@example.com
 
 individual.telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
 individual.telephoneNumber.title = What is the personal representative’s telephone number?

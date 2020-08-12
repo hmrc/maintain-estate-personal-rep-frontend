@@ -16,14 +16,24 @@
 
 package pages.business
 
-import java.time.LocalDate
+import pages.behaviours.PageBehaviours
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+class EmailAddressYesNoPageSpec extends PageBehaviours {
 
-case object StartDatePage extends QuestionPage[LocalDate] {
-  
-  override def path: JsPath = basePath \ toString
+  "EmailAddressYesNoPage" must {
 
-  override def toString: String = "startDate"
+    beRetrievable[Boolean](EmailAddressYesNoPage)
+
+    beSettable[Boolean](EmailAddressYesNoPage)
+
+    beRemovable[Boolean](EmailAddressYesNoPage)
+
+    "implement cleanup logic when NO selected" in {
+      val userAnswers = emptyUserAnswers
+        .set(EmailAddressPage, "email@example.com").success.value
+        .set(EmailAddressYesNoPage, false).success.value
+
+      userAnswers.get(EmailAddressPage) mustNot be(defined)
+    }
+  }
 }

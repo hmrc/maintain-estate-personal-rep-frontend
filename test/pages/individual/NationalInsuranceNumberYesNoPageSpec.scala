@@ -20,7 +20,8 @@ import java.time.LocalDate
 
 import models.{CombinedPassportOrIdCard, IdCard, Passport, PassportOrIdCard}
 import pages.behaviours.PageBehaviours
-import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage}
+import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage, PassportOrIdCardPage}
+import pages.individual.amend.{PassportOrIdCardDetailsPage, PassportOrIdCardDetailsYesNoPage}
 
 
 class NationalInsuranceNumberYesNoPageSpec extends PageBehaviours {

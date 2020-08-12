@@ -20,6 +20,7 @@ import base.SpecBase
 import models.{CheckMode, NormalMode}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.business._
+import pages.business.add.StartDatePage
 
 class BusinessNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks  {
 
