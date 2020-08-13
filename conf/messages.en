@@ -138,14 +138,14 @@ business.nonUkAddress.title = What is the company’s address?
 business.nonUkAddress.heading = What is {0}’s address?
 
 business.emailYesNo.checkYourAnswersLabel = Do you know {0}’s email address?
-business.emailYesNo.title = Do you know the personal representative’s email address?
+business.emailYesNo.title = Do you know the company’s email address?
 business.emailYesNo.heading = Do you know {0}’s email address?
-business.emailYesNo.error.required = Select yes if you know the personal representative’s email address
+business.emailYesNo.error.required = Select yes if you know the company’s email address
 
 business.email.checkYourAnswersLabel = What is {0}’s email address?
-business.email.title = What is the personal representative’s email address?
+business.email.title = What is the company’s email address?
 business.email.heading = What is {0}’s email address?
-business.email.error.required = Enter the personal representative’s email address
+business.email.error.required = Enter the company’s email address
 business.email.error.invalid = Enter a valid email address with no spaces, like name@example.com
 
 business.telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
