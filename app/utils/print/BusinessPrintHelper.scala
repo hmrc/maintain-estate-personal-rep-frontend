@@ -22,6 +22,7 @@ import controllers.business.add.{routes => addRts}
 import models.{CheckMode, NormalMode, UserAnswers}
 import pages.IndividualOrBusinessPage
 import pages.business._
+import pages.business.add.StartDatePage
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
@@ -46,6 +47,8 @@ class BusinessPrintHelper @Inject()(answerRowConverter: AnswerRowConverter,
       bound.yesNoQuestion(AddressUkYesNoPage, "business.addressUkYesNo", rts.AddressUkYesNoController.onPageLoad(NormalMode).url),
       bound.addressQuestion(UkAddressPage, "business.ukAddress", rts.UkAddressController.onPageLoad(NormalMode).url),
       bound.addressQuestion(NonUkAddressPage, "business.nonUkAddress", rts.NonUkAddressController.onPageLoad(NormalMode).url),
+      bound.yesNoQuestion(EmailAddressYesNoPage, "business.emailYesNo", rts.EmailAddressYesNoController.onPageLoad(NormalMode).url),
+      bound.stringQuestion(EmailAddressPage, "business.email", rts.EmailAddressController.onPageLoad(NormalMode).url),
       bound.stringQuestion(TelephoneNumberPage, "business.telephoneNumber", rts.TelephoneNumberController.onPageLoad(NormalMode).url),
       bound.dateQuestion(StartDatePage, "business.startDate", addRts.StartDateController.onPageLoad().url)
     ).flatten
@@ -63,6 +66,8 @@ class BusinessPrintHelper @Inject()(answerRowConverter: AnswerRowConverter,
       bound.yesNoQuestion(AddressUkYesNoPage, "business.addressUkYesNo", rts.AddressUkYesNoController.onPageLoad(CheckMode).url),
       bound.addressQuestion(UkAddressPage, "business.ukAddress", rts.UkAddressController.onPageLoad(CheckMode).url),
       bound.addressQuestion(NonUkAddressPage, "business.nonUkAddress", rts.NonUkAddressController.onPageLoad(CheckMode).url),
+      bound.yesNoQuestion(EmailAddressYesNoPage, "business.emailYesNo", rts.EmailAddressYesNoController.onPageLoad(CheckMode).url),
+      bound.stringQuestion(EmailAddressPage, "business.email", rts.EmailAddressController.onPageLoad(CheckMode).url),
       bound.stringQuestion(TelephoneNumberPage, "business.telephoneNumber", rts.TelephoneNumberController.onPageLoad(CheckMode).url)
     ).flatten
 

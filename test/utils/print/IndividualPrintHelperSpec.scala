@@ -18,15 +18,16 @@ package utils.print
 
 import java.time.LocalDate
 
+import base.SpecBase
 import controllers.individual.add.{routes => addRts}
 import controllers.individual.amend.{routes => amendRts}
 import controllers.individual.{routes => rts}
-import base.SpecBase
 import models.IndividualOrBusiness.Individual
 import models.{CheckMode, CombinedPassportOrIdCard, IdCard, Name, NonUkAddress, NormalMode, Passport, PassportOrIdCard, UkAddress}
 import pages.IndividualOrBusinessPage
 import pages.individual._
-import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage}
+import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage, PassportOrIdCardPage, StartDatePage}
+import pages.individual.amend.PassportOrIdCardDetailsPage
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
 
@@ -43,6 +44,7 @@ class IndividualPrintHelperSpec extends SpecBase {
   private val passport: Passport = Passport("FR", "123", LocalDate.parse("2022-02-03"))
   private val idCard: IdCard = IdCard("FR", "123", LocalDate.parse("2022-02-03"))
   private val passportOrIdCard: CombinedPassportOrIdCard = CombinedPassportOrIdCard("FR", "123", LocalDate.parse("2022-02-03"))
+  private val email: String = "email@example.com"
 
   "Individual print helper" must {
 
@@ -60,13 +62,15 @@ class IndividualPrintHelperSpec extends SpecBase {
         .set(TelephoneNumberPage, telephoneNumber).success.value
         .set(StartDatePage, startDate).success.value
 
-      "NINO and UK address" in {
+      "NINO, UK address and email" in {
 
         val userAnswers = baseAnswers
           .set(NationalInsuranceNumberYesNoPage, true).success.value
           .set(NationalInsuranceNumberPage, nino).success.value
           .set(LiveInTheUkYesNoPage, true).success.value
           .set(UkAddressPage, ukAddress).success.value
+          .set(EmailAddressYesNoPage, true).success.value
+          .set(EmailAddressPage, email).success.value
 
         val result = helper(userAnswers, isProvisional, displayName)
 
@@ -80,6 +84,8 @@ class IndividualPrintHelperSpec extends SpecBase {
             AnswerRow(label = Html(messages("individual.nationalInsuranceNumber.checkYourAnswersLabel", displayName)), answer = Html("AA 00 00 00 A"), changeUrl = rts.NationalInsuranceNumberController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("individual.liveInTheUkYesNo.checkYourAnswersLabel", displayName)), answer = Html("Yes"), changeUrl = rts.LiveInTheUkYesNoController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("individual.ukAddress.checkYourAnswersLabel", displayName)), answer = Html("value 1<br />value 2<br />AB1 1AB"), changeUrl = rts.UkAddressController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.emailYesNo.checkYourAnswersLabel", name.displayName)), answer = Html("Yes"), changeUrl = rts.EmailAddressYesNoController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.email.checkYourAnswersLabel", name.displayName)), answer = Html("email@example.com"), changeUrl = rts.EmailAddressController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("individual.telephoneNumber.checkYourAnswersLabel", displayName)), answer = Html("999"), changeUrl = rts.TelephoneNumberController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("individual.startDate.checkYourAnswersLabel", displayName)), answer = Html("1 January 2020"), changeUrl = addRts.StartDateController.onPageLoad().url)
           )
@@ -94,6 +100,7 @@ class IndividualPrintHelperSpec extends SpecBase {
           .set(PassportDetailsPage, passport).success.value
           .set(LiveInTheUkYesNoPage, true).success.value
           .set(UkAddressPage, ukAddress).success.value
+          .set(EmailAddressYesNoPage, false).success.value
 
         val result = helper(userAnswers, isProvisional, name.displayFullName)
 
@@ -108,6 +115,7 @@ class IndividualPrintHelperSpec extends SpecBase {
             AnswerRow(label = Html(messages("individual.passportDetails.checkYourAnswersLabel", displayName)), answer = Html("France<br />123<br />3 February 2022"), changeUrl = addRts.PassportDetailsController.onPageLoad().url),
             AnswerRow(label = Html(messages("individual.liveInTheUkYesNo.checkYourAnswersLabel", displayName)), answer = Html("Yes"), changeUrl = rts.LiveInTheUkYesNoController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("individual.ukAddress.checkYourAnswersLabel", displayName)), answer = Html("value 1<br />value 2<br />AB1 1AB"), changeUrl = rts.UkAddressController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.emailYesNo.checkYourAnswersLabel", name.displayName)), answer = Html("No"), changeUrl = rts.EmailAddressYesNoController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("individual.telephoneNumber.checkYourAnswersLabel", displayName)), answer = Html("999"), changeUrl = rts.TelephoneNumberController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("individual.startDate.checkYourAnswersLabel", displayName)), answer = Html("1 January 2020"), changeUrl = addRts.StartDateController.onPageLoad().url)
           )
@@ -122,6 +130,7 @@ class IndividualPrintHelperSpec extends SpecBase {
           .set(IdCardDetailsPage, idCard).success.value
           .set(LiveInTheUkYesNoPage, false).success.value
           .set(NonUkAddressPage, nonUkAddress).success.value
+          .set(EmailAddressYesNoPage, false).success.value
 
         val result = helper(userAnswers, isProvisional, name.displayFullName)
 
@@ -136,6 +145,7 @@ class IndividualPrintHelperSpec extends SpecBase {
             AnswerRow(label = Html(messages("individual.idCardDetails.checkYourAnswersLabel", displayName)), answer = Html("France<br />123<br />3 February 2022"), changeUrl = addRts.IdCardDetailsController.onPageLoad().url),
             AnswerRow(label = Html(messages("individual.liveInTheUkYesNo.checkYourAnswersLabel", displayName)), answer = Html("No"), changeUrl = rts.LiveInTheUkYesNoController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("individual.nonUkAddress.checkYourAnswersLabel", displayName)), answer = Html("value 1<br />value 2<br />France"), changeUrl = rts.NonUkAddressController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.emailYesNo.checkYourAnswersLabel", name.displayName)), answer = Html("No"), changeUrl = rts.EmailAddressYesNoController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("individual.telephoneNumber.checkYourAnswersLabel", displayName)), answer = Html("999"), changeUrl = rts.TelephoneNumberController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("individual.startDate.checkYourAnswersLabel", displayName)), answer = Html("1 January 2020"), changeUrl = addRts.StartDateController.onPageLoad().url)
           )
@@ -155,13 +165,15 @@ class IndividualPrintHelperSpec extends SpecBase {
         .set(TelephoneNumberPage, telephoneNumber).success.value
         .set(StartDatePage, startDate).success.value
 
-      "NINO and UK address" in {
+      "NINO, UK address and email" in {
 
         val userAnswers = baseAnswers
           .set(NationalInsuranceNumberYesNoPage, true).success.value
           .set(NationalInsuranceNumberPage, nino).success.value
           .set(LiveInTheUkYesNoPage, true).success.value
           .set(UkAddressPage, ukAddress).success.value
+          .set(EmailAddressYesNoPage, true).success.value
+          .set(EmailAddressPage, email).success.value
 
         val result = helper(userAnswers, isProvisional, displayName)
 
@@ -175,6 +187,8 @@ class IndividualPrintHelperSpec extends SpecBase {
             AnswerRow(label = Html(messages("individual.nationalInsuranceNumber.checkYourAnswersLabel", displayName)), answer = Html("AA 00 00 00 A"), changeUrl = rts.NationalInsuranceNumberController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("individual.liveInTheUkYesNo.checkYourAnswersLabel", displayName)), answer = Html("Yes"), changeUrl = rts.LiveInTheUkYesNoController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("individual.ukAddress.checkYourAnswersLabel", displayName)), answer = Html("value 1<br />value 2<br />AB1 1AB"), changeUrl = rts.UkAddressController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.emailYesNo.checkYourAnswersLabel", name.displayName)), answer = Html("Yes"), changeUrl = rts.EmailAddressYesNoController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.email.checkYourAnswersLabel", name.displayName)), answer = Html("email@example.com"), changeUrl = rts.EmailAddressController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("individual.telephoneNumber.checkYourAnswersLabel", displayName)), answer = Html("999"), changeUrl = rts.TelephoneNumberController.onPageLoad(mode).url)
           )
         )
@@ -187,6 +201,7 @@ class IndividualPrintHelperSpec extends SpecBase {
           .set(PassportOrIdCardDetailsPage, passportOrIdCard).success.value
           .set(LiveInTheUkYesNoPage, false).success.value
           .set(NonUkAddressPage, nonUkAddress).success.value
+          .set(EmailAddressYesNoPage, false).success.value
 
         val result = helper(userAnswers, isProvisional, name.displayFullName)
 
@@ -200,6 +215,7 @@ class IndividualPrintHelperSpec extends SpecBase {
             AnswerRow(label = Html(messages("individual.passportOrIdCardDetails.checkYourAnswersLabel", displayName)), answer = Html("France<br />123<br />3 February 2022"), changeUrl = amendRts.PassportOrIdCardDetailsController.onPageLoad().url),
             AnswerRow(label = Html(messages("individual.liveInTheUkYesNo.checkYourAnswersLabel", displayName)), answer = Html("No"), changeUrl = rts.LiveInTheUkYesNoController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("individual.nonUkAddress.checkYourAnswersLabel", displayName)), answer = Html("value 1<br />value 2<br />France"), changeUrl = rts.NonUkAddressController.onPageLoad(mode).url),
+            AnswerRow(label = Html(messages("individual.emailYesNo.checkYourAnswersLabel", name.displayName)), answer = Html("No"), changeUrl = rts.EmailAddressYesNoController.onPageLoad(mode).url),
             AnswerRow(label = Html(messages("individual.telephoneNumber.checkYourAnswersLabel", displayName)), answer = Html("999"), changeUrl = rts.TelephoneNumberController.onPageLoad(mode).url)
           )
         )

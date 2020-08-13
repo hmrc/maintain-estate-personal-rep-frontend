@@ -35,6 +35,16 @@ POST       /non-uk-address                              controllers.business.Non
 GET        /change-non-uk-address                       controllers.business.NonUkAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-non-uk-address                       controllers.business.NonUkAddressController.onSubmit(mode: Mode = CheckMode)
 
+GET        /has-email                                   controllers.business.EmailAddressYesNoController.onPageLoad(mode: Mode = NormalMode)
+POST       /has-email                                   controllers.business.EmailAddressYesNoController.onSubmit(mode: Mode = NormalMode)
+GET        /change-has-email                            controllers.business.EmailAddressYesNoController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-has-email                            controllers.business.EmailAddressYesNoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /email                                       controllers.business.EmailAddressController.onPageLoad(mode: Mode = NormalMode)
+POST       /email                                       controllers.business.EmailAddressController.onSubmit(mode: Mode = NormalMode)
+GET        /change-email                                controllers.business.EmailAddressController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-email                                controllers.business.EmailAddressController.onSubmit(mode: Mode = CheckMode)
+
 GET        /telephone-number                            controllers.business.TelephoneNumberController.onPageLoad(mode: Mode = NormalMode)
 POST       /telephone-number                            controllers.business.TelephoneNumberController.onSubmit(mode: Mode = NormalMode)
 GET        /change-telephone-number                     controllers.business.TelephoneNumberController.onPageLoad(mode: Mode = CheckMode)

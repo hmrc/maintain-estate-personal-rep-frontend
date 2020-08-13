@@ -21,6 +21,7 @@ import models._
 import pages.IndividualOrBusinessPage
 import pages.individual._
 import pages.individual.add._
+import pages.individual.amend.PassportOrIdCardDetailsPage
 
 import scala.util.Try
 
@@ -34,6 +35,7 @@ class IndividualExtractor {
       .flatMap(_.set(DateOfBirthPage, individual.dateOfBirth))
       .flatMap(answers => extractAddress(individual.address, answers))
       .flatMap(answers => extractIdentification(individual, answers))
+      .flatMap(answers => extractEmailAddress(individual.email, answers))
       .flatMap(_.set(StartDatePage, individual.entityStart))
 
   private def extractAddress(address: Address, answers: UserAnswers) : Try[UserAnswers] = {
@@ -67,6 +69,16 @@ class IndividualExtractor {
           .flatMap(_.set(PassportOrIdCardDetailsPage, combined))
       case _ =>
         answers.set(NationalInsuranceNumberYesNoPage, false)
+    }
+  }
+
+  private def extractEmailAddress(emailAddress: Option[String], userAnswers: UserAnswers): Try[UserAnswers] = {
+    emailAddress match {
+      case Some(email) =>
+        userAnswers.set(EmailAddressYesNoPage, true)
+          .flatMap(_.set(EmailAddressPage, email))
+      case None =>
+        userAnswers.set(EmailAddressYesNoPage, false)
     }
   }
 }

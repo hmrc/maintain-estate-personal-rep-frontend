@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package pages.individual
+package pages.business.add
 
-import models.CombinedPassportOrIdCard
+import java.time.LocalDate
+
 import pages.QuestionPage
+import pages.business.basePath
 import play.api.libs.json.JsPath
 
-case object PassportOrIdCardDetailsPage extends QuestionPage[CombinedPassportOrIdCard] {
+case object StartDatePage extends QuestionPage[LocalDate] {
 
   override def path: JsPath = basePath \ toString
 
-  override def toString: String = "passportOrIdCardDetails"
+  override def toString: String = "startDate"
 }

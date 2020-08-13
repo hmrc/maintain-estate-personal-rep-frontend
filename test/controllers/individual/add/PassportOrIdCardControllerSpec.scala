@@ -21,7 +21,8 @@ import controllers.individual.add.{routes => addRts}
 import controllers.routes._
 import forms.PassportOrIdCardFormProvider
 import models.{Name, PassportOrIdCard, UserAnswers}
-import pages.individual.{NamePage, PassportOrIdCardPage}
+import pages.individual.NamePage
+import pages.individual.add.PassportOrIdCardPage
 import play.api.data.Form
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}

@@ -23,6 +23,8 @@ import models.IndividualOrBusiness.Individual
 import models.{CombinedPassportOrIdCard, IndividualPersonalRep, Name, NationalInsuranceNumber, NonUkAddress, UkAddress}
 import pages.IndividualOrBusinessPage
 import pages.individual._
+import pages.individual.add.StartDatePage
+import pages.individual.amend.PassportOrIdCardDetailsPage
 
 class IndividualExtractorSpec extends SpecBase {
 
@@ -34,6 +36,7 @@ class IndividualExtractorSpec extends SpecBase {
   private val nonUkAddress: NonUkAddress = NonUkAddress("value 1", "value 2", None, "DE")
   private val telephoneNumber: String = "999"
   private val startDate: LocalDate = LocalDate.parse("2020-01-01")
+  private val email: String = "email@example.com"
 
   "Individual extractor" must {
 
@@ -41,7 +44,7 @@ class IndividualExtractorSpec extends SpecBase {
 
     "populate user answers" when {
 
-      "rep has NINO and UK address" in {
+      "rep has NINO, UK address and an email" in {
 
         val personalRep: IndividualPersonalRep = IndividualPersonalRep(
           name = name,
@@ -49,7 +52,7 @@ class IndividualExtractorSpec extends SpecBase {
           identification = NationalInsuranceNumber(nino),
           address = ukAddress,
           phoneNumber = telephoneNumber,
-          email = None,
+          email = Some(email),
           entityStart = startDate
         )
 
@@ -64,6 +67,8 @@ class IndividualExtractorSpec extends SpecBase {
         result.get(LiveInTheUkYesNoPage).get mustEqual true
         result.get(UkAddressPage).get mustEqual ukAddress
         result.get(NonUkAddressPage) mustNot be(defined)
+        result.get(EmailAddressYesNoPage).get mustBe true
+        result.get(EmailAddressPage).get mustBe email
         result.get(TelephoneNumberPage).get mustEqual telephoneNumber
         result.get(StartDatePage).get mustEqual startDate
       }
@@ -91,6 +96,8 @@ class IndividualExtractorSpec extends SpecBase {
         result.get(LiveInTheUkYesNoPage).get mustEqual false
         result.get(UkAddressPage) mustNot be(defined)
         result.get(NonUkAddressPage).get mustEqual nonUkAddress
+        result.get(EmailAddressYesNoPage).get mustBe false
+        result.get(EmailAddressPage) mustNot be(defined)
         result.get(TelephoneNumberPage).get mustEqual telephoneNumber
         result.get(StartDatePage).get mustEqual startDate
       }

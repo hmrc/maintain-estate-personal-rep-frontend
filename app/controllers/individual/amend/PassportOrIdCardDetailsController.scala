@@ -22,7 +22,7 @@ import forms.CombinedPassportOrIdCardDetailsFormProvider
 import javax.inject.Inject
 import models.{CheckMode, CombinedPassportOrIdCard}
 import navigation.Navigator
-import pages.individual.PassportOrIdCardDetailsPage
+import pages.individual.amend.PassportOrIdCardDetailsPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

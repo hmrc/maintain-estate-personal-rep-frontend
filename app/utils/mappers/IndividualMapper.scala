@@ -22,6 +22,7 @@ import models._
 import org.slf4j.LoggerFactory
 import pages.individual._
 import pages.individual.add._
+import pages.individual.amend.PassportOrIdCardDetailsPage
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsError, JsSuccess, Reads}
 
@@ -37,7 +38,7 @@ class IndividualMapper {
           readIdentification and
           readAddress and
           TelephoneNumberPage.path.read[String] and
-          Reads(_ => JsSuccess(None)) and
+          readEmailAddress and
           StartDatePage.path.read[LocalDate]
         ) (IndividualPersonalRep.apply _)
 
@@ -69,6 +70,13 @@ class IndividualMapper {
     LiveInTheUkYesNoPage.path.read[Boolean].flatMap[Address] {
       case true => UkAddressPage.path.read[UkAddress].widen[Address]
       case false => NonUkAddressPage.path.read[NonUkAddress].widen[Address]
+    }
+  }
+
+  private def readEmailAddress: Reads[Option[String]] = {
+    EmailAddressYesNoPage.path.read[Boolean].flatMap[Option[String]] {
+      case true => EmailAddressPage.path.read[String].map(Some(_))
+      case false => Reads(_ => JsSuccess(None))
     }
   }
 

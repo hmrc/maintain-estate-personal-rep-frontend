@@ -14,16 +14,30 @@
  * limitations under the License.
  */
 
-package pages.individual
+package pages.individual.add
 
-import java.time.LocalDate
-
+import models.PassportOrIdCard.{IdCard, Passport}
+import models.{PassportOrIdCard, UserAnswers}
 import pages.QuestionPage
+import pages.individual.basePath
 import play.api.libs.json.JsPath
 
-case object StartDatePage extends QuestionPage[LocalDate] {
-  
+import scala.util.Try
+
+object PassportOrIdCardPage extends QuestionPage[PassportOrIdCard] {
+
   override def path: JsPath = basePath \ toString
 
-  override def toString: String = "startDate"
+  override def toString: String = "passportOrIdCard"
+
+  override def cleanup(value: Option[PassportOrIdCard], userAnswers: UserAnswers): Try[UserAnswers] = {
+    value match {
+      case Some(Passport) =>
+        userAnswers.remove(IdCardDetailsPage)
+      case Some(IdCard) =>
+        userAnswers.remove(PassportDetailsPage)
+      case _ =>
+        super.cleanup(value, userAnswers)
+    }
+  }
 }

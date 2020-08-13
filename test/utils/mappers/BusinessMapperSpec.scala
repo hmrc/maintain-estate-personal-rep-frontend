@@ -23,6 +23,7 @@ import models.IndividualOrBusiness.Business
 import models.{NonUkAddress, UkAddress}
 import pages.IndividualOrBusinessPage
 import pages.business._
+import pages.business.add.StartDatePage
 
 class BusinessMapperSpec extends SpecBase {
 
@@ -32,6 +33,7 @@ class BusinessMapperSpec extends SpecBase {
   private val ukAddress = UkAddress("line1", "line2", Some("line3"), Some("line4"), "POSTCODE")
   private val telephoneNumber: String = "999"
   private val nonUkAddress = NonUkAddress("line1", "line2", Some("line3"), "country")
+  private val email: String = "email@example.com"
 
   "Business mapper" when {
 
@@ -43,19 +45,22 @@ class BusinessMapperSpec extends SpecBase {
       .set(TelephoneNumberPage, telephoneNumber).success.value
       .set(StartDatePage, startDate).success.value
 
-    "generate UK registered business personal rep model with UK address" in {
+    "generate UK registered business personal rep model with UK address and email" in {
 
       val userAnswers = baseAnswers
         .set(UkRegisteredCompanyYesNoPage, true).success.value
         .set(UtrPage, utr).success.value
         .set(AddressUkYesNoPage, true).success.value
         .set(UkAddressPage, ukAddress).success.value
+        .set(EmailAddressYesNoPage, true).success.value
+        .set(EmailAddressPage, email).success.value
 
       val result = mapper(userAnswers).get
 
       result.name mustBe name
       result.utr mustBe Some(utr)
       result.address mustBe ukAddress
+      result.email mustBe Some(email)
       result.entityStart mustBe startDate
     }
 
@@ -65,12 +70,14 @@ class BusinessMapperSpec extends SpecBase {
         .set(UkRegisteredCompanyYesNoPage, false).success.value
         .set(AddressUkYesNoPage, false).success.value
         .set(NonUkAddressPage, nonUkAddress).success.value
+        .set(EmailAddressYesNoPage, false).success.value
 
       val result = mapper(userAnswers).get
 
       result.name mustBe name
       result.utr mustBe None
       result.address mustBe nonUkAddress
+      result.email mustBe None
       result.entityStart mustBe startDate
     }
   }

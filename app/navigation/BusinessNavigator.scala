@@ -23,6 +23,7 @@ import javax.inject.Inject
 import models.{CheckMode, Mode, NormalMode, UserAnswers}
 import pages.Page
 import pages.business._
+import pages.business.add.StartDatePage
 import play.api.mvc.Call
 
 class BusinessNavigator @Inject()() extends Navigator {
@@ -31,7 +32,8 @@ class BusinessNavigator @Inject()() extends Navigator {
 
   private def simpleNavigation(mode: Mode): PartialFunction[Page, Call] = {
     case UtrPage => rts.AddressUkYesNoController.onPageLoad(mode)
-    case UkAddressPage | NonUkAddressPage => rts.TelephoneNumberController.onPageLoad(mode)
+    case UkAddressPage | NonUkAddressPage => rts.EmailAddressYesNoController.onPageLoad(mode)
+    case EmailAddressPage => rts.TelephoneNumberController.onPageLoad(mode)
     case TelephoneNumberPage => telephoneNumberRoute(mode)
     case StartDatePage => addRts.CheckDetailsController.onPageLoad()
   }
@@ -43,6 +45,8 @@ class BusinessNavigator @Inject()() extends Navigator {
       yesNoNav(ua, UkRegisteredCompanyYesNoPage, rts.UtrController.onPageLoad(mode), rts.AddressUkYesNoController.onPageLoad(mode))
     case AddressUkYesNoPage => ua =>
       yesNoNav(ua, AddressUkYesNoPage, rts.UkAddressController.onPageLoad(mode), rts.NonUkAddressController.onPageLoad(mode))
+    case EmailAddressYesNoPage => ua =>
+      yesNoNav(ua, EmailAddressYesNoPage, rts.EmailAddressController.onPageLoad(mode), rts.TelephoneNumberController.onPageLoad(mode))
   }
 
   private def routes(mode: Mode): PartialFunction[Page, UserAnswers => Call] =

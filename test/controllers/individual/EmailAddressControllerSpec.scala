@@ -14,52 +14,49 @@
  * limitations under the License.
  */
 
-package controllers.business.add
-
-import java.time.LocalDate
+package controllers.individual
 
 import base.SpecBase
-import config.annotations.Business
-import forms.DateFormProvider
-import models.UserAnswers
+import config.annotations.Individual
+import forms.EmailAddressFormProvider
+import models.{Name, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import pages.business.NamePage
-import pages.business.add.StartDatePage
+import pages.individual.{EmailAddressPage, NamePage}
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.business.add.StartDateView
+import views.html.individual.EmailAddressView
 
-class StartDateControllerSpec extends SpecBase {
+class EmailAddressControllerSpec extends SpecBase {
 
-  lazy val startDateRoute: String = routes.StartDateController.onPageLoad().url
+  lazy val emailAddressRoute: String = routes.EmailAddressController.onPageLoad(NormalMode).url
 
-  val formProvider = new DateFormProvider(frontendAppConfig)
-  val form: Form[LocalDate] = formProvider.withConfig("business.startDate")
-  val name: String = "Name"
+  val formProvider = new EmailAddressFormProvider()
+  val form: Form[String] = formProvider.withPrefix("individual.email")
+  val name: Name = Name("First", None, "Last")
 
-  val validAnswer: LocalDate = LocalDate.parse("2019-02-03")
+  val validAnswer: String = "email@example.com"
 
   val baseAnswers: UserAnswers = emptyUserAnswers
     .set(NamePage, name).success.value
 
-  "StartDate controller" must {
+  "EmailAddress Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
 
-      val request = FakeRequest(GET, startDateRoute)
+      val request = FakeRequest(GET, emailAddressRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[StartDateView]
+      val view = application.injector.instanceOf[EmailAddressView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, name)(fakeRequest, messages).toString
+        view(form, NormalMode, name.displayName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -67,20 +64,20 @@ class StartDateControllerSpec extends SpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = baseAnswers
-        .set(StartDatePage, validAnswer).success.value
+        .set(EmailAddressPage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, startDateRoute)
+      val request = FakeRequest(GET, emailAddressRoute)
 
-      val view = application.injector.instanceOf[StartDateView]
+      val view = application.injector.instanceOf[EmailAddressView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), name)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode, name.displayName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -90,17 +87,13 @@ class StartDateControllerSpec extends SpecBase {
       val application =
         applicationBuilder(userAnswers = Some(baseAnswers))
           .overrides(
-            bind[Navigator].qualifiedWith(classOf[Business]).toInstance(new FakeNavigator(onwardRoute))
+            bind[Navigator].qualifiedWith(classOf[Individual]).toInstance(new FakeNavigator(onwardRoute))
           )
           .build()
 
       val request =
-        FakeRequest(POST, startDateRoute)
-          .withFormUrlEncodedBody(
-            "value.day"   -> validAnswer.getDayOfMonth.toString,
-            "value.month" -> validAnswer.getMonthValue.toString,
-            "value.year"  -> validAnswer.getYear.toString
-          )
+        FakeRequest(POST, emailAddressRoute)
+          .withFormUrlEncodedBody(("value", validAnswer))
 
       val result = route(application, request).value
 
@@ -116,19 +109,19 @@ class StartDateControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
 
       val request =
-        FakeRequest(POST, startDateRoute)
+        FakeRequest(POST, emailAddressRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[StartDateView]
+      val view = application.injector.instanceOf[EmailAddressView]
 
       val result = route(application, request).value
 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, name)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, name.displayName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -137,7 +130,7 @@ class StartDateControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, startDateRoute)
+      val request = FakeRequest(GET, emailAddressRoute)
 
       val result = route(application, request).value
 
@@ -152,12 +145,8 @@ class StartDateControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, startDateRoute)
-          .withFormUrlEncodedBody(
-            "value.day"   -> validAnswer.getDayOfMonth.toString,
-            "value.month" -> validAnswer.getMonthValue.toString,
-            "value.year"  -> validAnswer.getYear.toString
-          )
+        FakeRequest(POST, emailAddressRoute)
+          .withFormUrlEncodedBody(("value", validAnswer))
 
       val result = route(application, request).value
 
