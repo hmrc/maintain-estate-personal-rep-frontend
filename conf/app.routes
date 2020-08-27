@@ -13,6 +13,10 @@ GET        /check-your-answers                          controllers.CheckYourAns
 
 GET        /unauthorised                                controllers.UnauthorisedController.onPageLoad
 
+GET        /keep-alive                                  controllers.SessionTimeoutController.keepAlive
+
+GET        /timeout                                     controllers.SessionTimeoutController.timeout
+
 GET        /logout                                      controllers.LogoutController.logout()
 
 GET        /individual-or-business                      controllers.IndividualOrBusinessController.onPageLoad(mode: Mode = NormalMode)
