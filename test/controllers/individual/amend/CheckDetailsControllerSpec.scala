@@ -81,7 +81,7 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(answerSection)(fakeRequest, messages).toString
+        view(answerSection)(request, messages).toString
     }
 
     "submitting" when {

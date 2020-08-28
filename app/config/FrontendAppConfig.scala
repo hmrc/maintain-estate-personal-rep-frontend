@@ -16,13 +16,14 @@
 
 package config
 
+import java.net.{URI, URLEncoder}
 import java.time.LocalDate
 
 import com.google.inject.{Inject, Singleton}
 import controllers.routes
 import play.api.Configuration
 import play.api.i18n.Lang
-import play.api.mvc.Call
+import play.api.mvc.{Call, Request}
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 @Singleton
@@ -82,5 +83,11 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
     } else {
       organisationDeclarationUrl
     }
+  }
+
+  private lazy val accessibilityLinkBaseUrl = configuration.get[String]("urls.accessibility")
+  def accessibilityLinkUrl(implicit request: Request[_]): String = {
+    val userAction = URLEncoder.encode(new URI(request.uri).getPath, "UTF-8")
+    s"$accessibilityLinkBaseUrl?userAction=$userAction"
   }
 }
