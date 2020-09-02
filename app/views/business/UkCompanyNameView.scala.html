@@ -26,7 +26,7 @@
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("business.ukCompanyName.title")}"
+    title = s"${errorPrefix(form)}${messages("business.ukCompanyName.title")}"
 ) {
 
     @formHelper(action = UkCompanyNameController.onSubmit(mode), 'autoComplete -> "off") {

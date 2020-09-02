@@ -27,7 +27,7 @@
 @(form: Form[_], countryOptions: Seq[InputOption], name: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("business.nonUkAddress.title")}"
+    title = s"${errorPrefix(form)}${messages("business.nonUkAddress.title")}"
 ) {
 
     @formHelper(action = NonUkAddressController.onSubmit(mode), 'autoComplete -> "off") {
