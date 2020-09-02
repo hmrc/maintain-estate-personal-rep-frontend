@@ -24,7 +24,7 @@
 @(form: Form[_], mode: Mode, name: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("business.email.title")}"
+    title = s"${errorPrefix(form)}${messages("business.email.title")}"
 ) {
 
     @formHelper(action = EmailAddressController.onSubmit(mode), 'autoComplete -> "off") {
