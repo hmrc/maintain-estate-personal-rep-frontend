@@ -94,14 +94,6 @@ trait Constraints {
         Invalid(errorKey, minimum)
     }
 
-  protected def isNotEmpty(value: String, errorKey: String): Constraint[String] =
-    Constraint {
-      case str if str.trim.nonEmpty =>
-        Valid
-      case _ =>
-        Invalid(errorKey, value)
-    }
-
   protected def maxDate(maximum: LocalDate, errorKey: String, args: Any*): Constraint[LocalDate] =
     Constraint {
       case date if date.isAfter(maximum) =>
