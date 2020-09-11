@@ -24,7 +24,6 @@ class TelephoneNumberFormProviderSpec extends StringFieldBehaviours {
 
   val prefix: String = "business.telephoneNumber"
   val requiredKey: String = s"$prefix.error.required"
-  val lengthKey: String = s"$prefix.error.length"
   val invalidKey: String = s"$prefix.error.invalid"
   val minLength: Int = 6
 
