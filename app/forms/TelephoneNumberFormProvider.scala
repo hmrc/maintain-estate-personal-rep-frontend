@@ -16,7 +16,7 @@
 
 package forms
 
-import forms.mappings.{Mappings, Validation}
+import forms.mappings.Mappings
 import javax.inject.Inject
 import play.api.data.Form
 
@@ -28,8 +28,7 @@ class TelephoneNumberFormProvider @Inject() extends Mappings {
         .verifying(
           firstError(
             nonEmptyString("value", s"$prefix.error.required"),
-            minLength(6, s"$prefix.error.invalid"),
-            regexp(Validation.telephoneRegex, s"$prefix.error.invalid")
+            isTelephoneNumberValid("value", s"$prefix.error.invalid")
           )
         )
     )
