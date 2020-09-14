@@ -104,7 +104,7 @@ trait StringFieldBehaviours extends FieldBehaviours with OptionalFieldBehaviours
                            fieldName: String,
                            requiredError: FormError): Unit = {
 
-    s"not bind strings which do not match valid telephone number format " in {
+    "not bind strings which do not match valid telephone number format" in {
       val generator = RegexpGen.from(Validation.telephoneRegex)
       forAll(generator) {
         string =>

@@ -31,7 +31,7 @@ class TelephoneNumberSpec extends SpecBase {
       TelephoneNumber.isValid("07 543") mustBe false
     }
 
-    "not be more than 19 characters once first instance of (0) have been removed" in {
+    "not be more than 19 characters once first instance of (0) has been removed" in {
 
       TelephoneNumber.isValid("07700 900 982 12345") mustBe true
       TelephoneNumber.isValid("07700 900 982 123456") mustBe false
