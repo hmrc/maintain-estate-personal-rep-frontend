@@ -45,11 +45,6 @@ class TelephoneNumberSpec extends SpecBase {
       TelephoneNumber.isValid("+44(0)151(0)666 1337") mustBe false
     }
 
-    "not have multiple spaces in a row" in {
-
-      TelephoneNumber.isValid("07700 900  982") mustBe false
-    }
-
     "be a valid telephone number" in {
 
       TelephoneNumber.isValid("01632 960 001") mustBe true

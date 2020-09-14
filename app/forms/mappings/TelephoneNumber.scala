@@ -30,14 +30,7 @@ object TelephoneNumber extends (String => TelephoneNumber) {
   implicit val writes: Writes[TelephoneNumber] = new SimpleObjectWrites[TelephoneNumber](_.value)
   implicit val reads: Reads[TelephoneNumber] = new SimpleObjectReads[TelephoneNumber]("value", TelephoneNumber.apply)
 
-  private val validFormat = Validation.telephoneRegex
-
   implicit class TelephoneNumberRequirements(tel: String) {
-
-    def hasNoMultipleSpaces: Boolean = {
-      val noMultipleSpaces: String = """^(?!.*  ).+"""
-      tel.matches(noMultipleSpaces)
-    }
 
     /** Removes instances of (0) in a telephone number
      *
@@ -52,13 +45,12 @@ object TelephoneNumber extends (String => TelephoneNumber) {
      */
     def hasMinimumOfSixDigits: Boolean = {
       def digit: Regex = "[0-9]".r
-      digit.findAllIn(tel.removeParentheses()).length >= 6
+      digit.findAllIn(tel).length >= 6
     }
   }
 
   def isValid(tel: String): Boolean =
     tel != null &&
-      tel.hasNoMultipleSpaces &&
-      tel.removeParentheses().matches(validFormat) &&
-      tel.hasMinimumOfSixDigits
+      tel.removeParentheses().matches(Validation.telephoneRegex) &&
+      tel.removeParentheses().hasMinimumOfSixDigits
 }
