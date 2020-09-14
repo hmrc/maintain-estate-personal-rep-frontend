@@ -16,7 +16,7 @@
 
 package forms.behaviours
 
-import forms.mappings.Validation
+import forms.mappings.{TelephoneNumber, Validation}
 import org.scalacheck.Gen
 import play.api.data.{Form, FormError}
 import uk.gov.hmrc.domain.Nino
@@ -93,6 +93,22 @@ trait StringFieldBehaviours extends FieldBehaviours with OptionalFieldBehaviours
       forAll(generator) {
         string =>
           whenever(!Nino.isValid(string)) {
+            val result = form.bind(Map(fieldName -> string)).apply(fieldName)
+            result.errors shouldEqual Seq(requiredError)
+          }
+      }
+    }
+  }
+
+  def telephoneNumberField(form: Form[_],
+                           fieldName: String,
+                           requiredError: FormError): Unit = {
+
+    s"not bind strings which do not match valid telephone number format " in {
+      val generator = RegexpGen.from(Validation.telephoneRegex)
+      forAll(generator) {
+        string =>
+          whenever(!TelephoneNumber.isValid(string)) {
             val result = form.bind(Map(fieldName -> string)).apply(fieldName)
             result.errors shouldEqual Seq(requiredError)
           }
