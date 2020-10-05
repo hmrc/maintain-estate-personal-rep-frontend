@@ -20,7 +20,7 @@ import base.SpecBase
 import config.annotations.Individual
 import forms.NonUkAddressFormProvider
 import models.{Name, NonUkAddress, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.Navigator
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar

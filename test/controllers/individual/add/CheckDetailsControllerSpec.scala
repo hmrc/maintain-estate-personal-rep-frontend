@@ -87,7 +87,7 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
     "submitting" must {
 
       val mockEstatesConnector = mock[EstatesConnector]
-      when(mockEstatesConnector.addOrAmendPersonalRep(any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK)))
+      when(mockEstatesConnector.addOrAmendPersonalRep(any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
       "individual" must {
         "redirect to declaration page" in {

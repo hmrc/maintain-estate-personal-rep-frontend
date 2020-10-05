@@ -22,7 +22,7 @@ import controllers.actions.Actions
 import javax.inject.Inject
 import models.PersonalRepresentative
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.mappers.IndividualMapper
 import utils.print.IndividualPrintHelper

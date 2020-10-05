@@ -24,7 +24,6 @@ import controllers.routes
 import play.api.Configuration
 import play.api.i18n.Lang
 import play.api.mvc.{Call, Request}
-import uk.gov.hmrc.auth.core.AffinityGroup
 
 @Singleton
 class FrontendAppConfig @Inject() (configuration: Configuration) {
