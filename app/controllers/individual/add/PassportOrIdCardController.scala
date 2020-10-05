@@ -20,7 +20,7 @@ import config.annotations.Individual
 import controllers.actions.Actions
 import forms.PassportOrIdCardFormProvider
 import javax.inject.Inject
-import models.{Enumerable, Mode, NormalMode, PassportOrIdCard}
+import models.{Enumerable, NormalMode, PassportOrIdCard}
 import navigation.Navigator
 import pages.individual.add.PassportOrIdCardPage
 import play.api.data.Form

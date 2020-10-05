@@ -52,10 +52,10 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
 
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 
-  private def applicationBuilderInterface(userAnswers: Option[UserAnswers] = None,
+  private def applicationBuilderInterface(userAnswers: Option[UserAnswers],
                                           fakeIdentifierAction: IdentifierAction,
                                           utr: String = "utr"
-                                         ) : GuiceApplicationBuilder = {
+                                         ): GuiceApplicationBuilder = {
     new GuiceApplicationBuilder()
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],

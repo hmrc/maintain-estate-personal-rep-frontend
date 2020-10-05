@@ -21,11 +21,9 @@ import java.time.LocalDate
 import com.google.inject.Inject
 import models.{Address, CombinedPassportOrIdCard, IdCard, Name, Passport, UserAnswers}
 import pages.QuestionPage
-import pages.business.NamePage
 import play.api.i18n.Messages
 import play.api.libs.json.Reads
 import play.twirl.api.HtmlFormat
-import queries.Gettable
 import utils.countryOptions.CountryOptions
 import utils.print.CheckAnswersFormatters.{formatIdCardDetails, formatNino, formatPassportDetails, _}
 import viewmodels.AnswerRow
