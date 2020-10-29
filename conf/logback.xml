@@ -74,7 +74,7 @@
     <logger name="repositories" level="INFO"/>
     <logger name="connectors" level="INFO"/>
 
-    <root level="DEBUG">
+    <root level="WARN">
         <appender-ref ref="FILE"/>
         <appender-ref ref="STDOUT"/>
     </root>
