@@ -41,7 +41,7 @@ class EstateAuthenticationServiceImpl @Inject()(authConnector: EstatesAuthConnec
       case AuthDenied(redirectUrl) =>
         Future.successful(Left(Redirect(redirectUrl)))
       case _ =>
-        logger.warn(s"[authenticateAgent][${Session.id(hc)}] Unable to authenticate agent with estates-auth")
+        logger.warn(s"[authenticateAgent][Session ID: ${Session.id(hc)}] Unable to authenticate agent with estates-auth")
         Future.successful(Left(Unauthorized))
     }
   }
@@ -55,7 +55,7 @@ class EstateAuthenticationServiceImpl @Inject()(authConnector: EstatesAuthConnec
       case AuthDenied(redirectUrl) =>
         Future.successful(Left(Redirect(redirectUrl)))
       case _ =>
-        logger.warn(s"[authenticateForUtr][${Session.id(hc)}][UTR: $utr] Unable to authenticate for utr with estates-auth")
+        logger.warn(s"[authenticateForUtr][Session ID: ${Session.id(hc)}][UTR: $utr] Unable to authenticate for utr with estates-auth")
         Future.successful(Left(Unauthorized))
     }
   }

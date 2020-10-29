@@ -82,7 +82,7 @@ class AuthenticatedIdentifierAction @Inject()(
         Future.successful(Redirect(controllers.routes.UnauthorisedController.onPageLoad()))
 
       case _ =>
-        logger.warn(s"[${Session.id(hc)}] Unable to retrieve retrievals")
+        logger.warn(s"[Session ID: ${Session.id(hc)}] Unable to retrieve retrievals")
         Future.successful(Redirect(controllers.routes.UnauthorisedController.onPageLoad()))
     } recover {
       case _: NoActiveSession => Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl)))
