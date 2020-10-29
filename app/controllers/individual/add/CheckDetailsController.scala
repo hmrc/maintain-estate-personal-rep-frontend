@@ -21,6 +21,7 @@ import connectors.EstatesConnector
 import controllers.actions.Actions
 import javax.inject.Inject
 import models.PersonalRepresentative
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -42,6 +43,8 @@ class CheckDetailsController @Inject()(
                                         connector: EstatesConnector
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private val logger: Logger = Logger(getClass)
+
   def onPageLoad(): Action[AnyContent] = actions.authWithIndividualName {
     implicit request =>
 
@@ -54,6 +57,8 @@ class CheckDetailsController @Inject()(
 
       mapper(request.userAnswers) match {
         case None =>
+          logger.error(s"[Session ID: ${utils.Session.id(hc)}][UTR: ${request.userAnswers.utr}]" +
+            s" error mapping user answers to Individual Personal rep")
           Future.successful(InternalServerError)
         case Some(individual) =>
           connector.addOrAmendPersonalRep(request.userAnswers.utr, PersonalRepresentative(Some(individual), None)).map(_ =>

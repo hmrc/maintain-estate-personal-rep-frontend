@@ -22,6 +22,7 @@ import controllers.actions.Actions
 import handlers.ErrorHandler
 import javax.inject.Inject
 import models.PersonalRepresentative
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -29,6 +30,7 @@ import utils.mappers.BusinessMapper
 import utils.print.BusinessPrintHelper
 import viewmodels.AnswerSection
 import views.html.business.amend.CheckBusinessDetailsView
+import utils.Session
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -44,6 +46,8 @@ class CheckDetailsController @Inject()(
                                         errorHandler: ErrorHandler
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private val logger: Logger = Logger(getClass)
+
   def renderFromUserAnswers() : Action[AnyContent] = actions.authWithBusinessName {
     implicit request =>
       val section: AnswerSection = businessPrintHelper(request.userAnswers, provisional = false, request.businessName)
@@ -58,6 +62,10 @@ class CheckDetailsController @Inject()(
           connector.addOrAmendPersonalRep(request.userAnswers.utr, PersonalRepresentative(None, Some(business))).map(_ =>
             Redirect(appConfig.maintainDeclarationUrl(request.request.user.isAgent))
           )
-      }.getOrElse(Future.successful(InternalServerError(errorHandler.internalServerErrorTemplate)))
+      }.getOrElse{
+        logger.error(s"[Session ID: ${Session.id(hc)}][UTR: ${request.userAnswers.utr}]" +
+          s" error mapping user answers to Business Personal rep")
+        Future.successful(InternalServerError(errorHandler.internalServerErrorTemplate))
+      }
   }
 }

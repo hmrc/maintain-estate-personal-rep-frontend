@@ -21,6 +21,7 @@ import connectors.EstatesConnector
 import controllers.actions.Actions
 import javax.inject.Inject
 import models.PersonalRepresentative
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -28,6 +29,7 @@ import utils.mappers.BusinessMapper
 import utils.print.BusinessPrintHelper
 import viewmodels.AnswerSection
 import views.html.business.add.CheckDetailsView
+import utils.Session
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -42,6 +44,8 @@ class CheckDetailsController @Inject()(
                                         connector: EstatesConnector
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private val logger: Logger = Logger(getClass)
+
   def onPageLoad(): Action[AnyContent] = actions.authWithBusinessName {
     implicit request =>
 
@@ -54,6 +58,8 @@ class CheckDetailsController @Inject()(
 
       mapper(request.userAnswers) match {
         case None =>
+          logger.error(s"[Session ID: ${Session.id(hc)}][UTR: ${request.userAnswers.utr}]" +
+            s" error in mapping user answers to Business Personal rep")
           Future.successful(InternalServerError)
         case Some(business) =>
           connector.addOrAmendPersonalRep(request.userAnswers.utr, PersonalRepresentative(None, Some(business))).map(_ =>
