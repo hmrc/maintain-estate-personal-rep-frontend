@@ -19,16 +19,16 @@ package utils.mappers
 import java.time.LocalDate
 
 import models._
-import org.slf4j.LoggerFactory
 import pages.individual._
 import pages.individual.add._
 import pages.individual.amend.PassportOrIdCardDetailsPage
+import play.api.Logger
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsError, JsSuccess, Reads}
 
 class IndividualMapper {
 
-  private val logger = LoggerFactory.getLogger("application." + this.getClass.getCanonicalName)
+  private val logger: Logger = Logger(getClass)
 
   def apply(answers: UserAnswers): Option[IndividualPersonalRep] = {
     val readFromUserAnswers: Reads[IndividualPersonalRep] =

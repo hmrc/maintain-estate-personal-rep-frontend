@@ -19,15 +19,15 @@ package utils.mappers
 import java.time.LocalDate
 
 import models.{Address, BusinessPersonalRep, NonUkAddress, UkAddress, UserAnswers}
-import org.slf4j.LoggerFactory
 import pages.business._
 import pages.business.add.StartDatePage
+import play.api.Logger
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsError, JsSuccess, Reads}
 
 class BusinessMapper {
 
-  private val logger = LoggerFactory.getLogger("application." + this.getClass.getCanonicalName)
+  private val logger: Logger = Logger(getClass)
 
   def apply(answers: UserAnswers): Option[BusinessPersonalRep] = {
     val readFromUserAnswers: Reads[BusinessPersonalRep] =
