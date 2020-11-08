@@ -34,7 +34,7 @@ import viewmodels.{AnswerRow, AnswerSection}
 class IndividualPrintHelperSpec extends SpecBase {
 
   private val name: Name = Name("John", None, "Doe")
-  private val displayName: String = name.displayFullName
+  private val displayName: String = name.displayName
   private val nino = "AA000000A"
   private val dateOfBirth = LocalDate.parse("1996-03-09")
   private val startDate = LocalDate.parse("2020-01-01")
@@ -102,7 +102,7 @@ class IndividualPrintHelperSpec extends SpecBase {
           .set(UkAddressPage, ukAddress).success.value
           .set(EmailAddressYesNoPage, false).success.value
 
-        val result = helper(userAnswers, isProvisional, name.displayFullName)
+        val result = helper(userAnswers, isProvisional, displayName)
 
         result mustBe AnswerSection(
           headingKey = None,
@@ -132,7 +132,7 @@ class IndividualPrintHelperSpec extends SpecBase {
           .set(NonUkAddressPage, nonUkAddress).success.value
           .set(EmailAddressYesNoPage, false).success.value
 
-        val result = helper(userAnswers, isProvisional, name.displayFullName)
+        val result = helper(userAnswers, isProvisional, displayName)
 
         result mustBe AnswerSection(
           headingKey = None,
@@ -203,7 +203,7 @@ class IndividualPrintHelperSpec extends SpecBase {
           .set(NonUkAddressPage, nonUkAddress).success.value
           .set(EmailAddressYesNoPage, false).success.value
 
-        val result = helper(userAnswers, isProvisional, name.displayFullName)
+        val result = helper(userAnswers, isProvisional, displayName)
 
         result mustBe AnswerSection(
           headingKey = None,
