@@ -22,10 +22,10 @@ import controllers.actions.Actions
 import handlers.ErrorHandler
 import javax.inject.Inject
 import models.PersonalRepresentative
-import play.api.Logger
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.mappers.BusinessMapper
 import utils.print.BusinessPrintHelper
 import viewmodels.AnswerSection
@@ -44,9 +44,8 @@ class CheckDetailsController @Inject()(
                                         businessPrintHelper: BusinessPrintHelper,
                                         mapper: BusinessMapper,
                                         errorHandler: ErrorHandler
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
-  private val logger: Logger = Logger(getClass)
+                                      )(implicit ec: ExecutionContext
+) extends FrontendBaseController with I18nSupport with Logging {
 
   def renderFromUserAnswers() : Action[AnyContent] = actions.authWithBusinessName {
     implicit request =>

@@ -21,13 +21,11 @@ import java.time.LocalDate
 import models.{Address, BusinessPersonalRep, NonUkAddress, UkAddress, UserAnswers}
 import pages.business._
 import pages.business.add.StartDatePage
-import play.api.Logger
+import play.api.Logging
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsError, JsSuccess, Reads}
 
-class BusinessMapper {
-
-  private val logger: Logger = Logger(getClass)
+class BusinessMapper extends Logging {
 
   def apply(answers: UserAnswers): Option[BusinessPersonalRep] = {
     val readFromUserAnswers: Reads[BusinessPersonalRep] =

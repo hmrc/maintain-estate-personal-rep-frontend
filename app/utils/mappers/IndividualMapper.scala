@@ -22,13 +22,11 @@ import models._
 import pages.individual._
 import pages.individual.add._
 import pages.individual.amend.PassportOrIdCardDetailsPage
-import play.api.Logger
+import play.api.Logging
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsError, JsSuccess, Reads}
 
-class IndividualMapper {
-
-  private val logger: Logger = Logger(getClass)
+class IndividualMapper extends Logging {
 
   def apply(answers: UserAnswers): Option[IndividualPersonalRep] = {
     val readFromUserAnswers: Reads[IndividualPersonalRep] =

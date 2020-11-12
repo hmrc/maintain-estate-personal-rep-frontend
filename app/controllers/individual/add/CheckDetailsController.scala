@@ -21,10 +21,10 @@ import connectors.EstatesConnector
 import controllers.actions.Actions
 import javax.inject.Inject
 import models.PersonalRepresentative
-import play.api.Logger
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.mappers.IndividualMapper
 import utils.print.IndividualPrintHelper
 import viewmodels.AnswerSection
@@ -41,9 +41,7 @@ class CheckDetailsController @Inject()(
                                         printHelper: IndividualPrintHelper,
                                         mapper: IndividualMapper,
                                         connector: EstatesConnector
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
-  private val logger: Logger = Logger(getClass)
+                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(): Action[AnyContent] = actions.authWithIndividualName {
     implicit request =>
