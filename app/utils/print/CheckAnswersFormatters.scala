@@ -38,7 +38,7 @@ object CheckAnswersFormatters {
 
   def formatNino(nino: String): Html = HtmlFormat.escape(Nino(nino).formatted)
 
-  def formatAddress(address: Address, countryOptions: CountryOptions): Html = {
+  def formatAddress(address: Address, countryOptions: CountryOptions)(implicit messages: Messages): Html = {
     address match {
       case a: UkAddress => formatUkAddress(a)
       case a: NonUkAddress => formatNonUkAddress(a, countryOptions)
@@ -58,7 +58,7 @@ object CheckAnswersFormatters {
     Html(lines.mkString("<br />"))
   }
 
-  private def formatNonUkAddress(address: NonUkAddress, countryOptions: CountryOptions): Html = {
+  private def formatNonUkAddress(address: NonUkAddress, countryOptions: CountryOptions)(implicit messages: Messages): Html = {
     val lines =
       Seq(
         Some(HtmlFormat.escape(address.line1)),
@@ -70,10 +70,10 @@ object CheckAnswersFormatters {
     Html(lines.mkString("<br />"))
   }
 
-  private def country(code: String, countryOptions: CountryOptions): String =
+  private def country(code: String, countryOptions: CountryOptions)(implicit messages: Messages): String =
     countryOptions.options.find(_.value.equals(code)).map(_.label).getOrElse("")
 
-  def formatPassportDetails(passport: Passport, countryOptions: CountryOptions): Html = {
+  def formatPassportDetails(passport: Passport, countryOptions: CountryOptions)(implicit messages: Messages): Html = {
     val lines =
       Seq(
         Some(country(passport.countryOfIssue, countryOptions)),
@@ -84,7 +84,7 @@ object CheckAnswersFormatters {
     Html(lines.mkString("<br />"))
   }
 
-  def formatIdCardDetails(idCard: IdCard, countryOptions: CountryOptions): Html = {
+  def formatIdCardDetails(idCard: IdCard, countryOptions: CountryOptions)(implicit messages: Messages): Html = {
     val lines =
       Seq(
         Some(country(idCard.countryOfIssue, countryOptions)),
@@ -95,7 +95,7 @@ object CheckAnswersFormatters {
     Html(lines.mkString("<br />"))
   }
 
-  def formatPassportOrIdCardDetails(passportOrIdCard: CombinedPassportOrIdCard, countryOptions: CountryOptions): Html = {
+  def formatPassportOrIdCardDetails(passportOrIdCard: CombinedPassportOrIdCard, countryOptions: CountryOptions)(implicit messages: Messages): Html = {
     val lines =
       Seq(
         Some(country(passportOrIdCard.countryOfIssue, countryOptions)),

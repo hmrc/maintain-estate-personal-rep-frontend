@@ -34,6 +34,9 @@ import play.api.test.FakeRequest
 
 trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with ScalaFutures with IntegrationPatience {
 
+  final val ENGLISH = "en"
+  final val WELSH = "cy"
+
   val userAnswersId = "id"
 
   val fakeNavigator = new FakeNavigator()
