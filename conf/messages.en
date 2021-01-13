@@ -62,7 +62,8 @@ site.address.nonUk.line1 = Address line 1
 site.address.nonUk.line2 = Address line 2
 site.address.nonUk.line3 = Address line 3 (optional)
 site.address.nonUk.country = Country
-site.address.nonUk.country.select = Select a country
+
+address.country.select = Select a country
 
 ukAddress.line1.error.required = Enter address line 1
 ukAddress.line2.error.required = Enter address line 2
