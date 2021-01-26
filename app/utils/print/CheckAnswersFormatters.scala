@@ -16,13 +16,14 @@
 
 package utils.print
 
-import java.time.format.DateTimeFormatter
-
 import models.{Address, CombinedPassportOrIdCard, IdCard, NonUkAddress, Passport, UkAddress}
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
 import uk.gov.hmrc.domain.Nino
 import utils.countryOptions.CountryOptions
+
+import java.time.format.DateTimeFormatter
+import scala.util.Try
 
 object CheckAnswersFormatters {
 
@@ -36,7 +37,10 @@ object CheckAnswersFormatters {
     }
   }
 
-  def formatNino(nino: String): Html = HtmlFormat.escape(Nino(nino).formatted)
+  def formatNino(nino: String): Html = {
+    val formatted = Try(Nino(nino).formatted).getOrElse(nino)
+    HtmlFormat.escape(formatted)
+  }
 
   def formatAddress(address: Address, countryOptions: CountryOptions)(implicit messages: Messages): Html = {
     address match {
