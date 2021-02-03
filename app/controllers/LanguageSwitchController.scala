@@ -18,34 +18,19 @@ package controllers
 
 import com.google.inject.Inject
 import config.FrontendAppConfig
-import handlers.ErrorHandler
-import play.api.i18n.{I18nSupport, Lang, MessagesApi}
+import play.api.i18n.{Lang, MessagesApi}
 import play.api.mvc._
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import uk.gov.hmrc.play.language.{LanguageController, LanguageUtils}
 
 class LanguageSwitchController @Inject()(
                                           appConfig: FrontendAppConfig,
                                           override implicit val messagesApi: MessagesApi,
-                                          val controllerComponents: MessagesControllerComponents,
-                                          errorHandler: ErrorHandler
-                                        ) extends FrontendBaseController with I18nSupport {
+                                          languageUtils: LanguageUtils,
+                                          cc: MessagesControllerComponents
+                                        ) extends LanguageController(languageUtils, cc) {
 
-  private def languageMap: Map[String, Lang] = appConfig.languageMap
+  override def fallbackURL: String = appConfig.loginContinueUrl
 
-  def switchToLanguage(language: String): Action[AnyContent] = Action {
-    implicit request =>
+  override def languageMap: Map[String, Lang] = appConfig.languageMap
 
-      val lang = if (appConfig.languageTranslationEnabled) {
-        languageMap.getOrElse(language, Lang.defaultLang)
-      } else {
-        Lang("en")
-      }
-
-      request.headers.get(REFERER) match {
-        case Some(url) =>
-          Redirect(url).withLang(Lang.apply(lang.code))
-        case _ =>
-          InternalServerError(errorHandler.internalServerErrorTemplate)
-      }
-  }
 }
