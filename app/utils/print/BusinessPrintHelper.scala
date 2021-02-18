@@ -24,15 +24,13 @@ import pages.IndividualOrBusinessPage
 import pages.business._
 import pages.business.add.StartDatePage
 import play.api.i18n.Messages
-import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
-class BusinessPrintHelper @Inject()(answerRowConverter: AnswerRowConverter,
-                                    countryOptions: CountryOptions) {
+class BusinessPrintHelper @Inject()(answerRowConverter: AnswerRowConverter) {
 
   def apply(userAnswers: UserAnswers, provisional: Boolean, name: String)(implicit messages: Messages): AnswerSection = {
 
-    val bound = answerRowConverter.bind(userAnswers, name, countryOptions)
+    val bound = answerRowConverter.bind(userAnswers, name)
 
     val add: Seq[AnswerRow] = Seq(
       bound.enumQuestion(IndividualOrBusinessPage, "individualOrBusiness", controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode).url),

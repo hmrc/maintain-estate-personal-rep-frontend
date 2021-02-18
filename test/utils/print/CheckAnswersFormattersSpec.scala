@@ -17,23 +17,54 @@
 package utils.print
 
 import base.SpecBase
+import play.api.i18n.{Lang, MessagesImpl}
 import play.twirl.api.Html
+
+import java.time.LocalDate
 
 class CheckAnswersFormattersSpec extends SpecBase {
 
+  private val checkAnswersFormatters: CheckAnswersFormatters = injector.instanceOf[CheckAnswersFormatters]
+
   "CheckAnswersFormatters" when {
+
+    ".formatDate" when {
+
+      def messages(langCode: String): MessagesImpl = {
+        val lang: Lang = Lang(langCode)
+        MessagesImpl(lang, messagesApi)
+      }
+
+      val date: LocalDate = LocalDate.parse("1996-02-03")
+
+      "in English mode" must {
+        "format date in English" in {
+
+          val result: String = checkAnswersFormatters.formatDate(date)(messages("en"))
+          result mustBe "3 February 1996"
+        }
+      }
+
+      "in Welsh mode" must {
+        "format date in Welsh" in {
+
+          val result: String = checkAnswersFormatters.formatDate(date)(messages("cy"))
+          result mustBe "3 Chwefror 1996"
+        }
+      }
+    }
 
     ".formatNino" must {
 
       "format a nino with prefix and suffix" in {
         val nino = "JP121212A"
-        val result = CheckAnswersFormatters.formatNino(nino)
+        val result = checkAnswersFormatters.formatNino(nino)
         result mustBe Html("JP 12 12 12 A")
       }
 
       "suppress IllegalArgumentException and not format nino" in {
         val nino = "JP121212"
-        val result = CheckAnswersFormatters.formatNino(nino)
+        val result = checkAnswersFormatters.formatNino(nino)
         result mustBe Html("JP121212")
       }
 

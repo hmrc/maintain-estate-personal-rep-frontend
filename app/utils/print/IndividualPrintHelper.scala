@@ -26,15 +26,13 @@ import pages.individual._
 import pages.individual.add._
 import pages.individual.amend.PassportOrIdCardDetailsPage
 import play.api.i18n.Messages
-import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
-class IndividualPrintHelper @Inject()(answerRowConverter: AnswerRowConverter,
-                                      countryOptions: CountryOptions) {
+class IndividualPrintHelper @Inject()(answerRowConverter: AnswerRowConverter) {
 
   def apply(userAnswers: UserAnswers, provisional: Boolean, name: String)(implicit messages: Messages): AnswerSection = {
 
-    val bound = answerRowConverter.bind(userAnswers, name, countryOptions)
+    val bound = answerRowConverter.bind(userAnswers, name)
 
     val add: Seq[AnswerRow] = Seq(
       bound.enumQuestion(IndividualOrBusinessPage, "individualOrBusiness", controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode).url),
