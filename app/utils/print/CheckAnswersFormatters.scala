@@ -17,17 +17,24 @@
 package utils.print
 
 import models.{Address, CombinedPassportOrIdCard, IdCard, NonUkAddress, Passport, UkAddress}
+import org.joda.time.{LocalDate => JodaDate}
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
 import uk.gov.hmrc.domain.Nino
+import uk.gov.hmrc.play.language.LanguageUtils
 import utils.countryOptions.CountryOptions
 
-import java.time.format.DateTimeFormatter
+import java.time.{LocalDate => JavaDate}
+import javax.inject.Inject
 import scala.util.Try
 
-object CheckAnswersFormatters {
+class CheckAnswersFormatters @Inject()(languageUtils: LanguageUtils,
+                                       countryOptions: CountryOptions) {
 
-  val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
+  def formatDate(date: JavaDate)(implicit messages: Messages): String = {
+    val convertedDate: JodaDate = new JodaDate(date.getYear, date.getMonthValue, date.getDayOfMonth)
+    languageUtils.Dates.formatDate(convertedDate)
+  }
 
   def yesOrNo(answer: Boolean)(implicit messages: Messages): Html = {
     if (answer) {
@@ -42,10 +49,10 @@ object CheckAnswersFormatters {
     HtmlFormat.escape(formatted)
   }
 
-  def formatAddress(address: Address, countryOptions: CountryOptions)(implicit messages: Messages): Html = {
+  def formatAddress(address: Address)(implicit messages: Messages): Html = {
     address match {
       case a: UkAddress => formatUkAddress(a)
-      case a: NonUkAddress => formatNonUkAddress(a, countryOptions)
+      case a: NonUkAddress => formatNonUkAddress(a)
     }
   }
 
@@ -62,49 +69,49 @@ object CheckAnswersFormatters {
     Html(lines.mkString("<br />"))
   }
 
-  private def formatNonUkAddress(address: NonUkAddress, countryOptions: CountryOptions)(implicit messages: Messages): Html = {
+  private def formatNonUkAddress(address: NonUkAddress)(implicit messages: Messages): Html = {
     val lines =
       Seq(
         Some(HtmlFormat.escape(address.line1)),
         Some(HtmlFormat.escape(address.line2)),
         address.line3.map(HtmlFormat.escape),
-        Some(country(address.country, countryOptions))
+        Some(country(address.country))
       ).flatten
 
     Html(lines.mkString("<br />"))
   }
 
-  private def country(code: String, countryOptions: CountryOptions)(implicit messages: Messages): String =
+  private def country(code: String)(implicit messages: Messages): String =
     countryOptions.options.find(_.value.equals(code)).map(_.label).getOrElse("")
 
-  def formatPassportDetails(passport: Passport, countryOptions: CountryOptions)(implicit messages: Messages): Html = {
+  def formatPassportDetails(passport: Passport)(implicit messages: Messages): Html = {
     val lines =
       Seq(
-        Some(country(passport.countryOfIssue, countryOptions)),
+        Some(country(passport.countryOfIssue)),
         Some(HtmlFormat.escape(passport.number)),
-        Some(HtmlFormat.escape(passport.expirationDate.format(dateFormatter)))
+        Some(HtmlFormat.escape(formatDate(passport.expirationDate)))
       ).flatten
 
     Html(lines.mkString("<br />"))
   }
 
-  def formatIdCardDetails(idCard: IdCard, countryOptions: CountryOptions)(implicit messages: Messages): Html = {
+  def formatIdCardDetails(idCard: IdCard)(implicit messages: Messages): Html = {
     val lines =
       Seq(
-        Some(country(idCard.countryOfIssue, countryOptions)),
+        Some(country(idCard.countryOfIssue)),
         Some(HtmlFormat.escape(idCard.number)),
-        Some(HtmlFormat.escape(idCard.expirationDate.format(dateFormatter)))
+        Some(HtmlFormat.escape(formatDate(idCard.expirationDate)))
       ).flatten
 
     Html(lines.mkString("<br />"))
   }
 
-  def formatPassportOrIdCardDetails(passportOrIdCard: CombinedPassportOrIdCard, countryOptions: CountryOptions)(implicit messages: Messages): Html = {
+  def formatPassportOrIdCardDetails(passportOrIdCard: CombinedPassportOrIdCard)(implicit messages: Messages): Html = {
     val lines =
       Seq(
-        Some(country(passportOrIdCard.countryOfIssue, countryOptions)),
+        Some(country(passportOrIdCard.countryOfIssue)),
         Some(HtmlFormat.escape(passportOrIdCard.number)),
-        Some(HtmlFormat.escape(passportOrIdCard.expirationDate.format(dateFormatter)))
+        Some(HtmlFormat.escape(formatDate(passportOrIdCard.expirationDate)))
       ).flatten
 
     Html(lines.mkString("<br />"))
