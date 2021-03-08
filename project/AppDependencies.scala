@@ -5,7 +5,7 @@ object AppDependencies {
 
   val compile = Seq(
     play.sbt.PlayImport.ws,
-    "org.reactivemongo" %% "play2-reactivemongo"            % "0.18.8-play27",
+    "org.reactivemongo" %% "play2-reactivemongo"            % "0.20.13-play27",
     "uk.gov.hmrc"       %% "logback-json-logger"            % "4.8.0",
     "uk.gov.hmrc"       %% "govuk-template"                 % "5.61.0-play-27",
     "uk.gov.hmrc"       %% "play-health"                    % "3.15.0-play-27",
@@ -40,6 +40,7 @@ object AppDependencies {
     "com.typesafe.akka" %% "akka-protobuf_2.12" % akkaVersion,
     "com.typesafe.akka" %% "akka-slf4j_2.12" % akkaVersion,
     "com.typesafe.akka" %% "akka-actor_2.12" % akkaVersion,
-    "com.typesafe.akka" %% "akka-http-core_2.12" % akkaHttpVersion
+    "com.typesafe.akka" %% "akka-http-core_2.12" % akkaHttpVersion,
+    "commons-codec"     %  "commons-codec" % "1.12"
   )
 }
