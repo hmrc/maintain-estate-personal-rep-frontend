@@ -16,7 +16,7 @@
 
 package repositories
 
-import play.api.Logging
+import play.api.{Configuration, Logging}
 import play.modules.reactivemongo.ReactiveMongoApi
 import reactivemongo.play.json.collection.JSONCollection
 
@@ -28,7 +28,7 @@ trait IndexManager extends Logging {
 
   val mongo: ReactiveMongoApi
 
-  val dropIndexes: Boolean
+  val config : Configuration
 
   implicit val ec: ExecutionContext
 
@@ -52,6 +52,9 @@ trait IndexManager extends Logging {
    * Only drops indexes if feature flag is enabled
    **/
   final val dropIndexesOnStartup: Future[Unit] = {
+
+    val dropIndexes = config.get[Boolean]("microservice.services.features.mongo.dropIndexes")
+
     for {
       _ <- logIndex
       _ <- if (dropIndexes) {
