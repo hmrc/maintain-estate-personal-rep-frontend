@@ -16,24 +16,28 @@
 
 package controllers
 
-import java.time.LocalDate
-
 import base.SpecBase
 import connectors.EstatesConnector
 import models.{CheckMode, Mode, NormalMode, UserAnswers}
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
-import org.mockito.Mockito.{verify, when}
+import org.mockito.Mockito.{reset, verify, when}
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
-class IndexControllerSpec extends SpecBase with MockitoSugar {
+class IndexControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfterEach {
+
+  override def beforeEach(): Unit = {
+    reset(fakeRepository)
+    when(fakeRepository.set(any())).thenReturn(Future.successful(true))
+  }
 
   "Index Controller" when {
 
@@ -47,14 +51,11 @@ class IndexControllerSpec extends SpecBase with MockitoSugar {
         val dateOfDeath: String = "1996-02-03"
 
         val mockEstatesConnector: EstatesConnector = mock[EstatesConnector]
-        val mockSessionRepository : SessionRepository = mock[SessionRepository]
 
         when(mockEstatesConnector.getDateOfDeath(any())(any(), any())).thenReturn(Future.successful(Json.toJson(dateOfDeath)))
-        when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
-          .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
           .build()
 
         val request = FakeRequest(GET, routes.IndexController.onPageLoad(utr, mode).url)
@@ -66,7 +67,7 @@ class IndexControllerSpec extends SpecBase with MockitoSugar {
         redirectLocation(result) mustBe Some(controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode).url)
 
         val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
-        verify(mockSessionRepository).set(uaCaptor.capture)
+        verify(fakeRepository).set(uaCaptor.capture)
         uaCaptor.getValue.utr mustEqual utr
         uaCaptor.getValue.dateOfDeath mustEqual LocalDate.parse(dateOfDeath)
 
@@ -84,14 +85,11 @@ class IndexControllerSpec extends SpecBase with MockitoSugar {
         val dateOfDeath: String = "1996-02-03"
 
         val mockEstatesConnector: EstatesConnector = mock[EstatesConnector]
-        val mockSessionRepository : SessionRepository = mock[SessionRepository]
 
         when(mockEstatesConnector.getDateOfDeath(any())(any(), any())).thenReturn(Future.successful(Json.toJson(dateOfDeath)))
-        when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
-          .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
           .build()
 
         val request = FakeRequest(GET, routes.IndexController.onPageLoad(utr, mode).url)
@@ -103,7 +101,7 @@ class IndexControllerSpec extends SpecBase with MockitoSugar {
         redirectLocation(result) mustBe Some(controllers.amend.routes.CheckDetailsController.extractAndRender().url)
 
         val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
-        verify(mockSessionRepository).set(uaCaptor.capture)
+        verify(fakeRepository).set(uaCaptor.capture)
         uaCaptor.getValue.utr mustEqual utr
         uaCaptor.getValue.dateOfDeath mustEqual LocalDate.parse(dateOfDeath)
 

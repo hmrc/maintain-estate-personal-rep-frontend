@@ -31,8 +31,9 @@ import play.api.inject.{Injector, bind}
 import play.api.libs.json.Json
 import play.api.mvc.{Call, PlayBodyParsers}
 import play.api.test.FakeRequest
+import repositories.SessionRepository
 
-trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with ScalaFutures with IntegrationPatience {
+trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Mocked with ScalaFutures with IntegrationPatience {
 
   final val ENGLISH = "en"
   final val WELSH = "cy"
@@ -64,7 +65,8 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].to(fakeIdentifierAction),
         bind[UTRAuthenticationAction].toInstance(new FakeUTRAuthenticationAction(utr)),
-        bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers))
+        bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
+        bind[SessionRepository].toInstance(fakeRepository)
       )
   }
 
