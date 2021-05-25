@@ -28,27 +28,59 @@ import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 
 class LogoutControllerSpec extends SpecBase with MockitoSugar {
 
-  "logout should redirect to feedback and audit" in {
+  "LogoutController" when {
 
-    val mockAuditConnector = mock[AuditConnector]
+    "auditing enabled" must {
+      "redirect to feedback and audit" in {
 
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
-      .overrides(bind[AuditConnector].toInstance(mockAuditConnector))
-      .build()
+        val mockAuditConnector = mock[AuditConnector]
 
-    val request = FakeRequest(GET, routes.LogoutController.logout().url)
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[AuditConnector].toInstance(mockAuditConnector))
+          .configure("microservice.services.features.auditing.logout" -> true)
+          .build()
 
-    val result = route(application, request).value
+        val request = FakeRequest(GET, routes.LogoutController.logout().url)
 
-    status(result) mustEqual SEE_OTHER
+        val result = route(application, request).value
 
-    redirectLocation(result).value mustBe frontendAppConfig.logoutUrl
+        status(result) mustEqual SEE_OTHER
 
-    verify(mockAuditConnector, never)
-      .sendExplicitAudit(eqTo("estates"), any[Map[String, String]])(any(), any())
+        redirectLocation(result).value mustBe frontendAppConfig.logoutUrl
 
-    application.stop()
+        verify(mockAuditConnector)
+          .sendExplicitAudit(eqTo("estates"), any[Map[String, String]])(any(), any())
 
+        application.stop()
+
+      }
+    }
+
+    "auditing disabled" must {
+      "redirect to feedback and not audit" in {
+
+        val mockAuditConnector = mock[AuditConnector]
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[AuditConnector].toInstance(mockAuditConnector))
+          .configure("microservice.services.features.auditing.logout" -> false)
+          .build()
+
+        val request = FakeRequest(GET, routes.LogoutController.logout().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustBe frontendAppConfig.logoutUrl
+
+        verify(mockAuditConnector, never)
+          .sendExplicitAudit(eqTo("estates"), any[Map[String, String]])(any(), any())
+
+        application.stop()
+
+      }
+    }
   }
 
 }
