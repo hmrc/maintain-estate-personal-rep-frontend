@@ -32,6 +32,7 @@ import play.api.libs.json.Json
 import play.api.mvc.{Call, PlayBodyParsers}
 import play.api.test.FakeRequest
 import repositories.SessionRepository
+import uk.gov.hmrc.auth.core.AffinityGroup
 
 trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Mocked with ScalaFutures with IntegrationPatience {
 
@@ -71,9 +72,10 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Moc
   }
 
   protected def applicationBuilderForUser(userAnswers: Option[UserAnswers] = None,
+                                          affinityGroup: AffinityGroup,
                                           user: User): GuiceApplicationBuilder = {
     val parsers = injector.instanceOf[PlayBodyParsers]
-    val fakeIdentifierAction = new FakeUserIdentifierAction(parsers)(user)
+    val fakeIdentifierAction = new FakeUserIdentifierAction(parsers)(affinityGroup, user)
 
     applicationBuilderInterface(userAnswers, fakeIdentifierAction)
   }

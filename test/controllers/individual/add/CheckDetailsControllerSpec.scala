@@ -33,7 +33,7 @@ import pages.individual.add.StartDatePage
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core.Enrolments
+import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 import uk.gov.hmrc.http.HttpResponse
 import utils.print.IndividualPrintHelper
 import views.html.individual.add.CheckDetailsView
@@ -114,7 +114,8 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
 
           val application =
             applicationBuilderForUser(userAnswers = Some(userAnswers),
-              user = AgentUser("id", Enrolments(Set()), "arn"))
+              user = AgentUser("id", Enrolments(Set()), "arn"),
+              affinityGroup = AffinityGroup.Agent)
               .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
               .build()
 
