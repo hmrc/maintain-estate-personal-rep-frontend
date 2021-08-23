@@ -15,33 +15,34 @@
  *@
 
 @import controllers.business.add.routes._
-@import config.FrontendAppConfig
+@import views.html.components.{ErrorSummary, InputDate, SubmitButton}
 
 @this(
-    main_template: MainTemplate,
+    mainTemplate: MainTemplate,
     formHelper: FormWithCSRF,
-    appConfig: FrontendAppConfig
+    errorSummary: ErrorSummary,
+    inputDate: InputDate,
+    submitButton: SubmitButton
 )
 
 @(form: Form[_], name: String)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)}${messages("business.startDate.title", name)}"
+@mainTemplate(
+    title = s"${errorPrefix(form)}${messages("business.startDate.title", name)}",
+    showBackLink = true
 ) {
 
     @formHelper(action = StartDateController.onSubmit(), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @errorSummary(form.errors)
 
-        @components.error_summary(form.errors)
-
-        @components.input_date(
+        @inputDate(
             field = form("value"),
             legend = messages("business.startDate.heading", name),
-            headingIsLegend = true,
+            legendAsHeading = true,
             hint = Some(messages("business.startDate.hint"))
         )
 
-        @components.submit_button()
+        @submitButton()
     }
 }

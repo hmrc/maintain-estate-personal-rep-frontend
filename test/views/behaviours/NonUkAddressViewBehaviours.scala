@@ -35,7 +35,7 @@ trait NonUkAddressViewBehaviours extends ViewBehaviours {
                        titleMessagePrefix: Option[String],
                        args: String*) = {
 
-    val titlePrefix = titleMessagePrefix.getOrElse("site.address.nonUk")
+    val titlePrefix = titleMessagePrefix.getOrElse("site.address.international")
 
     val fields = Seq(("line1", None),
       ("line2", None),
@@ -58,7 +58,7 @@ trait NonUkAddressViewBehaviours extends ViewBehaviours {
         "not render an error summary" in {
 
           val doc = asDocument(createView(form))
-          assertNotRenderedById(doc, "error-summary-heading")
+          assertNotRenderedById(doc, "error-summary-title")
         }
       }
 
@@ -81,14 +81,14 @@ trait NonUkAddressViewBehaviours extends ViewBehaviours {
           "show an error summary" in {
 
             val doc = asDocument(createView(form.withError(FormError(field._1, "error"))))
-            assertRenderedById(doc, "error-summary-heading")
+            assertRenderedById(doc, "error-summary-title")
           }
 
           s"show an error in the label for field '$field'" in {
 
             val doc = asDocument(createView(form.withError(FormError(field._1, "error"))))
-            val errorSpan = doc.getElementsByClass("error-message").first
-            errorSpan.parent.getElementsByClass("form-label").attr("for") mustBe field._1
+            val errorSpan = doc.getElementsByClass("govuk-error-message").first
+            errorSpan.parent.getElementsByClass("govuk-label").attr("for") mustBe field._1
           }
         }
       }
@@ -97,7 +97,7 @@ trait NonUkAddressViewBehaviours extends ViewBehaviours {
         s"contains a label and optional hint text for the field '$field'" in {
           val doc = asDocument(createView(form))
           val fieldName = field._1
-          assertContainsLabel(doc, fieldName, messages(s"site.address.nonUk.$fieldName"))
+          assertContainsLabel(doc, fieldName, messages(s"site.address.international.$fieldName"))
         }
       }
     }

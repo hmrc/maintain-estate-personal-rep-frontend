@@ -36,7 +36,7 @@ site.hidden-edit = Change {0}
 site.no = No
 site.yes = Yes
 site.continue = Continue
-site.service_name = Register and Maintain an Estate
+service.name = Register and Maintain an Estate
 site.service_section = Personal Representative
 site.textarea.char_limit = (Limit is {0} characters)
 site.sign_out = Sign out
@@ -58,12 +58,12 @@ site.address.uk.line4 = Address line 4 (optional)
 site.address.uk.postcode = Postcode
 site.address.uk.postcode.hint = For example, AB1 1AB.
 
-site.address.nonUk.title = What is the address?
-site.address.nonUk.heading = What is {0}’s address?
-site.address.nonUk.line1 = Address line 1
-site.address.nonUk.line2 = Address line 2
-site.address.nonUk.line3 = Address line 3 (optional)
-site.address.nonUk.country = Country
+site.address.international.title = What is the address?
+site.address.international.heading = What is {0}’s address?
+site.address.international.line1 = Address line 1
+site.address.international.line2 = Address line 2
+site.address.international.line3 = Address line 3 (optional)
+site.address.international.country = Country
 
 address.country.select = Select a country
 

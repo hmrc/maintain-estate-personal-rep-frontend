@@ -15,35 +15,35 @@
  *@
 
 @import controllers.individual.routes._
-@import config.FrontendAppConfig
+@import views.html.components.{ErrorSummary, InputTelephone, SubmitButton}
 
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF,
-    appConfig: FrontendAppConfig
+        mainTemplate: MainTemplate,
+        formHelper: FormWithCSRF,
+        errorSummary: ErrorSummary,
+        inputTelephone: InputTelephone,
+        submitButton: SubmitButton
 )
 
 @(form: Form[_], name: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)}${messages("individual.telephoneNumber.title")}"
+@mainTemplate(
+    title = s"${errorPrefix(form)}${messages("individual.telephoneNumber.title")}",
+    showBackLink = true
 ) {
 
     @formHelper(action = TelephoneNumberController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @errorSummary(form.errors)
 
-        @components.error_summary(form.errors)
-
-        @components.input_text(
+        @inputTelephone(
             field = form("value"),
             label = messages("individual.telephoneNumber.heading", name),
-            labelClass = Some("heading-large"),
-            headingIsLabel = true,
-            hint = Some(messages("individual.telephoneNumber.hint")),
-            inputMode = Some("numeric")
+            labelClass = Some("govuk-label--l"),
+            labelAsHeading = true,
+            hint = Some(messages("individual.telephoneNumber.hint"))
         )
 
-        @components.submit_button()
+        @submitButton()
     }
 }

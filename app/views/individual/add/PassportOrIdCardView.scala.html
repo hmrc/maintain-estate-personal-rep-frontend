@@ -16,36 +16,36 @@
 
 @import controllers.individual.add.routes._
 @import models.PassportOrIdCard
-@import config.FrontendAppConfig
+@import views.html.components.{ErrorSummary, SubmitButton, InputRadio}
 
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF,
-    appConfig: FrontendAppConfig
+        mainTemplate: MainTemplate,
+        formHelper: FormWithCSRF,
+        errorSummary: ErrorSummary,
+        inputRadio: InputRadio,
+        submitButton: SubmitButton
 )
-
 
 @(form: Form[_], name: String)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)}${messages("passportOrIdCard.title")}"
+@mainTemplate(
+    title = s"${errorPrefix(form)}${messages("passportOrIdCard.title")}",
+    showBackLink = true
 ) {
 
     @formHelper(action = PassportOrIdCardController.onSubmit(), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @errorSummary(form.errors, radioOptions = PassportOrIdCard.options.toSeq)
 
-        @components.error_summary(form.errors)
-
-        @components.input_radio(
+        @inputRadio(
             field = form("value"),
             legend = messages("passportOrIdCard.heading", name),
-            legendClass = Some("heading-large"),
-            fieldSetClass = Some("inline"),
-            inputs = PassportOrIdCard.options.toSeq,
-            headingIsLegend = true
+            legendClass = Some("govuk-fieldset__legend--l"),
+            inline = true,
+            inputs = mapRadioOptionsToRadioItems(form("value"), PassportOrIdCard.options.toSeq),
+            legendAsHeading = true
         )
 
-        @components.submit_button()
+        @submitButton()
     }
 }

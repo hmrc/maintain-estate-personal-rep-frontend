@@ -16,26 +16,30 @@
 
 @import viewmodels.AnswerSection
 @import controllers.business.amend.routes._
+@import utils.SectionFormatter.formatSections
+@import views.html.components.{Heading, SubmitButton}
 
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    mainTemplate: MainTemplate,
+    formHelper: FormWithCSRF,
+    govukSummaryList: GovukSummaryList,
+    submitButton: SubmitButton,
+    heading: Heading
 )
 
-@(answerSection: AnswerSection)(implicit request: Request[_], messages: Messages)
+@(answerSection: Seq[AnswerSection])(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("business.checkDetails.title")
+@mainTemplate(
+    title = messages("business.checkDetails.title"),
+    showBackLink = true
 ) {
 
     @formHelper(action = CheckDetailsController.onSubmit(), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @heading("business.checkDetails.heading")
 
-        @components.heading("business.checkDetails.heading")
+        @govukSummaryList(SummaryList(rows = formatSections(answerSection)))
 
-        @components.answer_section(answerSection)
-
-        @components.submit_button()
+        @submitButton()
     }
 }
