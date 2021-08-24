@@ -45,7 +45,6 @@
         @select(
             field = form("country"),
             label = messages("individual.idCardDetails.country"),
-            labelClasses = Set("form-control-1-2 bold"),
             options = countryOptions,
             placeholder = Some(messages("address.country.select")),
             formGroupClasses = Set("autocomplete-wrapper"),
@@ -61,7 +60,6 @@
         @inputDate(
             field = form("expiryDate"),
             legend = messages("individual.idCardDetails.expiryDate"),
-            legendClass = "bold",
             hint = Some(messages("individual.idCardDetails.expiryDate.hint")),
             legendAsHeading = false
         )
