@@ -15,50 +15,54 @@
  *@
 
 @import controllers.individual.add.routes._
+@import views.html.components.{ErrorSummary, Heading, InputSelect, InputText, InputDate, SubmitButton}
 @import utils.InputOption
 
 @this(
-        main_template: MainTemplate,
-        formHelper: FormWithCSRF
+        mainTemplate: MainTemplate,
+        formHelper: FormWithCSRF,
+        errorSummary: ErrorSummary,
+        select: InputSelect,
+        inputText: InputText,
+        inputDate: InputDate,
+        submitButton: SubmitButton,
+        heading: Heading
 )
 
 @(form: Form[_], countryOptions: Seq[InputOption], name: String)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)}${messages("individual.passportDetails.title")}"
+@mainTemplate(
+    title = s"${errorPrefix(form)}${messages("individual.passportDetails.title")}",
+    showBackLink = true
 ) {
 
     @formHelper(action = PassportDetailsController.onSubmit(), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @errorSummary(form.errors)
 
-        @components.error_summary(form.errors)
+        @heading("individual.passportDetails.heading", Some(name))
 
-        @components.heading("individual.passportDetails.heading", Some(name))
-
-        @components.select(field = form("country"),
+        @select(field = form("country"),
             label = messages("individual.passportDetails.country"),
-            labelClasses = Set("form-control-1-2 bold"),
             options = countryOptions,
             placeholder = Some(messages("address.country.select")),
-            formGroupClasses = Set("autocomplete-wrapper form-control-2-1"),
-            selectAttribute = Set("data-non-uk-countries")
+            formGroupClasses = Set("autocomplete-wrapper"),
+            selectAttribute = Map("data-non-uk-countries" -> "")
         )
 
-        @components.input_text(
+        @inputText(
             field = form("number"),
             label = messages("individual.passportDetails.number"),
             hint = Some(messages("individual.passportDetails.number.hint"))
         )
 
-        @components.input_date(
+        @inputDate(
             field = form("expiryDate"),
             legend = messages("individual.passportDetails.expiryDate"),
-            legendClass = Some("bold"),
             hint = Some(messages("individual.passportDetails.expiryDate.hint")),
-            headingIsLegend = false
+            legendAsHeading = false
         )
 
-        @components.submit_button()
+        @submitButton()
     }
 }

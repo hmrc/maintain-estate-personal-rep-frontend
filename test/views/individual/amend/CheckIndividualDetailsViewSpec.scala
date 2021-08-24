@@ -30,7 +30,7 @@ class CheckIndividualDetailsViewSpec extends ViewBehaviours {
     val view = viewFor[CheckIndividualDetailsView](Some(emptyUserAnswers))
 
     def applyView(): HtmlFormat.Appendable =
-      view.apply(AnswerSection(None, Seq()))(fakeRequest, messages)
+      view.apply(Seq(AnswerSection(None, Seq())))(fakeRequest, messages)
 
     behave like normalPage(applyView(), messageKeyPrefix)
 

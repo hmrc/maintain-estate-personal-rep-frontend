@@ -50,7 +50,7 @@ class CheckDetailsController @Inject()(
   def renderFromUserAnswers() : Action[AnyContent] = actions.authWithBusinessName {
     implicit request =>
       val section: AnswerSection = businessPrintHelper(request.userAnswers, provisional = false, request.businessName)
-      Ok(view(section))
+      Ok(view(Seq(section)))
   }
 
   def onSubmit(): Action[AnyContent] = actions.authWithBusinessName.async {

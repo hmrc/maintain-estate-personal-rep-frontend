@@ -15,32 +15,33 @@
  *@
 
 @import controllers.business.routes._
-@import config.FrontendAppConfig
+@import views.html.components.{InputYesNo, ErrorSummary, SubmitButton}
 
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF,
-    appConfig: FrontendAppConfig
+        mainTemplate: MainTemplate,
+        formHelper: FormWithCSRF,
+        inputYesNo: InputYesNo,
+        errorSummary: ErrorSummary,
+        submitButton: SubmitButton
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)}${messages("business.ukRegisteredCompanyYesNo.title")}"
+@mainTemplate(
+    title = s"${errorPrefix(form)}${messages("business.ukRegisteredCompanyYesNo.title")}",
+    showBackLink = true
 ) {
 
     @formHelper(action = UkRegisteredCompanyYesNoController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @errorSummary(form.errors, isYesNo = true)
 
-        @components.error_summary(form.errors)
-
-        @components.input_yes_no(
+        @inputYesNo(
             field = form("value"),
-            legend = messages("business.ukRegisteredCompanyYesNo.heading"),
-            headingIsLegend = true
+            label = messages("business.ukRegisteredCompanyYesNo.heading"),
+            legendAsHeading = true
         )
 
-        @components.submit_button()
+        @submitButton()
     }
 }

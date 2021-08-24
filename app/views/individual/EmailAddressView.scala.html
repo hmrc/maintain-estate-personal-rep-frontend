@@ -15,30 +15,34 @@
  *@
 
 @import controllers.individual.routes._
+@import views.html.components.{ErrorSummary, InputText, SubmitButton}
 
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+        mainTemplate: MainTemplate,
+        formHelper: FormWithCSRF,
+        errorSummary: ErrorSummary,
+        inputText: InputText,
+        submitButton: SubmitButton
 )
 
 @(form: Form[_], mode: Mode, name: String)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)}${messages("individual.email.title")}"
+@mainTemplate(
+    title = s"${errorPrefix(form)}${messages("individual.email.title")}",
+    showBackLink = true
 ) {
 
     @formHelper(action = EmailAddressController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @errorSummary(form.errors)
 
-        @components.error_summary(form.errors)
-
-        @components.input_text(
+        @inputText(
             field = form("value"),
             label = messages("individual.email.heading", name),
-            headingIsLabel = true
+            labelClass = Some("govuk-label--l"),
+            labelAsHeading = true
         )
 
-        @components.submit_button()
+        @submitButton()
     }
 }
