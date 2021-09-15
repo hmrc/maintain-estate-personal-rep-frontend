@@ -107,6 +107,22 @@ trait Formatters {
         baseFormatter.unbind(key, value.toString)
     }
 
+  private[mappings] def utrFormatter(requiredKey: String, invalidKey: String, lengthKey: String): Formatter[String] = new Formatter[String] {
+
+    override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] = {
+      val fixedLength = 10
+      val trimmedUtr = data.get(key).map(s => s.replaceAll("\\s",""))
+      trimmedUtr match {
+        case None | Some("") => Left(Seq(FormError(key, requiredKey)))
+        case Some(s) if s.length != fixedLength => Left(Seq(FormError(key, lengthKey, Seq(fixedLength))))
+        case Some(s) if !s.matches(Validation.utrRegex) => Left(Seq(FormError(key, invalidKey)))
+        case Some(s) => Right(s)
+      }
+    }
+
+    override def unbind(key: String, value: String): Map[String, String] =
+      Map(key -> value)
+  }
 
   private[mappings] def enumerableFormatter[A](requiredKey: String, invalidKey: String)(implicit ev: Enumerable[A]): Formatter[A] =
     new Formatter[A] {
