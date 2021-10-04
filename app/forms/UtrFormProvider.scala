@@ -16,9 +16,10 @@
 
 package forms
 
-import forms.mappings.{Mappings, Validation}
-import javax.inject.Inject
+import forms.mappings.Mappings
 import play.api.data.Form
+
+import javax.inject.Inject
 
 class UtrFormProvider @Inject() extends Mappings {
 
