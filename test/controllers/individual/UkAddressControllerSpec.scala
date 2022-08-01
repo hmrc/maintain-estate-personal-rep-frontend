@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,14 +35,14 @@ import scala.concurrent.Future
 
 class UkAddressControllerSpec extends SpecBase with MockitoSugar {
 
-  val form = new UkAddressFormProvider()()
+  private val form = new UkAddressFormProvider()()
 
-  val name = Name("FirstName", None, "LastName")
-  val userAnswersWithName: UserAnswers = emptyUserAnswers.set(NamePage, name).success.value
+  private val name = Name("FirstName", None, "LastName")
+  private val userAnswersWithName: UserAnswers = emptyUserAnswers.set(NamePage, name).success.value
 
-  val validAnswer: UkAddress = UkAddress("value 1", "value 2", None, None, "AB1 1AB")
+  private val validAnswer: UkAddress = UkAddress("value 1", "value 2", None, None, "AB1 1AB")
 
-  lazy val ukAddressControllerRoute: String = routes.UkAddressController.onPageLoad(NormalMode).url
+  private lazy val ukAddressControllerRoute: String = routes.UkAddressController.onPageLoad(NormalMode).url
 
   "UkAddress controller" must {
 
@@ -141,7 +141,7 @@ class UkAddressControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad.url
 
       application.stop()
     }
@@ -158,7 +158,7 @@ class UkAddressControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad.url
 
       application.stop()
     }

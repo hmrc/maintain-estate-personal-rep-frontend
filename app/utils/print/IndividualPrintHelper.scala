@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,8 @@ class IndividualPrintHelper @Inject()(answerRowConverter: AnswerRowConverter) {
       bound.enumQuestion(IndividualOrBusinessPage, "individualOrBusiness", controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode).url),
       bound.nameQuestion(NamePage, "individual.name", rts.NameController.onPageLoad(NormalMode).url),
       bound.dateQuestion(DateOfBirthPage, "individual.dateOfBirth", rts.DateOfBirthController.onPageLoad(NormalMode).url),
-      bound.yesNoQuestion(NationalInsuranceNumberYesNoPage, "individual.nationalInsuranceNumberYesNo", rts.NationalInsuranceNumberYesNoController.onPageLoad(NormalMode).url),
+      bound.yesNoQuestion(NationalInsuranceNumberYesNoPage, "individual.nationalInsuranceNumberYesNo",
+        rts.NationalInsuranceNumberYesNoController.onPageLoad(NormalMode).url),
       bound.ninoQuestion(NationalInsuranceNumberPage, "individual.nationalInsuranceNumber", rts.NationalInsuranceNumberController.onPageLoad(NormalMode).url),
       bound.enumQuestion(PassportOrIdCardPage, "passportOrIdCard", addRts.PassportOrIdCardController.onPageLoad().url),
       bound.passportDetailsQuestion(PassportDetailsPage, "individual.passportDetails", addRts.PassportDetailsController.onPageLoad().url),
@@ -56,9 +57,11 @@ class IndividualPrintHelper @Inject()(answerRowConverter: AnswerRowConverter) {
       bound.enumQuestion(IndividualOrBusinessPage, "individualOrBusiness", controllers.routes.IndividualOrBusinessController.onPageLoad(CheckMode).url),
       bound.nameQuestion(NamePage, "individual.name", rts.NameController.onPageLoad(CheckMode).url),
       bound.dateQuestion(DateOfBirthPage, "individual.dateOfBirth", rts.DateOfBirthController.onPageLoad(CheckMode).url),
-      bound.yesNoQuestion(NationalInsuranceNumberYesNoPage, "individual.nationalInsuranceNumberYesNo", rts.NationalInsuranceNumberYesNoController.onPageLoad(CheckMode).url),
+      bound.yesNoQuestion(NationalInsuranceNumberYesNoPage, "individual.nationalInsuranceNumberYesNo",
+        rts.NationalInsuranceNumberYesNoController.onPageLoad(CheckMode).url),
       bound.ninoQuestion(NationalInsuranceNumberPage, "individual.nationalInsuranceNumber", rts.NationalInsuranceNumberController.onPageLoad(CheckMode).url),
-      bound.passportOrIdCardDetailsQuestion(PassportOrIdCardDetailsPage, "individual.passportOrIdCardDetails", amendRts.PassportOrIdCardDetailsController.onPageLoad().url),
+      bound.passportOrIdCardDetailsQuestion(PassportOrIdCardDetailsPage, "individual.passportOrIdCardDetails",
+        amendRts.PassportOrIdCardDetailsController.onPageLoad().url),
       bound.yesNoQuestion(LiveInTheUkYesNoPage, "individual.liveInTheUkYesNo", rts.LiveInTheUkYesNoController.onPageLoad(CheckMode).url),
       bound.addressQuestion(UkAddressPage, "individual.ukAddress", rts.UkAddressController.onPageLoad(CheckMode).url),
       bound.addressQuestion(NonUkAddressPage, "individual.nonUkAddress", rts.NonUkAddressController.onPageLoad(CheckMode).url),

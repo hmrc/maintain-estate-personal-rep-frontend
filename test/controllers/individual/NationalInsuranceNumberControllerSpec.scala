@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,14 +35,14 @@ import scala.concurrent.Future
 
 class NationalInsuranceNumberControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new NationalInsuranceNumberFormProvider()
-  val form = formProvider.withPrefix("individual.nationalInsuranceNumber")
+  private val formProvider = new NationalInsuranceNumberFormProvider()
+  private val form = formProvider.withPrefix("individual.nationalInsuranceNumber")
 
-  val name = Name("FirstName", None, "LastName")
-  val userAnswersWithName = emptyUserAnswers.set(NamePage, name)
+  private val name = Name("FirstName", None, "LastName")
+  private val userAnswersWithName = emptyUserAnswers.set(NamePage, name)
     .success.value
 
-  lazy val nationalInsuranceNumberRoute = routes.NationalInsuranceNumberController.onPageLoad(NormalMode).url
+  private lazy val nationalInsuranceNumberRoute = routes.NationalInsuranceNumberController.onPageLoad(NormalMode).url
 
   "NationalInsuranceNumber Controller" must {
 
@@ -139,7 +139,7 @@ class NationalInsuranceNumberControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad.url
 
       application.stop()
     }
@@ -156,7 +156,7 @@ class NationalInsuranceNumberControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad.url
 
       application.stop()
     }

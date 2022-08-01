@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,20 +41,14 @@ import scala.concurrent.Future
 
 class IdCardDetailsControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new IdCardDetailsFormProvider()
+  private val formProvider = new IdCardDetailsFormProvider()
   private def form = formProvider.withPrefix("individual")
-
-  val name: Name = Name("FirstName", None, "LastName")
-
-  val userAnswersWithName = emptyUserAnswers.set(NamePage, name).success.value
-
-  val idCardDetailsRoute: String = addRts.IdCardDetailsController.onPageLoad().url
-
-  val getRequest = FakeRequest(GET, idCardDetailsRoute)
-
-  val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptions].options
-
-  val validData: IdCard = IdCard("country", "card number", LocalDate.of(2020, 1, 1))
+  private val name: Name = Name("FirstName", None, "LastName")
+  private val userAnswersWithName = emptyUserAnswers.set(NamePage, name).success.value
+  private val idCardDetailsRoute: String = addRts.IdCardDetailsController.onPageLoad().url
+  private val getRequest = FakeRequest(GET, idCardDetailsRoute)
+  private val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptions].options
+  private val validData: IdCard = IdCard("country", "card number", LocalDate.of(2020, 1, 1))
 
   "IdCardDetails Controller" must {
 
@@ -152,7 +146,7 @@ class IdCardDetailsControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, getRequest).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad.url
 
       application.stop()
     }
@@ -175,7 +169,7 @@ class IdCardDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad.url
 
       application.stop()
     }

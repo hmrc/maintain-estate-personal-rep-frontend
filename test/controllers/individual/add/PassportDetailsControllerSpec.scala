@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,19 +41,16 @@ import scala.concurrent.Future
 
 class PassportDetailsControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new PassportDetailsFormProvider()
+  private val formProvider = new PassportDetailsFormProvider()
   private def form = formProvider.withPrefix("individual")
 
-  val name: Name = Name("FirstName", None, "LastName")
-  val userAnswersWithName = emptyUserAnswers.set(NamePage, name).success.value
+  private val name: Name = Name("FirstName", None, "LastName")
+  private val userAnswersWithName = emptyUserAnswers.set(NamePage, name).success.value
 
-  val passportDetailsRoute: String = addRts.PassportDetailsController.onPageLoad().url
-
-  val getRequest = FakeRequest(GET, passportDetailsRoute)
-
-  val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptions].options
-
-  val validData: Passport = Passport("country", "passport number", LocalDate.of(2020, 1, 1))
+  private val passportDetailsRoute: String = addRts.PassportDetailsController.onPageLoad().url
+  private val getRequest = FakeRequest(GET, passportDetailsRoute)
+  private val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptions].options
+  private val validData: Passport = Passport("country", "passport number", LocalDate.of(2020, 1, 1))
 
   "PassportDetails Controller" must {
 
@@ -150,7 +147,7 @@ class PassportDetailsControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, getRequest).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad.url
 
       application.stop()
     }
@@ -173,7 +170,7 @@ class PassportDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad.url
 
       application.stop()
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,21 +38,21 @@ import scala.concurrent.Future
 
 class DateOfBirthControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new DateFormProvider(frontendAppConfig)
+  private val formProvider = new DateFormProvider(frontendAppConfig)
   private def form = formProvider.withConfig("individual.dateOfBirth")
 
-  val validAnswer = LocalDate.now(ZoneOffset.UTC)
-  val name = Name("FirstName", None, "LastName")
+  private val validAnswer = LocalDate.now(ZoneOffset.UTC)
+  private val name = Name("FirstName", None, "LastName")
 
-  lazy val dateOfBirthRoute = routes.DateOfBirthController.onPageLoad(NormalMode).url
+  private lazy val dateOfBirthRoute = routes.DateOfBirthController.onPageLoad(NormalMode).url
 
-  val userAnswersWithName = emptyUserAnswers.set(NamePage, name)
+  private val userAnswersWithName = emptyUserAnswers.set(NamePage, name)
     .success.value
 
-  def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
+  private def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, dateOfBirthRoute)
 
-  def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
+  private def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
     FakeRequest(POST, dateOfBirthRoute)
       .withFormUrlEncodedBody(
         "value.day"   -> validAnswer.getDayOfMonth.toString,
@@ -149,7 +149,7 @@ class DateOfBirthControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, getRequest()).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad.url
 
       application.stop()
     }
@@ -162,7 +162,7 @@ class DateOfBirthControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad.url
 
       application.stop()
     }
