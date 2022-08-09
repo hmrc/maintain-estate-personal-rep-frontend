@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,16 +36,16 @@ import scala.concurrent.Future
 
 class UtrControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new UtrFormProvider()
-  val form: Form[String] = formProvider.withPrefix("business.utr")
-  val name = "Name"
+  private val formProvider = new UtrFormProvider()
+  private val form: Form[String] = formProvider.withPrefix("business.utr")
+  private val name = "Name"
 
-  val validAnswer = "1234567890"
+  private val validAnswer = "1234567890"
 
-  val baseAnswers: UserAnswers = emptyUserAnswers
+  private val baseAnswers: UserAnswers = emptyUserAnswers
     .set(NamePage, name).success.value
 
-  lazy val utrRoute: String = routes.UtrController.onPageLoad(NormalMode).url
+  private lazy val utrRoute: String = routes.UtrController.onPageLoad(NormalMode).url
 
   "Utr Controller" must {
 
@@ -143,7 +143,7 @@ class UtrControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad.url
 
       application.stop()
     }
@@ -160,7 +160,7 @@ class UtrControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad.url
 
       application.stop()
     }

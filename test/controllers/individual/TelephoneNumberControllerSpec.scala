@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,15 +36,15 @@ import scala.concurrent.Future
 
 class TelephoneNumberControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new TelephoneNumberFormProvider()
-  val form: Form[String] = formProvider.withPrefix("individual.telephoneNumber")
-  val name = Name("FirstName", None, "LastName")
-  val userAnswersWithName = emptyUserAnswers.set(NamePage, name)
+  private val formProvider = new TelephoneNumberFormProvider()
+  private val form: Form[String] = formProvider.withPrefix("individual.telephoneNumber")
+  private val name = Name("FirstName", None, "LastName")
+  private val userAnswersWithName = emptyUserAnswers.set(NamePage, name)
     .success.value
 
-  val validAnswer = "1234567890"
+  private val validAnswer = "1234567890"
 
-  lazy val telephoneNumberRoute: String = routes.TelephoneNumberController.onPageLoad(NormalMode).url
+  private lazy val telephoneNumberRoute: String = routes.TelephoneNumberController.onPageLoad(NormalMode).url
 
   "TelephoneNumber controller" must {
 
@@ -142,7 +142,7 @@ class TelephoneNumberControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad.url
 
       application.stop()
     }
@@ -159,7 +159,7 @@ class TelephoneNumberControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad.url
 
       application.stop()
     }

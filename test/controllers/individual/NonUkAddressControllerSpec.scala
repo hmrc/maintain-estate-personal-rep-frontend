@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,16 +37,16 @@ import scala.concurrent.Future
 
 class NonUkAddressControllerSpec extends SpecBase with MockitoSugar {
 
-  val form = new NonUkAddressFormProvider()()
+  private val form = new NonUkAddressFormProvider()()
 
-  val name = Name("FirstName", None, "LastName")
-  val userAnswersWithName: UserAnswers = emptyUserAnswers.set(NamePage, name).success.value
+  private val name = Name("FirstName", None, "LastName")
+  private val userAnswersWithName: UserAnswers = emptyUserAnswers.set(NamePage, name).success.value
 
-  val nonUkAddressRoute: String = routes.NonUkAddressController.onPageLoad(NormalMode).url
+  private val nonUkAddressRoute: String = routes.NonUkAddressController.onPageLoad(NormalMode).url
 
-  val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
+  private val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 
-  val validAnswer: NonUkAddress = NonUkAddress("line1", "line2", None, "country")
+  private val validAnswer: NonUkAddress = NonUkAddress("line1", "line2", None, "country")
 
   "NonUkAddress controller" must {
 
@@ -144,7 +144,7 @@ class NonUkAddressControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad.url
 
       application.stop()
     }
@@ -161,7 +161,7 @@ class NonUkAddressControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad.url
 
       application.stop()
     }

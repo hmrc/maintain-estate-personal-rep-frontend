@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,12 +56,12 @@ class IndividualNavigator @Inject()() extends Navigator {
   private def routes(mode: Mode): PartialFunction[Page, UserAnswers => Call] =
     simpleNavigation(mode) andThen (c => (_:UserAnswers) => c) orElse
       conditionalNavigation(mode)
-  
+
   private def passportOrIdCardDetailsRoute(ua: UserAnswers): Call =
     ua.get(PassportOrIdCardPage) match {
       case Some(IdCard) => addRts.IdCardDetailsController.onPageLoad()
       case Some(Passport) => addRts.PassportDetailsController.onPageLoad()
-      case _ => controllers.routes.SessionExpiredController.onPageLoad()
+      case _ => controllers.routes.SessionExpiredController.onPageLoad
     }
 
   private def combinedOrSeparateDetailsRoute(mode: Mode): Call =
