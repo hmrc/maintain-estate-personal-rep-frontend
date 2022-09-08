@@ -16,7 +16,9 @@
 
 package forms
 
+import forms.helpers.WhitespaceHelper._
 import forms.mappings.{Mappings, Validation}
+
 import javax.inject.Inject
 import models.UkAddress
 import play.api.data.Forms._
@@ -46,22 +48,24 @@ class UkAddressFormProvider @Inject() extends Mappings {
           ),
       "line3" ->
         optional(Forms.text
+          .transform(trimWhitespace, identity[String])
           .verifying(
             firstError(
               maxLength(35, "ukAddress.line3.error.length"),
               regexp(Validation.addressLineRegex, "ukAddress.line3.error.invalid")
             )
           )
-        ),
+        ).transform(emptyToNone, identity[Option[String]]),
       "line4" ->
         optional(Forms.text
+          .transform(trimWhitespace, identity[String])
           .verifying(
             firstError(
               maxLength(35, "ukAddress.line4.error.length"),
               regexp(Validation.addressLineRegex, "ukAddress.line4.error.invalid")
             )
           )
-        ),
+        ).transform(emptyToNone, identity[Option[String]]),
       "postcode" ->
         postcode("ukAddress.postcode.error.required", "ukAddress.postcode.error.invalid")
           .verifying(
