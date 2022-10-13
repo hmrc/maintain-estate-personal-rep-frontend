@@ -19,7 +19,7 @@ package controllers.actions
 import base.SpecBase
 import config.FrontendAppConfig
 import models.FakeUser
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.Application

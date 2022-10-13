@@ -21,7 +21,7 @@ import config.annotations.Individual
 import forms.UkAddressFormProvider
 import models.{Name, NormalMode, UkAddress, UserAnswers}
 import navigation.Navigator
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.individual.{NamePage, UkAddressPage}

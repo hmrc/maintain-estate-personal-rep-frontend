@@ -21,7 +21,7 @@ import java.time.LocalDate
 import base.SpecBase
 import connectors.EstatesConnector
 import models.{BusinessPersonalRep, IndividualPersonalRep, Name, NationalInsuranceNumber, UkAddress}
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
