@@ -23,7 +23,7 @@ import connectors.EstatesConnector
 import models.IndividualOrBusiness.Business
 import models.UkAddress
 import models.requests.AgentUser
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar

@@ -17,10 +17,10 @@
 package controllers
 
 import base.SpecBase
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{never, verify}
 import org.scalatestplus.mockito.MockitoSugar
-import org.mockito.Matchers.{eq => eqTo, _}
+import org.mockito.ArgumentMatchers.{eq => eqTo, _}
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

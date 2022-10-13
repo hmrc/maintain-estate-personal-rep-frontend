@@ -20,7 +20,7 @@ import base.SpecBase
 import connectors.EstatesConnector
 import models.{CheckMode, Mode, NormalMode, UserAnswers}
 import org.mockito.ArgumentCaptor
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{reset, verify, when}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
@@ -66,7 +66,7 @@ class IndexControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfter
 
         redirectLocation(result) mustBe Some(controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode).url)
 
-        val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+        val uaCaptor: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
         verify(fakeRepository).set(uaCaptor.capture)
         uaCaptor.getValue.utr mustEqual utr
         uaCaptor.getValue.dateOfDeath mustEqual LocalDate.parse(dateOfDeath)
@@ -100,7 +100,7 @@ class IndexControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfter
 
         redirectLocation(result) mustBe Some(controllers.amend.routes.CheckDetailsController.extractAndRender().url)
 
-        val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+        val uaCaptor: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
         verify(fakeRepository).set(uaCaptor.capture)
         uaCaptor.getValue.utr mustEqual utr
         uaCaptor.getValue.dateOfDeath mustEqual LocalDate.parse(dateOfDeath)

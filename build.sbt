@@ -15,7 +15,7 @@ lazy val root = (project in file("."))
   .settings(inConfig(Test)(testSettings): _*)
   .settings(majorVersion := 0)
   .settings(
-    scalaVersion := "2.12.15",
+    scalaVersion := "2.12.16",
     SilencerSettings(),
     name := appName,
     RoutesKeys.routesImport += "models._",
@@ -30,20 +30,14 @@ lazy val root = (project in file("."))
       "controllers.routes._"
     ),
     PlayKeys.playDefaultPort := 8829,
-    ScoverageKeys.coverageExcludedFiles := "<empty>;Reverse.*;.*filters.*;.*handlers.*;.*components.*;.*repositories.*;" +
-      ".*BuildInfo.*;.*javascript.*;.*FrontendAuditConnector.*;.*Routes.*;.*GuiceInjector;" +
-      ".*ControllerConfiguration;.*LanguageSwitchController",
+    ScoverageKeys.coverageExcludedFiles := "<empty>;Reverse.*;.*filters.*;.*components.*;.*Mode.*;" +
+      ".*BuildInfo.*;.*javascript.*;.*FrontendAuditConnector.*;.*Routes.*;.*GuiceInjector;",
     ScoverageKeys.coverageMinimumStmtTotal := 90,
     ScoverageKeys.coverageFailOnMinimum := true,
     ScoverageKeys.coverageHighlighting := true,
     scalacOptions ++= Seq("-feature"),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged := true,
-    update / evictionWarningOptions :=
-      EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
-    resolvers ++= Seq(
-      Resolver.jcenterRepo
-    ),
     // concatenate js
     Concat.groups := Seq(
       "javascripts/maintainestatepersonalrepfrontend-app.js" ->
@@ -65,10 +59,11 @@ lazy val root = (project in file("."))
   )
 
 lazy val testSettings: Seq[Def.Setting[_]] = Seq(
-  fork        := true,
-  javaOptions ++= Seq(
+  parallelExecution := false,
+  fork              := true,
+  javaOptions       ++= Seq(
     "-Dconfig.resource=test.application.conf"
   )
 )
 
-dependencyOverrides ++= AppDependencies.overrides
+addCommandAlias("scalastyleAll", "all scalastyle test:scalastyle")
