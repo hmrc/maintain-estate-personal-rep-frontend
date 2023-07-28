@@ -34,7 +34,7 @@
     showBackLink = true
 ) {
 
-    @formHelper(action = IndividualOrBusinessController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = IndividualOrBusinessController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @errorSummary(form.errors, radioOptions = IndividualOrBusiness.options.toSeq)
 

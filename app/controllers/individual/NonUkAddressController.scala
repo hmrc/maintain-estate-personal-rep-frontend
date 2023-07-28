@@ -54,7 +54,7 @@ class NonUkAddressController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, countryOptions.options, request.individualName, mode))
+      Ok(view(preparedForm, countryOptions.options(), request.individualName, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithIndividualName.async {
@@ -62,7 +62,7 @@ class NonUkAddressController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, request.individualName, mode))),
+          Future.successful(BadRequest(view(formWithErrors, countryOptions.options(), request.individualName, mode))),
 
         value =>
           for {

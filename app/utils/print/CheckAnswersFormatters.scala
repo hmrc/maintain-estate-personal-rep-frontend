@@ -80,7 +80,7 @@ class CheckAnswersFormatters @Inject()(languageUtils: LanguageUtils,
   }
 
   private def country(code: String)(implicit messages: Messages): Html =
-    HtmlFormat.escape(countryOptions.options.find(_.value.equals(code)).map(_.label).getOrElse(""))
+    HtmlFormat.escape(countryOptions.options().find(_.value.equals(code)).map(_.label).getOrElse(""))
 
   def formatPassportDetails(passport: Passport)(implicit messages: Messages): Html = {
     formatPassportOrIdCardDetails(passport.asCombined)
