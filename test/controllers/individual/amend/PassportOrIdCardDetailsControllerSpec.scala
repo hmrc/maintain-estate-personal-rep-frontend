@@ -45,7 +45,7 @@ class PassportOrIdCardDetailsControllerSpec extends SpecBase with MockitoSugar {
   val form: Form[CombinedPassportOrIdCard] = formProvider.withPrefix("individual.passportOrIdCardDetails")
   val name: Name = Name("John", None, "Doe")
 
-  val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptions].options
+  val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptions].options()
 
   val baseAnswers: UserAnswers = emptyUserAnswers
     .set(NamePage, name).success.value

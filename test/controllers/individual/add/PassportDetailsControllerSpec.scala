@@ -49,7 +49,7 @@ class PassportDetailsControllerSpec extends SpecBase with MockitoSugar {
 
   private val passportDetailsRoute: String = addRts.PassportDetailsController.onPageLoad().url
   private val getRequest = FakeRequest(GET, passportDetailsRoute)
-  private val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptions].options
+  private val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptions].options()
   private val validData: Passport = Passport("country", "passport number", LocalDate.of(2020, 1, 1))
 
   "PassportDetails Controller" must {

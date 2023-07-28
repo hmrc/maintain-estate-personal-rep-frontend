@@ -24,7 +24,7 @@ sealed trait IndividualIdentification
 
 object IndividualIdentification {
   implicit val reads: Reads[IndividualIdentification] =
-    (__ \ 'passport).read[CombinedPassportOrIdCard].widen[IndividualIdentification] orElse
+    (__ \ Symbol("passport")).read[CombinedPassportOrIdCard].widen[IndividualIdentification] orElse
     __.read[NationalInsuranceNumber].widen[IndividualIdentification]
 
   implicit val writes: Writes[IndividualIdentification] = Writes {
@@ -41,7 +41,7 @@ object NationalInsuranceNumber{
 }
 
 case class Passport(countryOfIssue: String, number: String, expirationDate: LocalDate) extends IndividualIdentification {
-  def asCombined = CombinedPassportOrIdCard(countryOfIssue, number, expirationDate)
+  def asCombined: CombinedPassportOrIdCard = CombinedPassportOrIdCard(countryOfIssue, number, expirationDate)
 }
 
 object Passport {
@@ -49,7 +49,7 @@ object Passport {
 }
 
 case class IdCard(countryOfIssue: String, number: String, expirationDate: LocalDate) extends IndividualIdentification {
-   def asCombined = CombinedPassportOrIdCard(countryOfIssue, number, expirationDate)
+   def asCombined: CombinedPassportOrIdCard = CombinedPassportOrIdCard(countryOfIssue, number, expirationDate)
 }
 
 object IdCard {

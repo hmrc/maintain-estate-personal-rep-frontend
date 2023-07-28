@@ -54,7 +54,7 @@ class PassportOrIdCardDetailsController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, request.individualName, countryOptions.options))
+      Ok(view(preparedForm, request.individualName, countryOptions.options()))
   }
 
   def onSubmit(): Action[AnyContent] = actions.authWithIndividualName.async {
@@ -62,7 +62,7 @@ class PassportOrIdCardDetailsController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, request.individualName, countryOptions.options))),
+          Future.successful(BadRequest(view(formWithErrors, request.individualName, countryOptions.options()))),
 
         value =>
           for {

@@ -19,10 +19,12 @@ package controllers.individual.add
 import config.annotations.Individual
 import controllers.actions.Actions
 import forms.IdCardDetailsFormProvider
+
 import javax.inject.Inject
-import models.NormalMode
+import models.{IdCard, NormalMode}
 import navigation.Navigator
 import pages.individual.add.IdCardDetailsPage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -43,7 +45,7 @@ class IdCardDetailsController @Inject()(
                                          val countryOptions: CountryOptions
                                        )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider.withPrefix("individual")
+  val form: Form[IdCard] = formProvider.withPrefix("individual")
 
   def onPageLoad(): Action[AnyContent] = actions.authWithIndividualName {
     implicit request =>
@@ -53,7 +55,7 @@ class IdCardDetailsController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, countryOptions.options, request.individualName))
+      Ok(view(preparedForm, countryOptions.options(), request.individualName))
   }
 
   def onSubmit(): Action[AnyContent] = actions.authWithIndividualName.async {
@@ -61,7 +63,7 @@ class IdCardDetailsController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, request.individualName))),
+          Future.successful(BadRequest(view(formWithErrors, countryOptions.options(), request.individualName))),
 
         value =>
           for {

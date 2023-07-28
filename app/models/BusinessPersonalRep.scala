@@ -31,24 +31,24 @@ final case class BusinessPersonalRep(name: String,
 object BusinessPersonalRep extends EntityReads {
 
   implicit val reads: Reads[BusinessPersonalRep] =
-    ((__ \ 'orgName).read[String] and
-      (__ \ 'phoneNumber).read[String] and
-      __.lazyRead(readNullableAtSubPath[String](__ \ 'identification \ 'utr)) and
-      __.lazyRead(readAtSubPath[Address](__ \ 'identification \ 'address)) and
-      (__ \ 'email).readNullable[String] and
-      (__ \ 'entityStart).read[LocalDate]).tupled.map {
+    ((__ \ Symbol("orgName")).read[String] and
+      (__ \ Symbol("phoneNumber")).read[String] and
+      __.lazyRead(readNullableAtSubPath[String](__ \ Symbol("identification") \ Symbol("utr"))) and
+      __.lazyRead(readAtSubPath[Address](__ \ Symbol("identification") \ Symbol("address"))) and
+      (__ \ Symbol("email")).readNullable[String] and
+      (__ \ Symbol("entityStart")).read[LocalDate]).tupled.map {
 
       case (name, phoneNumber, utr, address, email, date) =>
         BusinessPersonalRep(name, phoneNumber, utr, address, email, date)
     }
 
   implicit val writes: Writes[BusinessPersonalRep] =
-    ((__ \ 'orgName).write[String] and
-      (__ \ 'phoneNumber).write[String] and
-      (__ \ 'identification \ 'utr).writeNullable[String] and
-      (__ \ 'identification \ 'address).write[Address] and
+    ((__ \ Symbol("orgName")).write[String] and
+      (__ \ Symbol("phoneNumber")).write[String] and
+      (__ \ Symbol("identification") \ Symbol("utr")).writeNullable[String] and
+      (__ \ Symbol("identification") \ Symbol("address")).write[Address] and
       (__ \ "email").writeNullable[String] and
-      (__ \ 'entityStart).write[LocalDate]
+      (__ \ Symbol("entityStart")).write[LocalDate]
       ).apply(unlift(BusinessPersonalRep.unapply))
 
 }
