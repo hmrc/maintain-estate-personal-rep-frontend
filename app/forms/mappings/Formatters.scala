@@ -16,7 +16,7 @@
 
 package forms.mappings
 
-import forms.helpers.WhitespaceHelper.replaceSmartApostrophesAndTrim
+import forms.helpers.FormHelper.replaceSmartApostrophesAndTrim
 import models.Enumerable
 import play.api.data.FormError
 import play.api.data.format.Formatter
