@@ -16,13 +16,13 @@
 
 package forms
 
-import forms.helpers.FormHelper._
+import forms.helpers.FormHelper.emptyToNone
 import forms.mappings.{Mappings, Validation}
+import models.UkAddress
+import play.api.data.Form
+import play.api.data.Forms._
 
 import javax.inject.Inject
-import models.UkAddress
-import play.api.data.Forms._
-import play.api.data.{Form, Forms}
 
 class UkAddressFormProvider @Inject() extends Mappings {
 
@@ -47,8 +47,7 @@ class UkAddressFormProvider @Inject() extends Mappings {
             )
           ),
       "line3" ->
-        optional(Forms.text
-          .transform(trimWhitespace, identity[String])
+        optional(text()
           .verifying(
             firstError(
               maxLength(35, "ukAddress.line3.error.length"),
@@ -57,8 +56,7 @@ class UkAddressFormProvider @Inject() extends Mappings {
           )
         ).transform(emptyToNone, identity[Option[String]]),
       "line4" ->
-        optional(Forms.text
-          .transform(trimWhitespace, identity[String])
+        optional(text()
           .verifying(
             firstError(
               maxLength(35, "ukAddress.line4.error.length"),

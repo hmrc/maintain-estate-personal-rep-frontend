@@ -163,6 +163,21 @@ class UkAddressFormProviderSpec extends StringFieldBehaviours {
     }
   }
 
+  "all lines excluding postcode" must {
+    "bind whitespace, trim text, and replace smart apostrophes with single quotes" in {
+      val smartApostrophesOpen = '‘'
+      val smartApostrophesClose= '’'
+
+      val testAddressLine = s"   ${smartApostrophesOpen}TestAddressLine${smartApostrophesClose}  "
+
+      val result = form.bind(
+        Map("line1" -> testAddressLine, "line2" -> testAddressLine, "line3" -> testAddressLine, "line4" -> testAddressLine, "postcode" -> "AB12CD")
+      )
+
+      result.value.value shouldBe UkAddress("'TestAddressLine'", "'TestAddressLine'", Some("'TestAddressLine'"), Some("'TestAddressLine'"), "AB12CD")
+    }
+  }
+
   ".postcode" must {
 
     val fieldName = "postcode"
@@ -189,5 +204,6 @@ class UkAddressFormProviderSpec extends StringFieldBehaviours {
       requiredError = FormError(fieldName, invalidKey)
     )
   }
+
 
 }

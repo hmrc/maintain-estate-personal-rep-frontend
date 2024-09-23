@@ -127,6 +127,21 @@ class NonUkAddressFormProviderSpec extends StringFieldBehaviours {
     }
   }
 
+  "all lines excluding country" must {
+    "bind whitespace, trim text, and replace smart apostrophes with single quotes" in {
+      val smartApostrophesOpen= '‘'
+      val smartApostrophesClose= '’'
+
+      val testAddressLine =  s"   ${smartApostrophesOpen}TestAddressLine${smartApostrophesClose}  "
+
+      val result = form.bind(
+        Map("line1" -> testAddressLine, "line2" -> testAddressLine, "line3" -> testAddressLine, "country" -> "NL")
+      )
+
+      result.value.value shouldBe NonUkAddress("'TestAddressLine'", "'TestAddressLine'", Some("'TestAddressLine'"), "NL")
+    }
+  }
+
   ".country" must {
 
     val fieldName = "country"
