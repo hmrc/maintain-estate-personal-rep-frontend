@@ -16,13 +16,13 @@
 
 package forms
 
-import forms.helpers.WhitespaceHelper._
+import forms.helpers.FormHelper._
 import forms.mappings.{Mappings, Validation}
+import models.NonUkAddress
+import play.api.data.Form
+import play.api.data.Forms._
 
 import javax.inject.Inject
-import models.NonUkAddress
-import play.api.data.Forms._
-import play.api.data.{Form, Forms}
 
 class NonUkAddressFormProvider @Inject() extends Mappings {
 
@@ -47,8 +47,8 @@ class NonUkAddressFormProvider @Inject() extends Mappings {
             )
           ),
       "line3" ->
-        optional(Forms.text
-          .transform(trimWhitespace, identity[String])
+        optional(
+          text()
           .verifying(
             firstError(
               maxLength(35, "nonUkAddress.line3.error.length"),

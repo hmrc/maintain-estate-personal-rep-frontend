@@ -17,6 +17,7 @@
 package forms
 
 import forms.behaviours.{OptionalFieldBehaviours, StringFieldBehaviours}
+import models.Name
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 
@@ -128,5 +129,22 @@ class NameFormProviderSpec extends StringFieldBehaviours with OptionalFieldBehav
       fieldName,
       requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
     )
+  }
+
+  "all name fields" must {
+    "bind whitespace, trim text, and replace smart apostrophes with single quotes" in {
+      val smartApostrophesOpen = '‘'
+      val smartApostrophesClose= '’'
+
+      val firstName = s"   ${smartApostrophesOpen}TestFirstName$smartApostrophesClose  "
+      val middleName = s"   ${smartApostrophesOpen}TestMiddleName$smartApostrophesClose  "
+      val lastName = s"   ${smartApostrophesOpen}TestLastName$smartApostrophesClose  "
+
+      val result = form.bind(Map("firstName" -> firstName, "middleName" -> middleName, "lastName" -> lastName))
+
+      result.value.value shouldBe Name("'TestFirstName'", Some("'TestMiddleName'"), "'TestLastName'")
+    }
+
+
   }
 }

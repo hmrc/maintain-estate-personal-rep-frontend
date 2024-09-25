@@ -16,17 +16,17 @@
 
 package forms
 
-import forms.helpers.WhitespaceHelper._
+import forms.helpers.FormHelper._
 import forms.mappings.{Mappings, Validation}
-
-import javax.inject.Inject
 import models.Name
 import play.api.data.Form
 import play.api.data.Forms._
 
+import javax.inject.Inject
+
 class NameFormProvider @Inject() extends Mappings {
 
-   def withPrefix(prefix: String): Form[Name] =   Form(
+  def withPrefix(prefix: String): Form[Name] = Form(
     mapping(
       "firstName" -> text(s"$prefix.error.firstName.required")
         .verifying(
@@ -37,7 +37,6 @@ class NameFormProvider @Inject() extends Mappings {
           )
         ),
       "middleName" -> optional(text()
-        .transform(trimWhitespace, identity[String])
         .verifying(
           firstError(
             maxLength(35, s"$prefix.error.middleName.length"),
@@ -53,5 +52,5 @@ class NameFormProvider @Inject() extends Mappings {
           )
         )
     )(Name.apply)(Name.unapply)
-   )
- }
+  )
+}
