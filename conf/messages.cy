@@ -174,6 +174,7 @@ individual.dateOfBirth.error.past=Mae’n rhaid i ddyddiad geni’r cynrychiolyd
 individual.nationalInsuranceNumberYesNo.checkYourAnswersLabel=A oes gan {0} rif Yswiriant Gwladol?
 individual.nationalInsuranceNumberYesNo.title=A oes gan y cynrychiolydd personol rif Yswiriant Gwladol?
 individual.nationalInsuranceNumberYesNo.heading=A oes gan {0} rif Yswiriant Gwladol?
+individual.nationalInsuranceNumberYesNo.hint = Mae hwn ar ei gerdyn Yswiriant Gwladol. Er enghraifft, ‘QQ 12 34 56 C’.
 individual.nationalInsuranceNumberYesNo.error.required=Dewiswch ‘Iawn’ os ydych yn gwybod rhif Yswiriant Gwladol y cynrychiolydd personol
 individual.nationalInsuranceNumber.checkYourAnswersLabel=Beth yw rhif Yswiriant Gwladol {0}?
 individual.nationalInsuranceNumber.title=Beth yw rhif Yswiriant Gwladol y cynrychiolydd personol?

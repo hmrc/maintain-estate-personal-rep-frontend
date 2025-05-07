@@ -204,6 +204,7 @@ individual.dateOfBirth.error.past = Personal representative’s date of birth mu
 individual.nationalInsuranceNumberYesNo.checkYourAnswersLabel = Does {0} have a National Insurance number?
 individual.nationalInsuranceNumberYesNo.title = Does the personal representative have a National Insurance number?
 individual.nationalInsuranceNumberYesNo.heading = Does {0} have a National Insurance number?
+individual.nationalInsuranceNumberYesNo.hint = It’s on your National Insurance card, benefit letter, payslip or P60. For example, ‘QQ 12 34 56 C’.
 individual.nationalInsuranceNumberYesNo.error.required = Select yes if you know the personal representative’s National Insurance number
 
 individual.nationalInsuranceNumber.checkYourAnswersLabel = What is {0}’s National Insurance number?
