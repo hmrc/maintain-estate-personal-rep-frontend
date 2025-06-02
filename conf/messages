@@ -26,7 +26,7 @@ index.guidance = Welcome to your new frontend. Please see the README file for a 
 session_expired.title = For your security, we signed you out
 session_expired.heading = For your security, we signed you out
 session_expired.guidance = This is because you have been inactive on the service for 15 minutes.
-session_expired.guidance.2 = You will need to sign in to continue maintaining the estate.
+session_expired.guidance.2 = You will need to sign in to continue managing the estate.
 
 site.back = Back
 site.delete = Remove
