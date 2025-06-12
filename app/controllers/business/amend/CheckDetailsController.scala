@@ -20,19 +20,19 @@ import config.FrontendAppConfig
 import connectors.EstatesConnector
 import controllers.actions.Actions
 import handlers.ErrorHandler
-import javax.inject.Inject
 import models.PersonalRepresentative
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import utils.Session
 import utils.mappers.BusinessMapper
 import utils.print.BusinessPrintHelper
 import viewmodels.AnswerSection
 import views.html.business.amend.CheckBusinessDetailsView
-import utils.Session
 
-import scala.concurrent.{ExecutionContext, Future}
+import javax.inject.Inject
+import scala.concurrent.ExecutionContext
 
 class CheckDetailsController @Inject()(
                                         override val messagesApi: MessagesApi,
@@ -64,7 +64,7 @@ class CheckDetailsController @Inject()(
       }.getOrElse{
         logger.error(s"[Session ID: ${Session.id(hc)}][UTR: ${request.userAnswers.utr}]" +
           s" error mapping user answers to Business Personal rep")
-        Future.successful(InternalServerError(errorHandler.internalServerErrorTemplate))
+        errorHandler.internalServerErrorTemplate.map(html => InternalServerError(html))
       }
   }
 }

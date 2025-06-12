@@ -26,7 +26,7 @@
         submitButton: SubmitButton
 )
 
-@(form: Form[_], countryOptions: Seq[InputOption], name: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], countryOptions: Seq[InputOption], name: String, mode: Mode)(implicit request: RequestHeader, messages: Messages)
 
 @mainTemplate(
     title = s"${errorPrefix(form)}${messages("individual.nonUkAddress.title")}",

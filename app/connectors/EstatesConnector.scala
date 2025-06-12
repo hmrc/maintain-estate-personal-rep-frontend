@@ -17,33 +17,38 @@
 package connectors
 
 import config.FrontendAppConfig
-import javax.inject.Inject
 import models.{PersonalRep, PersonalRepresentative}
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.http.HttpReads.Implicits._
-import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
-import uk.gov.hmrc.http.HttpClient
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class EstatesConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
+class EstatesConnector @Inject()(http: HttpClientV2, config: FrontendAppConfig) {
 
   private def getPersonalRepUrl(utr: String) = s"${config.estatesUrl}/estates/$utr/transformed/personal-representative"
 
   def getPersonalRep(utr: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[PersonalRep] = {
-    http.GET[PersonalRep](getPersonalRepUrl(utr))
+    val fullUrl = getPersonalRepUrl(utr)
+    http.get(url"$fullUrl").execute[PersonalRep]
   }
 
   private def addOrAmendPersonalRepUrl(utr: String) = s"${config.estatesUrl}/estates/personal-rep/add-or-amend/$utr"
 
   def addOrAmendPersonalRep(utr: String, personalRep: PersonalRepresentative)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
-    http.POST[JsValue, HttpResponse](addOrAmendPersonalRepUrl(utr), Json.toJson(personalRep))
+    val fullUrl = addOrAmendPersonalRepUrl(utr)
+    http.post(url"$fullUrl")
+      .withBody(Json.toJson(personalRep))
+      .execute[HttpResponse]
   }
 
   private def getDateOfDeathUrl(utr: String) = s"${config.estatesUrl}/estates/$utr/date-of-death"
 
   def getDateOfDeath(utr: String)(implicit hc: HeaderCarrier, ex: ExecutionContext): Future[JsValue] = {
-    http.GET[JsValue](getDateOfDeathUrl(utr))
+    val fullUrl = getDateOfDeathUrl(utr)
+    http.get(url"$fullUrl").execute[JsValue]
   }
 
 }
