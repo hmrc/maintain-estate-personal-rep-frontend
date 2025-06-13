@@ -27,7 +27,7 @@
     heading: Heading
 )
 
-@(answerSection: Seq[AnswerSection])(implicit request: Request[_], messages: Messages)
+@(answerSection: Seq[AnswerSection])(implicit request: RequestHeader, messages: Messages)
 
 @mainTemplate(
     title = messages("individual.checkDetails.title"),

@@ -20,7 +20,6 @@ import config.FrontendAppConfig
 import connectors.EstatesConnector
 import controllers.actions.Actions
 import handlers.ErrorHandler
-import javax.inject.Inject
 import models.PersonalRepresentative
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -31,7 +30,8 @@ import utils.print.IndividualPrintHelper
 import viewmodels.AnswerSection
 import views.html.individual.amend.CheckIndividualDetailsView
 
-import scala.concurrent.{ExecutionContext, Future}
+import javax.inject.Inject
+import scala.concurrent.ExecutionContext
 
 class CheckDetailsController @Inject()(
                                         override val messagesApi: MessagesApi,
@@ -44,9 +44,9 @@ class CheckDetailsController @Inject()(
                                         mapper: IndividualMapper,
                                         errorHandler: ErrorHandler
                                       )(implicit ec: ExecutionContext
-) extends FrontendBaseController with I18nSupport with Logging {
+                                      ) extends FrontendBaseController with I18nSupport with Logging {
 
-  def renderFromUserAnswers() : Action[AnyContent] = actions.authWithIndividualName {
+  def renderFromUserAnswers(): Action[AnyContent] = actions.authWithIndividualName {
     implicit request =>
       val section: AnswerSection = printHelper(request.userAnswers, provisional = false, request.individualName)
       Ok(view(Seq(section)))
@@ -60,10 +60,10 @@ class CheckDetailsController @Inject()(
           connector.addOrAmendPersonalRep(request.userAnswers.utr, PersonalRepresentative(Some(individual), None)).map(_ =>
             Redirect(appConfig.maintainDeclarationUrl(request.request.user.isAgent))
           )
-      }.getOrElse{
+      }.getOrElse {
         logger.error(s"[Session ID: ${utils.Session.id(hc)}][UTR: ${request.userAnswers.utr}]" +
           s" error mapping user answers to Individual Personal rep")
-        Future.successful(InternalServerError(errorHandler.internalServerErrorTemplate))
+        errorHandler.internalServerErrorTemplate.map(html => InternalServerError(html))
       }
   }
 }
