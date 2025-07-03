@@ -43,7 +43,7 @@ class UkCompanyNameController @Inject()(
 
   val form: Form[String] = formProvider.withPrefix("business.ukCompanyName", 53)
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authenticatedForUtr {
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithData {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(NamePage) match {
@@ -54,7 +54,7 @@ class UkCompanyNameController @Inject()(
       Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions.authenticatedForUtr.async {
+  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithData.async {
     implicit request =>
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>

@@ -39,9 +39,9 @@ class Actions @Inject()(
     authWithData andThen verifyUtr
 
   def authWithBusinessName: ActionBuilder[BusinessNameRequest, AnyContent] =
-    authenticatedForUtr andThen requireBusinessName
+    authWithData andThen requireBusinessName
 
   def authWithIndividualName: ActionBuilder[IndividualNameRequest, AnyContent] =
-    authenticatedForUtr andThen requireIndividualName
+    authWithData andThen requireIndividualName
 
 }
