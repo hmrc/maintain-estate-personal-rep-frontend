@@ -26,7 +26,7 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class EstatesConnector @Inject()(http: HttpClientV2, config: FrontendAppConfig) {
+class EstatesConnector @Inject() (http: HttpClientV2, config: FrontendAppConfig) {
 
   private def getPersonalRepUrl(utr: String) = s"${config.estatesUrl}/estates/$utr/transformed/personal-representative"
 
@@ -37,9 +37,13 @@ class EstatesConnector @Inject()(http: HttpClientV2, config: FrontendAppConfig) 
 
   private def addOrAmendPersonalRepUrl(utr: String) = s"${config.estatesUrl}/estates/personal-rep/add-or-amend/$utr"
 
-  def addOrAmendPersonalRep(utr: String, personalRep: PersonalRepresentative)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
+  def addOrAmendPersonalRep(utr: String, personalRep: PersonalRepresentative)(implicit
+    hc: HeaderCarrier,
+    ec: ExecutionContext
+  ): Future[HttpResponse] = {
     val fullUrl = addOrAmendPersonalRepUrl(utr)
-    http.post(url"$fullUrl")
+    http
+      .post(url"$fullUrl")
       .withBody(Json.toJson(personalRep))
       .execute[HttpResponse]
   }

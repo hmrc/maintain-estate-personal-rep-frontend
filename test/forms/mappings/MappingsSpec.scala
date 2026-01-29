@@ -34,12 +34,14 @@ object MappingsSpec {
 
     implicit val fooEnumerable: Enumerable[Foo] =
       Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+
   }
+
 }
 
 class MappingsSpec extends AnyWordSpec with Matchers with OptionValues with Mappings {
 
-  private val smartApostrophesOpen: Char = '‘'
+  private val smartApostrophesOpen: Char  = '‘'
   private val smartApostrophesClose: Char = '’'
 
   import MappingsSpec._
@@ -58,8 +60,8 @@ class MappingsSpec extends AnyWordSpec with Matchers with OptionValues with Mapp
 
     "remove leading and trialing whitespace, and replace smart apostrophes with single quotes" in {
       val result = testForm.bind(
-          Map("value" -> s"   Peter O${smartApostrophesOpen}Hanraha${smartApostrophesClose}hanrahan    ")
-        )
+        Map("value" -> s"   Peter O${smartApostrophesOpen}Hanraha${smartApostrophesClose}hanrahan    ")
+      )
 
       result.get mustEqual "Peter O'Hanraha'hanrahan"
     }
@@ -75,7 +77,7 @@ class MappingsSpec extends AnyWordSpec with Matchers with OptionValues with Mapp
     }
 
     "return a custom error message" in {
-      val form = Form("value" -> text("custom.error"))
+      val form   = Form("value" -> text("custom.error"))
       val result = form.bind(Map("value" -> ""))
       result.errors must contain(FormError("value", "custom.error"))
     }
@@ -158,7 +160,7 @@ class MappingsSpec extends AnyWordSpec with Matchers with OptionValues with Mapp
 
     val testForm: Form[String] =
       Form(
-        "value" -> utr("error.required", "error.invalid", "error.length" )
+        "value" -> utr("error.required", "error.invalid", "error.length")
       )
 
     "bind a valid utr" in {
@@ -170,7 +172,6 @@ class MappingsSpec extends AnyWordSpec with Matchers with OptionValues with Mapp
       val result = testForm.bind(Map("value" -> " 123  4567  890 "))
       result.get mustEqual "1234567890"
     }
-
 
     "not bind an empty string" in {
       val result = testForm.bind(Map("value" -> ""))
@@ -224,4 +225,5 @@ class MappingsSpec extends AnyWordSpec with Matchers with OptionValues with Mapp
       result.errors must contain(FormError("value", "error.required"))
     }
   }
+
 }

@@ -27,7 +27,8 @@ import scala.util.Try
 class BusinessExtractor {
 
   def apply(answers: UserAnswers, business: BusinessPersonalRep): Try[UserAnswers] =
-    answers.deleteAtPath(pages.business.basePath)
+    answers
+      .deleteAtPath(pages.business.basePath)
       .flatMap(_.set(IndividualOrBusinessPage, Business))
       .flatMap(_.set(NamePage, business.name))
       .flatMap(_.set(TelephoneNumberPage, business.phoneNumber))
@@ -36,33 +37,35 @@ class BusinessExtractor {
       .flatMap(answers => extractEmailAddress(business.email, answers))
       .flatMap(_.set(StartDatePage, business.entityStart))
 
-  private def extractUtr(utr: Option[String], answers: UserAnswers) : Try[UserAnswers] = {
+  private def extractUtr(utr: Option[String], answers: UserAnswers): Try[UserAnswers] =
     utr match {
       case Some(utr) =>
-        answers.set(UkRegisteredCompanyYesNoPage, true)
-        .flatMap(_.set(UtrPage, utr))
-      case _ => answers.set(UkRegisteredCompanyYesNoPage, false)
+        answers
+          .set(UkRegisteredCompanyYesNoPage, true)
+          .flatMap(_.set(UtrPage, utr))
+      case _         => answers.set(UkRegisteredCompanyYesNoPage, false)
     }
-  }
 
-  private def extractAddress(address: Address, answers: UserAnswers) : Try[UserAnswers] = {
+  private def extractAddress(address: Address, answers: UserAnswers): Try[UserAnswers] =
     address match {
-      case uk: UkAddress =>
-        answers.set(AddressUkYesNoPage, true)
+      case uk: UkAddress       =>
+        answers
+          .set(AddressUkYesNoPage, true)
           .flatMap(_.set(UkAddressPage, uk))
       case nonUk: NonUkAddress =>
-        answers.set(AddressUkYesNoPage, false)
+        answers
+          .set(AddressUkYesNoPage, false)
           .flatMap(_.set(NonUkAddressPage, nonUk))
     }
-  }
 
-  private def extractEmailAddress(emailAddress: Option[String], userAnswers: UserAnswers): Try[UserAnswers] = {
+  private def extractEmailAddress(emailAddress: Option[String], userAnswers: UserAnswers): Try[UserAnswers] =
     emailAddress match {
       case Some(email) =>
-        userAnswers.set(EmailAddressYesNoPage, true)
+        userAnswers
+          .set(EmailAddressYesNoPage, true)
           .flatMap(_.set(EmailAddressPage, email))
-      case None =>
+      case None        =>
         userAnswers.set(EmailAddressYesNoPage, false)
     }
-  }
+
 }

@@ -36,29 +36,27 @@ class BusinessMapper extends Logging {
           readAddress and
           readEmailAddress and
           StartDatePage.path.read[LocalDate]
-        ) (BusinessPersonalRep.apply _)
+      )(BusinessPersonalRep.apply _)
 
     answers.data.validate[BusinessPersonalRep](readFromUserAnswers) match {
       case JsSuccess(value, _) =>
         Some(value)
-      case JsError(errors) =>
+      case JsError(errors)     =>
         logger.error(s"Failed to rehydrate BusinessPersonalRep from UserAnswers due to $errors")
         None
     }
   }
 
-  private def readAddress: Reads[Address] = {
+  private def readAddress: Reads[Address] =
     AddressUkYesNoPage.path.read[Boolean].flatMap[Address] {
-      case true => UkAddressPage.path.read[UkAddress].widen[Address]
+      case true  => UkAddressPage.path.read[UkAddress].widen[Address]
       case false => NonUkAddressPage.path.read[NonUkAddress].widen[Address]
     }
-  }
 
-  private def readEmailAddress: Reads[Option[String]] = {
+  private def readEmailAddress: Reads[Option[String]] =
     EmailAddressYesNoPage.path.read[Boolean].flatMap[Option[String]] {
-      case true => EmailAddressPage.path.read[String].map(Some(_))
+      case true  => EmailAddressPage.path.read[String].map(Some(_))
       case false => Reads(_ => JsSuccess(None))
     }
-  }
 
 }

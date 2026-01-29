@@ -36,9 +36,9 @@ import scala.concurrent.Future
 
 class NonUkCompanyNameControllerSpec extends SpecBase with MockitoSugar {
 
-  private val formProvider = new StringFormProvider()
+  private val formProvider       = new StringFormProvider()
   private val form: Form[String] = formProvider.withPrefix("business.nonUkCompanyName", 53)
-  private val name = "Name"
+  private val name               = "Name"
 
   private lazy val nameRoute: String = routes.NonUkCompanyNameController.onPageLoad(NormalMode).url
 
@@ -64,7 +64,7 @@ class NonUkCompanyNameControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val ua = emptyUserAnswers.set(NamePage, name)
+      val ua          = emptyUserAnswers.set(NamePage, name)
       val application = applicationBuilder(userAnswers = Some(ua.success.value)).build()
 
       val request = FakeRequest(GET, nameRoute)
@@ -160,4 +160,5 @@ class NonUkCompanyNameControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
   }
+
 }

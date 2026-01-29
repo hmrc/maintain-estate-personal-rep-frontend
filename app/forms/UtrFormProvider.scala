@@ -27,10 +27,11 @@ class UtrFormProvider @Inject() extends Mappings {
     Form(
       "value" -> utr(
         requiredKey = s"$messagePrefix.error.required",
-        invalidKey  = s"$messagePrefix.error.invalid",
-        lengthKey   = s"$messagePrefix.error.length"
+        invalidKey = s"$messagePrefix.error.invalid",
+        lengthKey = s"$messagePrefix.error.length"
       ).verifying(
         nonEmptyString("value", s"$messagePrefix.error.required")
       )
     )
+
 }

@@ -26,7 +26,7 @@ import pages.individual._
 import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage, PassportOrIdCardPage, StartDatePage}
 import pages.individual.amend.PassportOrIdCardDetailsPage
 
-class IndividualNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks  {
+class IndividualNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks {
 
   val navigator = new IndividualNavigator
 
@@ -36,125 +36,143 @@ class IndividualNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks  {
 
       val mode = NormalMode
 
-      "name page -> date of birth page" in {
-
-        navigator.nextPage(NamePage, mode, emptyUserAnswers)
+      "name page -> date of birth page" in
+        navigator
+          .nextPage(NamePage, mode, emptyUserAnswers)
           .mustBe(rts.DateOfBirthController.onPageLoad(mode))
-      }
 
-      "date of birth page -> Nino Yes No page" in {
-
-        navigator.nextPage(DateOfBirthPage, mode, emptyUserAnswers)
+      "date of birth page -> Nino Yes No page" in
+        navigator
+          .nextPage(DateOfBirthPage, mode, emptyUserAnswers)
           .mustBe(rts.NationalInsuranceNumberYesNoController.onPageLoad(mode))
-      }
 
       "Nino Yes No page -> Yes -> Nino page" in {
         val answers = emptyUserAnswers
-          .set(NationalInsuranceNumberYesNoPage, true).success.value
+          .set(NationalInsuranceNumberYesNoPage, true)
+          .success
+          .value
 
-        navigator.nextPage(NationalInsuranceNumberYesNoPage, mode, answers)
+        navigator
+          .nextPage(NationalInsuranceNumberYesNoPage, mode, answers)
           .mustBe(rts.NationalInsuranceNumberController.onPageLoad(mode))
       }
 
       "Nino Yes No page -> No -> Passport Or IDCard page" in {
         val answers = emptyUserAnswers
-          .set(NationalInsuranceNumberYesNoPage, false).success.value
+          .set(NationalInsuranceNumberYesNoPage, false)
+          .success
+          .value
 
-        navigator.nextPage(NationalInsuranceNumberYesNoPage, mode, answers)
+        navigator
+          .nextPage(NationalInsuranceNumberYesNoPage, mode, answers)
           .mustBe(addRts.PassportOrIdCardController.onPageLoad())
       }
 
       "Passport Or ID Card page -> Passport -> Passport page" in {
         val answers = emptyUserAnswers
-          .set(PassportOrIdCardPage, PassportOrIdCard.Passport).success.value
+          .set(PassportOrIdCardPage, PassportOrIdCard.Passport)
+          .success
+          .value
 
-        navigator.nextPage(PassportOrIdCardPage, mode, answers)
+        navigator
+          .nextPage(PassportOrIdCardPage, mode, answers)
           .mustBe(addRts.PassportDetailsController.onPageLoad())
       }
 
       "Passport Or ID Card page -> IdCard -> Passport page" in {
         val answers = emptyUserAnswers
-          .set(PassportOrIdCardPage, PassportOrIdCard.IdCard).success.value
+          .set(PassportOrIdCardPage, PassportOrIdCard.IdCard)
+          .success
+          .value
 
-        navigator.nextPage(PassportOrIdCardPage, mode, answers)
+        navigator
+          .nextPage(PassportOrIdCardPage, mode, answers)
           .mustBe(addRts.IdCardDetailsController.onPageLoad())
       }
 
-      "Passport page -> LiveInTheUK Yes No page" in {
-
-        navigator.nextPage(PassportDetailsPage, mode, emptyUserAnswers)
+      "Passport page -> LiveInTheUK Yes No page" in
+        navigator
+          .nextPage(PassportDetailsPage, mode, emptyUserAnswers)
           .mustBe(rts.LiveInTheUkYesNoController.onPageLoad(mode))
-      }
 
-      "ID Card page -> LiveInTheUK Yes No page" in {
-
-        navigator.nextPage(IdCardDetailsPage, mode, emptyUserAnswers)
+      "ID Card page -> LiveInTheUK Yes No page" in
+        navigator
+          .nextPage(IdCardDetailsPage, mode, emptyUserAnswers)
           .mustBe(rts.LiveInTheUkYesNoController.onPageLoad(mode))
-      }
 
-      "Nino page -> LiveInTheUK Yes No page" in {
-
-        navigator.nextPage(NationalInsuranceNumberPage, mode, emptyUserAnswers)
+      "Nino page -> LiveInTheUK Yes No page" in
+        navigator
+          .nextPage(NationalInsuranceNumberPage, mode, emptyUserAnswers)
           .mustBe(rts.LiveInTheUkYesNoController.onPageLoad(mode))
-      }
 
       "Live In UK page -> Yes -> UK Address page" in {
         val answers = emptyUserAnswers
-          .set(LiveInTheUkYesNoPage, true).success.value
+          .set(LiveInTheUkYesNoPage, true)
+          .success
+          .value
 
-        navigator.nextPage(LiveInTheUkYesNoPage, mode, answers)
+        navigator
+          .nextPage(LiveInTheUkYesNoPage, mode, answers)
           .mustBe(rts.UkAddressController.onPageLoad(mode))
       }
 
       "Live In UK page -> No -> Non UK Address page" in {
         val answers = emptyUserAnswers
-          .set(LiveInTheUkYesNoPage, false).success.value
+          .set(LiveInTheUkYesNoPage, false)
+          .success
+          .value
 
-        navigator.nextPage(LiveInTheUkYesNoPage, mode, answers)
+        navigator
+          .nextPage(LiveInTheUkYesNoPage, mode, answers)
           .mustBe(rts.NonUkAddressController.onPageLoad(mode))
       }
 
-      "UK address page -> Email address yes no page" in {
-        navigator.nextPage(UkAddressPage, mode, emptyUserAnswers)
+      "UK address page -> Email address yes no page" in
+        navigator
+          .nextPage(UkAddressPage, mode, emptyUserAnswers)
           .mustBe(controllers.individual.routes.EmailAddressYesNoController.onPageLoad(mode))
-      }
 
-      "Non-UK address page -> Email address yes no page" in {
-        navigator.nextPage(NonUkAddressPage, mode, emptyUserAnswers)
+      "Non-UK address page -> Email address yes no page" in
+        navigator
+          .nextPage(NonUkAddressPage, mode, emptyUserAnswers)
           .mustBe(controllers.individual.routes.EmailAddressYesNoController.onPageLoad(mode))
-      }
 
       "Email address yes no page -> YES -> Email address page" in {
         val userAnswers = emptyUserAnswers
-          .set(EmailAddressYesNoPage, true).success.value
+          .set(EmailAddressYesNoPage, true)
+          .success
+          .value
 
-        navigator.nextPage(EmailAddressYesNoPage, mode, userAnswers)
+        navigator
+          .nextPage(EmailAddressYesNoPage, mode, userAnswers)
           .mustBe(controllers.individual.routes.EmailAddressController.onPageLoad(mode))
       }
 
       "Email address yes no page -> NO -> Telephone number page" in {
         val userAnswers = emptyUserAnswers
-          .set(EmailAddressYesNoPage, false).success.value
+          .set(EmailAddressYesNoPage, false)
+          .success
+          .value
 
-        navigator.nextPage(EmailAddressYesNoPage, mode, userAnswers)
+        navigator
+          .nextPage(EmailAddressYesNoPage, mode, userAnswers)
           .mustBe(controllers.individual.routes.TelephoneNumberController.onPageLoad(mode))
       }
 
-      "Email address page -> Telephone number page" in {
-        navigator.nextPage(EmailAddressPage, mode, emptyUserAnswers)
+      "Email address page -> Telephone number page" in
+        navigator
+          .nextPage(EmailAddressPage, mode, emptyUserAnswers)
           .mustBe(controllers.individual.routes.TelephoneNumberController.onPageLoad(mode))
-      }
 
-      "Telephone number page -> Start date page" in {
-
-        navigator.nextPage(TelephoneNumberPage, mode, emptyUserAnswers)
+      "Telephone number page -> Start date page" in
+        navigator
+          .nextPage(TelephoneNumberPage, mode, emptyUserAnswers)
           .mustBe(addRts.StartDateController.onPageLoad())
-      }
 
-      "Start date page -> Check details" in {
-        navigator.nextPage(StartDatePage, mode, emptyUserAnswers)
+      "Start date page -> Check details" in
+        navigator
+          .nextPage(StartDatePage, mode, emptyUserAnswers)
           .mustBe(addRts.CheckDetailsController.onPageLoad())
-      }
 
     }
 
@@ -162,97 +180,112 @@ class IndividualNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks  {
 
       val mode = CheckMode
 
-      "name page -> date of birth page" in {
-
-        navigator.nextPage(NamePage, mode, emptyUserAnswers)
+      "name page -> date of birth page" in
+        navigator
+          .nextPage(NamePage, mode, emptyUserAnswers)
           .mustBe(rts.DateOfBirthController.onPageLoad(mode))
-      }
 
-      "date of birth page -> Nino Yes No page" in {
-
-        navigator.nextPage(DateOfBirthPage, mode, emptyUserAnswers)
+      "date of birth page -> Nino Yes No page" in
+        navigator
+          .nextPage(DateOfBirthPage, mode, emptyUserAnswers)
           .mustBe(rts.NationalInsuranceNumberYesNoController.onPageLoad(mode))
-      }
 
       "Nino Yes No page -> Yes -> Nino page" in {
         val answers = emptyUserAnswers
-          .set(NationalInsuranceNumberYesNoPage, true).success.value
+          .set(NationalInsuranceNumberYesNoPage, true)
+          .success
+          .value
 
-        navigator.nextPage(NationalInsuranceNumberYesNoPage, mode, answers)
+        navigator
+          .nextPage(NationalInsuranceNumberYesNoPage, mode, answers)
           .mustBe(rts.NationalInsuranceNumberController.onPageLoad(mode))
       }
 
       "Nino Yes No page -> No -> Passport Or ID Card details page" in {
         val answers = emptyUserAnswers
-          .set(NationalInsuranceNumberYesNoPage, false).success.value
+          .set(NationalInsuranceNumberYesNoPage, false)
+          .success
+          .value
 
-        navigator.nextPage(NationalInsuranceNumberYesNoPage, mode, answers)
+        navigator
+          .nextPage(NationalInsuranceNumberYesNoPage, mode, answers)
           .mustBe(amendRts.PassportOrIdCardDetailsController.onPageLoad())
       }
 
-      "Passport or ID card details page -> LiveInTheUK Yes No page" in {
-
-        navigator.nextPage(PassportOrIdCardDetailsPage, mode, emptyUserAnswers)
+      "Passport or ID card details page -> LiveInTheUK Yes No page" in
+        navigator
+          .nextPage(PassportOrIdCardDetailsPage, mode, emptyUserAnswers)
           .mustBe(rts.LiveInTheUkYesNoController.onPageLoad(mode))
-      }
 
-      "Nino page -> LiveInTheUK Yes No page" in {
-
-        navigator.nextPage(NationalInsuranceNumberPage, mode, emptyUserAnswers)
+      "Nino page -> LiveInTheUK Yes No page" in
+        navigator
+          .nextPage(NationalInsuranceNumberPage, mode, emptyUserAnswers)
           .mustBe(rts.LiveInTheUkYesNoController.onPageLoad(mode))
-      }
 
       "Live In UK page -> Yes -> UK Address page" in {
         val answers = emptyUserAnswers
-          .set(LiveInTheUkYesNoPage, true).success.value
+          .set(LiveInTheUkYesNoPage, true)
+          .success
+          .value
 
-        navigator.nextPage(LiveInTheUkYesNoPage, mode, answers)
+        navigator
+          .nextPage(LiveInTheUkYesNoPage, mode, answers)
           .mustBe(rts.UkAddressController.onPageLoad(mode))
       }
 
       "Live In UK page -> No -> Non UK Address page" in {
         val answers = emptyUserAnswers
-          .set(LiveInTheUkYesNoPage, false).success.value
+          .set(LiveInTheUkYesNoPage, false)
+          .success
+          .value
 
-        navigator.nextPage(LiveInTheUkYesNoPage, mode, answers)
+        navigator
+          .nextPage(LiveInTheUkYesNoPage, mode, answers)
           .mustBe(rts.NonUkAddressController.onPageLoad(mode))
       }
 
-      "UK address page -> Email address yes no page" in {
-        navigator.nextPage(UkAddressPage, mode, emptyUserAnswers)
+      "UK address page -> Email address yes no page" in
+        navigator
+          .nextPage(UkAddressPage, mode, emptyUserAnswers)
           .mustBe(controllers.individual.routes.EmailAddressYesNoController.onPageLoad(mode))
-      }
 
-      "Non-UK address page -> Email address yes no page" in {
-        navigator.nextPage(NonUkAddressPage, mode, emptyUserAnswers)
+      "Non-UK address page -> Email address yes no page" in
+        navigator
+          .nextPage(NonUkAddressPage, mode, emptyUserAnswers)
           .mustBe(controllers.individual.routes.EmailAddressYesNoController.onPageLoad(mode))
-      }
 
       "Email address yes no page -> YES -> Email address page" in {
         val userAnswers = emptyUserAnswers
-          .set(EmailAddressYesNoPage, true).success.value
+          .set(EmailAddressYesNoPage, true)
+          .success
+          .value
 
-        navigator.nextPage(EmailAddressYesNoPage, mode, userAnswers)
+        navigator
+          .nextPage(EmailAddressYesNoPage, mode, userAnswers)
           .mustBe(controllers.individual.routes.EmailAddressController.onPageLoad(mode))
       }
 
       "Email address yes no page -> NO -> Telephone number page" in {
         val userAnswers = emptyUserAnswers
-          .set(EmailAddressYesNoPage, false).success.value
+          .set(EmailAddressYesNoPage, false)
+          .success
+          .value
 
-        navigator.nextPage(EmailAddressYesNoPage, mode, userAnswers)
+        navigator
+          .nextPage(EmailAddressYesNoPage, mode, userAnswers)
           .mustBe(controllers.individual.routes.TelephoneNumberController.onPageLoad(mode))
       }
 
-      "Email address page -> Telephone number page" in {
-        navigator.nextPage(EmailAddressPage, mode, emptyUserAnswers)
+      "Email address page -> Telephone number page" in
+        navigator
+          .nextPage(EmailAddressPage, mode, emptyUserAnswers)
           .mustBe(controllers.individual.routes.TelephoneNumberController.onPageLoad(mode))
-      }
 
-      "Telephone number page -> Check details" in {
-        navigator.nextPage(TelephoneNumberPage, mode, emptyUserAnswers)
+      "Telephone number page -> Check details" in
+        navigator
+          .nextPage(TelephoneNumberPage, mode, emptyUserAnswers)
           .mustBe(amendRts.CheckDetailsController.renderFromUserAnswers())
-      }
     }
   }
+
 }

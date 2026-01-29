@@ -34,38 +34,35 @@ import views.html.individual.add.StartDateView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class StartDateController @Inject()(
-                                     override val messagesApi: MessagesApi,
-                                     val controllerComponents: MessagesControllerComponents,
-                                     sessionRepository: SessionRepository,
-                                     @Individual navigator: Navigator,
-                                     actions: Actions,
-                                     formProvider: DateFormProvider,
-                                     view: StartDateView
-                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class StartDateController @Inject() (
+  override val messagesApi: MessagesApi,
+  val controllerComponents: MessagesControllerComponents,
+  sessionRepository: SessionRepository,
+  @Individual navigator: Navigator,
+  actions: Actions,
+  formProvider: DateFormProvider,
+  view: StartDateView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = actions.authWithIndividualName {
-    implicit request =>
+  def onPageLoad(): Action[AnyContent] = actions.authWithIndividualName { implicit request =>
+    val form: Form[LocalDate] = formProvider.withConfig("individual.startDate", request.userAnswers.dateOfDeath)
 
-      val form: Form[LocalDate] = formProvider.withConfig("individual.startDate", request.userAnswers.dateOfDeath)
+    val preparedForm = request.userAnswers.get(StartDatePage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(StartDatePage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm, request.individualName))
+    Ok(view(preparedForm, request.individualName))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.authWithIndividualName.async {
-    implicit request =>
+  def onSubmit(): Action[AnyContent] = actions.authWithIndividualName.async { implicit request =>
+    val form: Form[LocalDate] = formProvider.withConfig("individual.startDate", request.userAnswers.dateOfDeath)
 
-      val form: Form[LocalDate] = formProvider.withConfig("individual.startDate", request.userAnswers.dateOfDeath)
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, request.individualName))),
-
+    form
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.individualName))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(StartDatePage, value))
@@ -73,4 +70,5 @@ class StartDateController @Inject()(
           } yield Redirect(navigator.nextPage(StartDatePage, NormalMode, updatedAnswers))
       )
   }
+
 }

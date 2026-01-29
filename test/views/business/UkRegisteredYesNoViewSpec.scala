@@ -42,4 +42,5 @@ class UkRegisteredYesNoViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithASubmitButton(applyView(form))
   }
+
 }

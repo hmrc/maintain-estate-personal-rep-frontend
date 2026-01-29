@@ -27,58 +27,87 @@ import pages.business.add.StartDatePage
 
 class BusinessMapperSpec extends SpecBase {
 
-  private val name = "Name"
-  private val utr = "1234567890"
-  private val startDate = LocalDate.parse("2019-03-09")
-  private val ukAddress = UkAddress("line1", "line2", Some("line3"), Some("line4"), "POSTCODE")
+  private val name                    = "Name"
+  private val utr                     = "1234567890"
+  private val startDate               = LocalDate.parse("2019-03-09")
+  private val ukAddress               = UkAddress("line1", "line2", Some("line3"), Some("line4"), "POSTCODE")
   private val telephoneNumber: String = "999"
-  private val nonUkAddress = NonUkAddress("line1", "line2", Some("line3"), "country")
-  private val email: String = "email@example.com"
+  private val nonUkAddress            = NonUkAddress("line1", "line2", Some("line3"), "country")
+  private val email: String           = "email@example.com"
 
   "Business mapper" when {
 
     val mapper = injector.instanceOf[BusinessMapper]
 
     val baseAnswers = emptyUserAnswers
-      .set(IndividualOrBusinessPage, Business).success.value
-      .set(NamePage, name).success.value
-      .set(TelephoneNumberPage, telephoneNumber).success.value
-      .set(StartDatePage, startDate).success.value
+      .set(IndividualOrBusinessPage, Business)
+      .success
+      .value
+      .set(NamePage, name)
+      .success
+      .value
+      .set(TelephoneNumberPage, telephoneNumber)
+      .success
+      .value
+      .set(StartDatePage, startDate)
+      .success
+      .value
 
     "generate UK registered business personal rep model with UK address and email" in {
 
       val userAnswers = baseAnswers
-        .set(UkRegisteredCompanyYesNoPage, true).success.value
-        .set(UtrPage, utr).success.value
-        .set(AddressUkYesNoPage, true).success.value
-        .set(UkAddressPage, ukAddress).success.value
-        .set(EmailAddressYesNoPage, true).success.value
-        .set(EmailAddressPage, email).success.value
+        .set(UkRegisteredCompanyYesNoPage, true)
+        .success
+        .value
+        .set(UtrPage, utr)
+        .success
+        .value
+        .set(AddressUkYesNoPage, true)
+        .success
+        .value
+        .set(UkAddressPage, ukAddress)
+        .success
+        .value
+        .set(EmailAddressYesNoPage, true)
+        .success
+        .value
+        .set(EmailAddressPage, email)
+        .success
+        .value
 
       val result = mapper(userAnswers).get
 
-      result.name mustBe name
-      result.utr mustBe Some(utr)
-      result.address mustBe ukAddress
-      result.email mustBe Some(email)
+      result.name        mustBe name
+      result.utr         mustBe Some(utr)
+      result.address     mustBe ukAddress
+      result.email       mustBe Some(email)
       result.entityStart mustBe startDate
     }
 
     "generate non-UK business personal rep model with non-UK address" in {
 
       val userAnswers = baseAnswers
-        .set(UkRegisteredCompanyYesNoPage, false).success.value
-        .set(AddressUkYesNoPage, false).success.value
-        .set(NonUkAddressPage, nonUkAddress).success.value
-        .set(EmailAddressYesNoPage, false).success.value
+        .set(UkRegisteredCompanyYesNoPage, false)
+        .success
+        .value
+        .set(AddressUkYesNoPage, false)
+        .success
+        .value
+        .set(NonUkAddressPage, nonUkAddress)
+        .success
+        .value
+        .set(EmailAddressYesNoPage, false)
+        .success
+        .value
 
       val result = mapper(userAnswers).get
 
-      result.name mustBe name
-      result.utr mustBe None
-      result.address mustBe nonUkAddress
-      result.email mustBe None
+      result.name        mustBe name
+      result.utr         mustBe None
+      result.address     mustBe nonUkAddress
+      result.email       mustBe None
       result.entityStart mustBe startDate
     }
   }
+
 }

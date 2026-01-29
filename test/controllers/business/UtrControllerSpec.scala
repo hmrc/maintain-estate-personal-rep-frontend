@@ -36,14 +36,16 @@ import scala.concurrent.Future
 
 class UtrControllerSpec extends SpecBase with MockitoSugar {
 
-  private val formProvider = new UtrFormProvider()
+  private val formProvider       = new UtrFormProvider()
   private val form: Form[String] = formProvider.withPrefix("business.utr")
-  private val name = "Name"
+  private val name               = "Name"
 
   private val validAnswer = "1234567890"
 
   private val baseAnswers: UserAnswers = emptyUserAnswers
-    .set(NamePage, name).success.value
+    .set(NamePage, name)
+    .success
+    .value
 
   private lazy val utrRoute: String = routes.UtrController.onPageLoad(NormalMode).url
 
@@ -69,7 +71,7 @@ class UtrControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val ua = baseAnswers.set(UtrPage, validAnswer)
+      val ua          = baseAnswers.set(UtrPage, validAnswer)
       val application = applicationBuilder(userAnswers = Some(ua.success.value)).build()
 
       val request = FakeRequest(GET, utrRoute)
@@ -165,4 +167,5 @@ class UtrControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
   }
+
 }

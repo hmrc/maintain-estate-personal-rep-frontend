@@ -23,23 +23,21 @@ import viewmodels.RadioOption
 
 object ViewUtils {
 
-  def errorPrefix(form: Form[_])(implicit messages: Messages): String = {
+  def errorPrefix(form: Form[_])(implicit messages: Messages): String =
     if (form.hasErrors || form.hasGlobalErrors) s"${messages("error.browser.title.prefix")} " else ""
-  }
 
-  def breadcrumbTitle(title: String)(implicit messages: Messages): String = {
+  def breadcrumbTitle(title: String)(implicit messages: Messages): String =
     s"$title - ${messages("site.service_section")} - ${messages("service.name")} - GOV.UK"
-  }
 
-  def errorHref(error: FormError, radioOptions: Seq[RadioOption] = Nil, isYesNo: Boolean = false): String = {
+  def errorHref(error: FormError, radioOptions: Seq[RadioOption] = Nil, isYesNo: Boolean = false): String =
     error.args match {
       case x if x.contains("day") || x.contains("month") || x.contains("year") =>
         s"${error.key}.${error.args.head}"
-      case _ if isYesNo =>
+      case _ if isYesNo                                                        =>
         s"${error.key}-yes"
-      case _ if radioOptions.nonEmpty =>
+      case _ if radioOptions.nonEmpty                                          =>
         radioOptions.head.id
-      case _ =>
+      case _                                                                   =>
         val isSingleDateField = isDateError(error.message) && !error.message.toLowerCase.contains("yesno")
         if (isDateError(error.key) || isSingleDateField) {
           s"${error.key}.day"
@@ -47,22 +45,19 @@ object ViewUtils {
           s"${error.key}"
         }
     }
-  }
 
-  def isDateError(error: String): Boolean = {
+  def isDateError(error: String): Boolean =
     error.toLowerCase.contains("date") || error.toLowerCase.contains("when")
-  }
 
   def mapRadioOptionsToRadioItems(field: Field, inputs: Seq[RadioOption])(implicit messages: Messages): Seq[RadioItem] =
-    inputs.map(
-      a => {
-        RadioItem(
-          id = Some(a.id),
-          value = Some(a.value),
-          checked = field.value.contains(a.value),
-          content = Text(messages(a.messageKey)),
-          attributes = Map.empty
-        )
-      }
+    inputs.map(a =>
+      RadioItem(
+        id = Some(a.id),
+        value = Some(a.value),
+        checked = field.value.contains(a.value),
+        content = Text(messages(a.messageKey)),
+        attributes = Map.empty
+      )
     )
+
 }

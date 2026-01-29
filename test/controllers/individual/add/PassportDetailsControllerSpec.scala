@@ -42,15 +42,15 @@ import scala.concurrent.Future
 class PassportDetailsControllerSpec extends SpecBase with MockitoSugar {
 
   private val formProvider = new PassportDetailsFormProvider()
-  private def form = formProvider.withPrefix("individual")
+  private def form         = formProvider.withPrefix("individual")
 
-  private val name: Name = Name("FirstName", None, "LastName")
+  private val name: Name          = Name("FirstName", None, "LastName")
   private val userAnswersWithName = emptyUserAnswers.set(NamePage, name).success.value
 
-  private val passportDetailsRoute: String = addRts.PassportDetailsController.onPageLoad().url
-  private val getRequest = FakeRequest(GET, passportDetailsRoute)
+  private val passportDetailsRoute: String     = addRts.PassportDetailsController.onPageLoad().url
+  private val getRequest                       = FakeRequest(GET, passportDetailsRoute)
   private val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptions].options()
-  private val validData: Passport = Passport("country", "passport number", LocalDate.of(2020, 1, 1))
+  private val validData: Passport              = Passport("country", "passport number", LocalDate.of(2020, 1, 1))
 
   "PassportDetails Controller" must {
 
@@ -102,8 +102,8 @@ class PassportDetailsControllerSpec extends SpecBase with MockitoSugar {
       val request =
         FakeRequest(POST, passportDetailsRoute)
           .withFormUrlEncodedBody(
-            "country" -> "country",
-            "number" -> "123456",
+            "country"          -> "country",
+            "number"           -> "123456",
             "expiryDate.day"   -> validData.expirationDate.getDayOfMonth.toString,
             "expiryDate.month" -> validData.expirationDate.getMonthValue.toString,
             "expiryDate.year"  -> validData.expirationDate.getYear.toString
@@ -159,8 +159,8 @@ class PassportDetailsControllerSpec extends SpecBase with MockitoSugar {
       val request =
         FakeRequest(POST, passportDetailsRoute)
           .withFormUrlEncodedBody(
-            "country" -> "country",
-            "number" -> "123456",
+            "country"          -> "country",
+            "number"           -> "123456",
             "expiryDate.day"   -> validData.expirationDate.getDayOfMonth.toString,
             "expiryDate.month" -> validData.expirationDate.getMonthValue.toString,
             "expiryDate.year"  -> validData.expirationDate.getYear.toString
@@ -175,4 +175,5 @@ class PassportDetailsControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
   }
+
 }

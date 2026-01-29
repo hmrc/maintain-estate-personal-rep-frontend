@@ -27,4 +27,5 @@ class PassportOrIdCardFormProvider @Inject() extends Mappings {
     Form(
       "value" -> enumerable[PassportOrIdCard]("passportOrIdCard.error.required")
     )
+
 }

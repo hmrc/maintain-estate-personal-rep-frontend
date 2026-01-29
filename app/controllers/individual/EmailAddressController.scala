@@ -32,40 +32,38 @@ import views.html.individual.EmailAddressView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EmailAddressController @Inject()(
-                                        val controllerComponents: MessagesControllerComponents,
-                                        actions: Actions,
-                                        formProvider: EmailAddressFormProvider,
-                                        view: EmailAddressView,
-                                        repository: SessionRepository,
-                                        @Individual navigator: Navigator
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class EmailAddressController @Inject() (
+  val controllerComponents: MessagesControllerComponents,
+  actions: Actions,
+  formProvider: EmailAddressFormProvider,
+  view: EmailAddressView,
+  repository: SessionRepository,
+  @Individual navigator: Navigator
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form: Form[String] = formProvider.withPrefix("individual.email")
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithIndividualName {
-    implicit request =>
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithIndividualName { implicit request =>
+    val preparedForm = request.userAnswers.get(EmailAddressPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(EmailAddressPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm, mode, request.individualName))
+    Ok(view(preparedForm, mode, request.individualName))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithIndividualName.async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, request.individualName))),
-
+  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithIndividualName.async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, request.individualName))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(EmailAddressPage, value))
-            _ <- repository.set(updatedAnswers)
+            _              <- repository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(EmailAddressPage, mode, updatedAnswers))
       )
   }
+
 }

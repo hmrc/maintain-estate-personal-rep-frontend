@@ -32,36 +32,33 @@ import views.html.business.UkAddressView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class UkAddressController @Inject()(
-                                     override val messagesApi: MessagesApi,
-                                     sessionRepository: SessionRepository,
-                                     @Business navigator: Navigator,
-                                     actions: Actions,
-                                     formProvider: UkAddressFormProvider,
-                                     val controllerComponents: MessagesControllerComponents,
-                                     view: UkAddressView
-                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class UkAddressController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  @Business navigator: Navigator,
+  actions: Actions,
+  formProvider: UkAddressFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: UkAddressView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form: Form[UkAddress] = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithBusinessName {
-    implicit request =>
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithBusinessName { implicit request =>
+    val preparedForm = request.userAnswers.get(UkAddressPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(UkAddressPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm, request.businessName, mode))
+    Ok(view(preparedForm, request.businessName, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithBusinessName.async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, request.businessName, mode))),
-
+  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithBusinessName.async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.businessName, mode))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAddressPage, value))
@@ -69,4 +66,5 @@ class UkAddressController @Inject()(
           } yield Redirect(navigator.nextPage(UkAddressPage, mode, updatedAnswers))
       )
   }
+
 }

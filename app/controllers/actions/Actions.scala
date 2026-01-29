@@ -20,14 +20,14 @@ import com.google.inject.Inject
 import models.requests.{BusinessNameRequest, DataRequest, IndividualNameRequest, OptionalDataRequest}
 import play.api.mvc.{ActionBuilder, AnyContent}
 
-class Actions @Inject()(
-                         identify: IdentifierAction,
-                         getData: DataRetrievalAction,
-                         requireData: DataRequiredAction,
-                         verifyUtr: UTRAuthenticationAction,
-                         requireBusinessName: business.NameRequiredAction,
-                         requireIndividualName: individual.NameRequiredAction
-                       ) {
+class Actions @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  verifyUtr: UTRAuthenticationAction,
+  requireBusinessName: business.NameRequiredAction,
+  requireIndividualName: individual.NameRequiredAction
+) {
 
   def authWithSession: ActionBuilder[OptionalDataRequest, AnyContent] =
     identify andThen getData

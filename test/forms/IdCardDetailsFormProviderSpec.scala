@@ -21,8 +21,8 @@ import play.api.data.FormError
 
 class IdCardDetailsFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "individual.idCardDetails.country.error.required"
-  val lengthKey = "individual.idCardDetails.country.error.length"
+  val requiredKey           = "individual.idCardDetails.country.error.required"
+  val lengthKey             = "individual.idCardDetails.country.error.length"
   val maxLengthCountryField = 100
 
   val form = new IdCardDetailsFormProvider().withPrefix("individual")
@@ -50,4 +50,5 @@ class IdCardDetailsFormProviderSpec extends StringFieldBehaviours {
       requiredError = FormError(fieldName, requiredKey)
     )
   }
+
 }

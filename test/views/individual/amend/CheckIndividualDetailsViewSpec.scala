@@ -38,5 +38,5 @@ class CheckIndividualDetailsViewSpec extends ViewBehaviours {
 
     behave like pageWithASubmitButton(applyView())
   }
-}
 
+}

@@ -18,8 +18,10 @@ package models
 
 import play.api.libs.json._
 
-case class PersonalRepresentative(estatePerRepInd : Option[IndividualPersonalRep] = None,
-                                  estatePerRepOrg : Option[BusinessPersonalRep] = None)
+case class PersonalRepresentative(
+  estatePerRepInd: Option[IndividualPersonalRep] = None,
+  estatePerRepOrg: Option[BusinessPersonalRep] = None
+)
 
 object PersonalRepresentative {
   implicit val personalRepFormats: Format[PersonalRepresentative] = Json.format[PersonalRepresentative]

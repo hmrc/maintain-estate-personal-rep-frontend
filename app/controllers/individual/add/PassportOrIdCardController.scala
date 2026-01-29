@@ -32,42 +32,39 @@ import views.html.individual.add.PassportOrIdCardView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PassportOrIdCardController @Inject()(
-                                            override val messagesApi: MessagesApi,
-                                            sessionRepository: SessionRepository,
-                                            @Individual navigator: Navigator,
-                                            actions: Actions,
-                                            formProvider: PassportOrIdCardFormProvider,
-                                            val controllerComponents: MessagesControllerComponents,
-                                            view: PassportOrIdCardView
-                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
+class PassportOrIdCardController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  @Individual navigator: Navigator,
+  actions: Actions,
+  formProvider: PassportOrIdCardFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: PassportOrIdCardView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
   val form: Form[PassportOrIdCard] = formProvider()
 
-  def onPageLoad(): Action[AnyContent] = actions.authWithIndividualName {
-    implicit request =>
+  def onPageLoad(): Action[AnyContent] = actions.authWithIndividualName { implicit request =>
+    val preparedForm = request.userAnswers.get(PassportOrIdCardPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(PassportOrIdCardPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm, request.individualName))
+    Ok(view(preparedForm, request.individualName))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.authWithIndividualName.async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, request.individualName))),
-
-        value => {
+  def onSubmit(): Action[AnyContent] = actions.authWithIndividualName.async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors, request.individualName))),
+        value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(PassportOrIdCardPage, value))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(PassportOrIdCardPage, NormalMode, updatedAnswers))
-        }
       )
   }
+
 }

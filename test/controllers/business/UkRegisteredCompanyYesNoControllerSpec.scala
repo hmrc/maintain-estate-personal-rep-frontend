@@ -36,10 +36,11 @@ import scala.concurrent.Future
 
 class UkRegisteredCompanyYesNoControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new YesNoFormProvider()
+  val formProvider        = new YesNoFormProvider()
   val form: Form[Boolean] = formProvider.withPrefix("business.ukRegisteredCompanyYesNo")
 
-  lazy val ukRegisteredYesNoControllerRoute: String = routes.UkRegisteredCompanyYesNoController.onPageLoad(NormalMode).url
+  lazy val ukRegisteredYesNoControllerRoute: String =
+    routes.UkRegisteredCompanyYesNoController.onPageLoad(NormalMode).url
 
   "UkRegisteredCompanyYesNo Controller" must {
 
@@ -159,4 +160,5 @@ class UkRegisteredCompanyYesNoControllerSpec extends SpecBase with MockitoSugar 
       application.stop()
     }
   }
+
 }

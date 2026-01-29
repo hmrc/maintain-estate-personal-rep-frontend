@@ -34,10 +34,11 @@ import play.api.test.FakeRequest
 import repositories.SessionRepository
 import uk.gov.hmrc.auth.core.AffinityGroup
 
-trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Mocked with ScalaFutures with IntegrationPatience {
+trait SpecBase
+    extends PlaySpec with GuiceOneAppPerSuite with TryValues with Mocked with ScalaFutures with IntegrationPatience {
 
   final val ENGLISH = "en"
-  final val WELSH = "cy"
+  final val WELSH   = "cy"
 
   val userAnswersId = "id"
 
@@ -57,10 +58,11 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Moc
 
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 
-  private def applicationBuilderInterface(userAnswers: Option[UserAnswers],
-                                          fakeIdentifierAction: IdentifierAction,
-                                          utr: String = "utr"
-                                         ): GuiceApplicationBuilder = {
+  private def applicationBuilderInterface(
+    userAnswers: Option[UserAnswers],
+    fakeIdentifierAction: IdentifierAction,
+    utr: String = "utr"
+  ): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
@@ -69,19 +71,24 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Moc
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
         bind[SessionRepository].toInstance(fakeRepository)
       )
-  }
 
-  protected def applicationBuilderForUser(userAnswers: Option[UserAnswers] = None,
-                                          affinityGroup: AffinityGroup,
-                                          user: User): GuiceApplicationBuilder = {
-    val parsers = injector.instanceOf[PlayBodyParsers]
+  protected def applicationBuilderForUser(
+    userAnswers: Option[UserAnswers] = None,
+    affinityGroup: AffinityGroup,
+    user: User
+  ): GuiceApplicationBuilder = {
+    val parsers              = injector.instanceOf[PlayBodyParsers]
     val fakeIdentifierAction = new FakeUserIdentifierAction(parsers)(user)
 
     applicationBuilderInterface(userAnswers, fakeIdentifierAction)
   }
 
-  protected def applicationBuilder(userAnswers: Option[UserAnswers] = None, utr: String = "utr"): GuiceApplicationBuilder = {
+  protected def applicationBuilder(
+    userAnswers: Option[UserAnswers] = None,
+    utr: String = "utr"
+  ): GuiceApplicationBuilder = {
     val fakeIdentifierAction = injector.instanceOf[FakeOrganisationIdentifierAction]
     applicationBuilderInterface(userAnswers, fakeIdentifierAction, utr)
   }
+
 }

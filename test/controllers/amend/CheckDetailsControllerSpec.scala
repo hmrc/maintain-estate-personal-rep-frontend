@@ -35,14 +35,14 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
 
   private lazy val checkDetailsRoute = controllers.amend.routes.CheckDetailsController.extractAndRender().url
 
-  private val orgName = "Org"
-  private val name = Name("John", None, "Doe")
-  private val utr = "1234567890"
-  private val nino = "AA000000A"
-  private val ukAddress: UkAddress = UkAddress("Line 1", "Line 2", None, None, "POSTCODE")
+  private val orgName                 = "Org"
+  private val name                    = Name("John", None, "Doe")
+  private val utr                     = "1234567890"
+  private val nino                    = "AA000000A"
+  private val ukAddress: UkAddress    = UkAddress("Line 1", "Line 2", None, None, "POSTCODE")
   private val telephoneNumber: String = "999"
-  private val date = LocalDate.parse("2010-02-03")
-  private val email: String = "email@example.com"
+  private val date                    = LocalDate.parse("2010-02-03")
+  private val email: String           = "email@example.com"
 
   "CheckDetails Controller" when {
 
@@ -110,4 +110,5 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
     }
 
   }
+
 }

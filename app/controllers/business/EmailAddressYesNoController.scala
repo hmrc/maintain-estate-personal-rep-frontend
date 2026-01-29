@@ -32,40 +32,38 @@ import views.html.business.EmailAddressYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EmailAddressYesNoController @Inject()(
-                                             val controllerComponents: MessagesControllerComponents,
-                                             actions: Actions,
-                                             formProvider: YesNoFormProvider,
-                                             view: EmailAddressYesNoView,
-                                             repository: SessionRepository,
-                                             @Business navigator: Navigator
-                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class EmailAddressYesNoController @Inject() (
+  val controllerComponents: MessagesControllerComponents,
+  actions: Actions,
+  formProvider: YesNoFormProvider,
+  view: EmailAddressYesNoView,
+  repository: SessionRepository,
+  @Business navigator: Navigator
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = formProvider.withPrefix("business.emailYesNo")
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithBusinessName {
-    implicit request =>
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithBusinessName { implicit request =>
+    val preparedForm = request.userAnswers.get(EmailAddressYesNoPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(EmailAddressYesNoPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm, mode, request.businessName))
+    Ok(view(preparedForm, mode, request.businessName))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithBusinessName.async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, request.businessName))),
-
+  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithBusinessName.async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, request.businessName))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(EmailAddressYesNoPage, value))
-            _ <- repository.set(updatedAnswers)
+            _              <- repository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(EmailAddressYesNoPage, mode, updatedAnswers))
       )
   }
+
 }

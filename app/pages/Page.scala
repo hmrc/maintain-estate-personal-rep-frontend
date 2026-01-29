@@ -16,6 +16,4 @@
 
 package pages
 
-trait Page {
-
-}
+trait Page {}

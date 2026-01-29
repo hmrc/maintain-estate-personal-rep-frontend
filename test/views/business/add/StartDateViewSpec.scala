@@ -26,7 +26,7 @@ import views.html.business.add.StartDateView
 
 class StartDateViewSpec extends QuestionViewBehaviours[LocalDate] {
 
-  val prefix = "business.startDate"
+  val prefix       = "business.startDate"
   val name: String = "Name"
 
   override val form: Form[LocalDate] = new DateFormProvider(frontendAppConfig).withConfig(prefix)
@@ -52,4 +52,5 @@ class StartDateViewSpec extends QuestionViewBehaviours[LocalDate] {
 
     behave like pageWithASubmitButton(applyView(form))
   }
+
 }

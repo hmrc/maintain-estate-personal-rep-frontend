@@ -19,6 +19,7 @@ package models.requests
 import models.UserAnswers
 import play.api.mvc.WrappedRequest
 
-case class IndividualNameRequest[T](request: DataRequest[T], individualName: String) extends WrappedRequest[T](request){
-  val userAnswers:UserAnswers = request.userAnswers
+case class IndividualNameRequest[T](request: DataRequest[T], individualName: String)
+    extends WrappedRequest[T](request) {
+  val userAnswers: UserAnswers = request.userAnswers
 }

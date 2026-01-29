@@ -23,7 +23,6 @@ import pages.behaviours.PageBehaviours
 import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage}
 import pages.individual.amend.PassportOrIdCardDetailsYesNoPage
 
-
 class PassportOrIdCardYesNoPageSpec extends PageBehaviours {
 
   "PassportOrIdCardYesNoPage" must {
@@ -36,7 +35,9 @@ class PassportOrIdCardYesNoPageSpec extends PageBehaviours {
 
     "implement cleanup logic when NO selected" in {
       val userAnswers = emptyUserAnswers
-        .set(PassportDetailsPage, Passport("GB", "1", LocalDate.of(2030, 10, 10))).success.value
+        .set(PassportDetailsPage, Passport("GB", "1", LocalDate.of(2030, 10, 10)))
+        .success
+        .value
         .set(PassportOrIdCardDetailsYesNoPage, false)
 
       userAnswers.get.get(PassportDetailsPage) mustNot be(defined)
@@ -44,11 +45,14 @@ class PassportOrIdCardYesNoPageSpec extends PageBehaviours {
 
     "implement cleanup logic when Yes selected" in {
       val userAnswers = emptyUserAnswers
-        .set(IdCardDetailsPage, IdCard("GB", "1", LocalDate.of(2030, 10, 10))).success.value
+        .set(IdCardDetailsPage, IdCard("GB", "1", LocalDate.of(2030, 10, 10)))
+        .success
+        .value
         .set(PassportOrIdCardDetailsYesNoPage, true)
 
       userAnswers.get.get(IdCardDetailsPage) mustNot be(defined)
     }
 
   }
+
 }

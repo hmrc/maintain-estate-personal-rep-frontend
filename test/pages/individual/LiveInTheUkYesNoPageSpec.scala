@@ -31,7 +31,9 @@ class LiveInTheUkYesNoPageSpec extends PageBehaviours {
 
     "implement cleanup logic when NO selected" in {
       val userAnswers = emptyUserAnswers
-        .set(UkAddressPage, UkAddress("line1", "line2", None, None, "postcode")).success.value
+        .set(UkAddressPage, UkAddress("line1", "line2", None, None, "postcode"))
+        .success
+        .value
         .set(LiveInTheUkYesNoPage, false)
 
       userAnswers.get.get(UkAddressPage) mustNot be(defined)
@@ -39,11 +41,14 @@ class LiveInTheUkYesNoPageSpec extends PageBehaviours {
 
     "implement cleanup logic when Yes selected" in {
       val userAnswers = emptyUserAnswers
-        .set(NonUkAddressPage, NonUkAddress("line1", "line2", None,"country")).success.value
+        .set(NonUkAddressPage, NonUkAddress("line1", "line2", None, "country"))
+        .success
+        .value
         .set(LiveInTheUkYesNoPage, true)
 
       userAnswers.get.get(NonUkAddressPage) mustNot be(defined)
     }
 
   }
+
 }

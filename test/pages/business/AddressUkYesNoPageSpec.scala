@@ -19,7 +19,6 @@ package pages.business
 import models.{NonUkAddress, UkAddress}
 import pages.behaviours.PageBehaviours
 
-
 class AddressUkYesNoPageSpec extends PageBehaviours {
 
   "AddressUkYesNoPage" must {
@@ -40,10 +39,11 @@ class AddressUkYesNoPageSpec extends PageBehaviours {
 
     "implement cleanup logic when YES selected" in {
       val userAnswers = emptyUserAnswers
-        .set(NonUkAddressPage, NonUkAddress("line1", "line2", None,"country"))
+        .set(NonUkAddressPage, NonUkAddress("line1", "line2", None, "country"))
         .flatMap(_.set(AddressUkYesNoPage, true))
 
       userAnswers.get.get(NonUkAddressPage) mustNot be(defined)
     }
   }
+
 }

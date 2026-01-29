@@ -24,8 +24,8 @@ class UtrFormProviderSpec extends StringFieldBehaviours {
   val prefix: String = "business.utr"
 
   val requiredKey: String = s"$prefix.error.required"
-  val lengthKey: String = s"$prefix.error.length"
-  val maxLength: Int = 10
+  val lengthKey: String   = s"$prefix.error.length"
+  val maxLength: Int      = 10
 
   val form: Form[String] = new UtrFormProvider().withPrefix(prefix)
 
@@ -59,4 +59,5 @@ class UtrFormProviderSpec extends StringFieldBehaviours {
       requiredError = FormError(fieldName, requiredKey)
     )
   }
+
 }

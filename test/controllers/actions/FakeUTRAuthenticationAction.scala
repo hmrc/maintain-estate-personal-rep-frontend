@@ -26,6 +26,7 @@ class FakeUTRAuthenticationAction(utr: String) extends UTRAuthenticationAction {
   override def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] =
     Future.successful(Right(request))
 
-  override protected implicit val executionContext: ExecutionContext =
+  implicit override protected val executionContext: ExecutionContext =
     scala.concurrent.ExecutionContext.Implicits.global
+
 }

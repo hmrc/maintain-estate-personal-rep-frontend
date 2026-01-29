@@ -28,10 +28,10 @@ import views.html.IndividualOrBusinessView
 
 class IndividualOrBusinessControllerSpec extends SpecBase {
 
-  lazy val individualOrBusinessRoute: String = routes.IndividualOrBusinessController.onPageLoad(NormalMode).url
+  lazy val individualOrBusinessRoute: String       = routes.IndividualOrBusinessController.onPageLoad(NormalMode).url
   lazy val individualOrBusinessChangeRoute: String = routes.IndividualOrBusinessController.onPageLoad(CheckMode).url
 
-  val formProvider = new IndividualOrBusinessFormProvider()
+  val formProvider                     = new IndividualOrBusinessFormProvider()
   val form: Form[IndividualOrBusiness] = formProvider()
 
   "IndividualOrBusiness Controller" when {
@@ -42,7 +42,8 @@ class IndividualOrBusinessControllerSpec extends SpecBase {
 
         val previousAnswers = emptyUserAnswers
           .set(IndividualOrBusinessPage, IndividualOrBusiness.Business)
-          .success.value
+          .success
+          .value
 
         val application =
           applicationBuilder(userAnswers = Some(previousAnswers)).build()
@@ -65,7 +66,8 @@ class IndividualOrBusinessControllerSpec extends SpecBase {
 
         val previousAnswers = emptyUserAnswers
           .set(IndividualOrBusinessPage, IndividualOrBusiness.Business)
-          .success.value
+          .success
+          .value
 
         val application =
           applicationBuilder(userAnswers = Some(previousAnswers)).build()
@@ -218,6 +220,6 @@ class IndividualOrBusinessControllerSpec extends SpecBase {
       }
     }
 
-
   }
+
 }

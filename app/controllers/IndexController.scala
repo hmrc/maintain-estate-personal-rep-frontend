@@ -31,42 +31,41 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class IndexController @Inject()(
-                                 val controllerComponents: MessagesControllerComponents,
-                                 actions: Actions,
-                                 repository: SessionRepository,
-                                 connector: EstatesConnector,
-                                 config: FrontendAppConfig
-                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class IndexController @Inject() (
+  val controllerComponents: MessagesControllerComponents,
+  actions: Actions,
+  repository: SessionRepository,
+  connector: EstatesConnector,
+  config: FrontendAppConfig
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(utr: String, mode: Mode): Action[AnyContent] = actions.authWithSession.async {
-    implicit request =>
+  def onPageLoad(utr: String, mode: Mode): Action[AnyContent] = actions.authWithSession.async { implicit request =>
+    def userAnswers(dateOfDeath: JsValue): UserAnswers = UserAnswers(
+      id = request.user.internalId,
+      utr = utr,
+      dateOfDeath = dateOfDeath match {
+        case JsString(date) => LocalDate.parse(date)
+        case _              => config.minDate
+      }
+    )
 
-      def userAnswers(dateOfDeath: JsValue): UserAnswers = UserAnswers(
-        id = request.user.internalId,
-        utr = utr,
-        dateOfDeath = dateOfDeath match {
-          case JsString(date) => LocalDate.parse(date)
-          case _ => config.minDate
-        }
-      )
-
-      for {
-        dateOfDeath <- connector.getDateOfDeath(utr)
-        ua <- Future.successful(
-          if (mode == NormalMode) {
-            userAnswers(dateOfDeath)
-          } else {
-            request.userAnswers.getOrElse(userAnswers(dateOfDeath))
-          }
-        )
-        _ <- repository.set(ua)
-      } yield {
-        if (mode == NormalMode) {
-          Redirect(controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode))
-        } else {
-          Redirect(controllers.amend.routes.CheckDetailsController.extractAndRender())
-        }
+    for {
+      dateOfDeath <- connector.getDateOfDeath(utr)
+      ua          <- Future.successful(
+                       if (mode == NormalMode) {
+                         userAnswers(dateOfDeath)
+                       } else {
+                         request.userAnswers.getOrElse(userAnswers(dateOfDeath))
+                       }
+                     )
+      _           <- repository.set(ua)
+    } yield
+      if (mode == NormalMode) {
+        Redirect(controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode))
+      } else {
+        Redirect(controllers.amend.routes.CheckDetailsController.extractAndRender())
       }
   }
+
 }

@@ -21,10 +21,12 @@ import play.api.libs.json.{Format, Json, Reads, __}
 sealed trait EstatesAuthResponse
 
 object EstatesAuthResponse {
+
   implicit val reads: Reads[EstatesAuthResponse] =
     __.read[AuthAllowed].widen[EstatesAuthResponse] orElse
       __.read[AuthAgentAllowed].widen[EstatesAuthResponse] orElse
       __.read[AuthDenied].widen[EstatesAuthResponse]
+
 }
 
 case class AuthAllowed(authorised: Boolean = true) extends EstatesAuthResponse

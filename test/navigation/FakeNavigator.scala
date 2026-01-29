@@ -24,4 +24,5 @@ class FakeNavigator(desiredRoute: Call = Call("GET", "/foo"), mode: Mode = Norma
 
   override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call =
     desiredRoute
+
 }

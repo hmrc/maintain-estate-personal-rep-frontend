@@ -27,32 +27,28 @@ import java.time.LocalDate
 import javax.inject.Inject
 import scala.util.Try
 
-class CheckAnswersFormatters @Inject()(languageUtils: LanguageUtils,
-                                       countryOptions: CountryOptions) {
+class CheckAnswersFormatters @Inject() (languageUtils: LanguageUtils, countryOptions: CountryOptions) {
 
-  def formatDate(date: LocalDate)(implicit messages: Messages): Html = {
+  def formatDate(date: LocalDate)(implicit messages: Messages): Html =
     HtmlFormat.escape(languageUtils.Dates.formatDate(date))
-  }
 
-  def yesOrNo(answer: Boolean)(implicit messages: Messages): Html = {
+  def yesOrNo(answer: Boolean)(implicit messages: Messages): Html =
     if (answer) {
       HtmlFormat.escape(messages("site.yes"))
     } else {
       HtmlFormat.escape(messages("site.no"))
     }
-  }
 
   def formatNino(nino: String): Html = {
     val formatted = Try(Nino(nino).formatted).getOrElse(nino)
     HtmlFormat.escape(formatted)
   }
 
-  def formatAddress(address: Address)(implicit messages: Messages): Html = {
+  def formatAddress(address: Address)(implicit messages: Messages): Html =
     address match {
-      case a: UkAddress => formatUkAddress(a)
+      case a: UkAddress    => formatUkAddress(a)
       case a: NonUkAddress => formatNonUkAddress(a)
     }
-  }
 
   private def formatUkAddress(address: UkAddress): Html = {
     val lines =
@@ -82,13 +78,11 @@ class CheckAnswersFormatters @Inject()(languageUtils: LanguageUtils,
   private def country(code: String)(implicit messages: Messages): Html =
     HtmlFormat.escape(countryOptions.options().find(_.value.equals(code)).map(_.label).getOrElse(""))
 
-  def formatPassportDetails(passport: Passport)(implicit messages: Messages): Html = {
+  def formatPassportDetails(passport: Passport)(implicit messages: Messages): Html =
     formatPassportOrIdCardDetails(passport.asCombined)
-  }
 
-  def formatIdCardDetails(idCard: IdCard)(implicit messages: Messages): Html = {
+  def formatIdCardDetails(idCard: IdCard)(implicit messages: Messages): Html =
     formatPassportOrIdCardDetails(idCard.asCombined)
-  }
 
   def formatPassportOrIdCardDetails(passportOrIdCard: CombinedPassportOrIdCard)(implicit messages: Messages): Html = {
     val lines =
@@ -101,8 +95,7 @@ class CheckAnswersFormatters @Inject()(languageUtils: LanguageUtils,
     breakLines(lines)
   }
 
-  private def breakLines(lines: Seq[Html]): Html = {
+  private def breakLines(lines: Seq[Html]): Html =
     Html(lines.mkString("<br />"))
-  }
 
 }
