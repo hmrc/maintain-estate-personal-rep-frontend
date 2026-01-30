@@ -42,7 +42,7 @@ import scala.concurrent.Future
 
 class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFutures {
 
-  private lazy val checkDetailsRoute  =
+  private lazy val checkDetailsRoute =
     controllers.business.amend.routes.CheckDetailsController.renderFromUserAnswers().url
 
   private lazy val submitDetailsRoute = controllers.business.amend.routes.CheckDetailsController.onSubmit().url

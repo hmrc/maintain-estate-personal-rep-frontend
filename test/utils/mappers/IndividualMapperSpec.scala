@@ -30,20 +30,20 @@ import pages.individual.amend.PassportOrIdCardDetailsPage
 
 class IndividualMapperSpec extends SpecBase {
 
-  private val name: Name                                 = Name("John", None, "Doe")
-  private val nino                                       = "AA000000A"
-  private val dateOfBirth                                = LocalDate.parse("1996-03-09")
-  private val startDate                                  = LocalDate.parse("2019-03-09")
-  private val ukAddress                                  = UkAddress("line1", "line2", Some("line3"), Some("line4"), "POSTCODE")
-  private val telephoneNumber: String                    = "999"
-  private val nonUkAddress                               = NonUkAddress("line1", "line2", Some("line3"), "country")
-  private val passport: Passport                         = Passport("FR", "123", LocalDate.parse("2022-02-03"))
-  private val idCard: IdCard                             = IdCard("FR", "123", LocalDate.parse("2022-02-03"))
+  private val name: Name              = Name("John", None, "Doe")
+  private val nino                    = "AA000000A"
+  private val dateOfBirth             = LocalDate.parse("1996-03-09")
+  private val startDate               = LocalDate.parse("2019-03-09")
+  private val ukAddress               = UkAddress("line1", "line2", Some("line3"), Some("line4"), "POSTCODE")
+  private val telephoneNumber: String = "999"
+  private val nonUkAddress            = NonUkAddress("line1", "line2", Some("line3"), "country")
+  private val passport: Passport      = Passport("FR", "123", LocalDate.parse("2022-02-03"))
+  private val idCard: IdCard          = IdCard("FR", "123", LocalDate.parse("2022-02-03"))
 
   private val passportOrIdCard: CombinedPassportOrIdCard =
     CombinedPassportOrIdCard("FR", "123", LocalDate.parse("2022-02-03"))
 
-  private val email: String                              = "email@example.com"
+  private val email: String = "email@example.com"
 
   "Individual mapper" when {
 

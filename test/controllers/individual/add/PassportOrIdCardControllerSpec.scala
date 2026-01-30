@@ -37,7 +37,7 @@ class PassportOrIdCardControllerSpec extends SpecBase {
   val formProvider                 = new PassportOrIdCardFormProvider()
   val form: Form[PassportOrIdCard] = formProvider()
 
-  val name: Name                       = Name("FirstName", None, "LastName")
+  val name: Name = Name("FirstName", None, "LastName")
 
   val userAnswersWithName: UserAnswers = emptyUserAnswers
     .set(NamePage, name)

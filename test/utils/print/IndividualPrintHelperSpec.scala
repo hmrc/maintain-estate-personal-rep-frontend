@@ -35,21 +35,21 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class IndividualPrintHelperSpec extends SpecBase {
 
-  private val name: Name                                 = Name("John", None, "Doe")
-  private val displayName: String                        = name.displayName
-  private val nino                                       = "AA000000A"
-  private val dateOfBirth                                = LocalDate.parse("1996-03-09")
-  private val startDate                                  = LocalDate.parse("2020-01-01")
-  private val ukAddress                                  = UkAddress("value 1", "value 2", None, None, "AB1 1AB")
-  private val telephoneNumber: String                    = "999"
-  private val nonUkAddress                               = NonUkAddress("value 1", "value 2", None, "FR")
-  private val passport: Passport                         = Passport("FR", "123", LocalDate.parse("2022-02-03"))
-  private val idCard: IdCard                             = IdCard("FR", "123", LocalDate.parse("2022-02-03"))
+  private val name: Name              = Name("John", None, "Doe")
+  private val displayName: String     = name.displayName
+  private val nino                    = "AA000000A"
+  private val dateOfBirth             = LocalDate.parse("1996-03-09")
+  private val startDate               = LocalDate.parse("2020-01-01")
+  private val ukAddress               = UkAddress("value 1", "value 2", None, None, "AB1 1AB")
+  private val telephoneNumber: String = "999"
+  private val nonUkAddress            = NonUkAddress("value 1", "value 2", None, "FR")
+  private val passport: Passport      = Passport("FR", "123", LocalDate.parse("2022-02-03"))
+  private val idCard: IdCard          = IdCard("FR", "123", LocalDate.parse("2022-02-03"))
 
   private val passportOrIdCard: CombinedPassportOrIdCard =
     CombinedPassportOrIdCard("FR", "123", LocalDate.parse("2022-02-03"))
 
-  private val email: String                              = "email@example.com"
+  private val email: String = "email@example.com"
 
   "Individual print helper" must {
 

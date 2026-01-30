@@ -28,18 +28,18 @@ import pages.individual.amend.PassportOrIdCardDetailsPage
 
 class IndividualExtractorSpec extends SpecBase {
 
-  private val name: Name                                 = Name("First", None, "Last")
-  private val dateOfBirth: LocalDate                     = LocalDate.parse("1996-02-03")
-  private val nino: String                               = "AA000000A"
+  private val name: Name             = Name("First", None, "Last")
+  private val dateOfBirth: LocalDate = LocalDate.parse("1996-02-03")
+  private val nino: String           = "AA000000A"
 
   private val passportOrIdCard: CombinedPassportOrIdCard =
     CombinedPassportOrIdCard("FR", "123", LocalDate.parse("2022-04-05"))
 
-  private val ukAddress: UkAddress                       = UkAddress("value 1", "value 2", None, None, "AB1 1AB")
-  private val nonUkAddress: NonUkAddress                 = NonUkAddress("value 1", "value 2", None, "DE")
-  private val telephoneNumber: String                    = "999"
-  private val startDate: LocalDate                       = LocalDate.parse("2020-01-01")
-  private val email: String                              = "email@example.com"
+  private val ukAddress: UkAddress       = UkAddress("value 1", "value 2", None, None, "AB1 1AB")
+  private val nonUkAddress: NonUkAddress = NonUkAddress("value 1", "value 2", None, "DE")
+  private val telephoneNumber: String    = "999"
+  private val startDate: LocalDate       = LocalDate.parse("2020-01-01")
+  private val email: String              = "email@example.com"
 
   "Individual extractor" must {
 
