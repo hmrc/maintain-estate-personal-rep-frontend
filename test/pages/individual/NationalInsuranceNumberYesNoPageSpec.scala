@@ -23,7 +23,6 @@ import pages.behaviours.PageBehaviours
 import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage, PassportOrIdCardPage}
 import pages.individual.amend.{PassportOrIdCardDetailsPage, PassportOrIdCardDetailsYesNoPage}
 
-
 class NationalInsuranceNumberYesNoPageSpec extends PageBehaviours {
 
   "NationalInsuranceNumberYesNoPage" must {
@@ -36,7 +35,9 @@ class NationalInsuranceNumberYesNoPageSpec extends PageBehaviours {
 
     "implement cleanup logic when No selected" in {
       val userAnswers = emptyUserAnswers
-        .set(NationalInsuranceNumberPage, "AA000000A").success.value
+        .set(NationalInsuranceNumberPage, "AA000000A")
+        .success
+        .value
         .set(NationalInsuranceNumberYesNoPage, false)
 
       userAnswers.get.get(NationalInsuranceNumberPage) mustNot be(defined)
@@ -44,12 +45,24 @@ class NationalInsuranceNumberYesNoPageSpec extends PageBehaviours {
 
     "implement cleanup logic when Yes selected" in {
       val userAnswers = emptyUserAnswers
-        .set(PassportDetailsPage, Passport("GB", "1", LocalDate.of(2030, 10, 10))).success.value
-        .set(IdCardDetailsPage, IdCard("GB", "1", LocalDate.of(2030, 10, 10))).success.value
-        .set(PassportOrIdCardDetailsYesNoPage, false).success.value
-        .set(PassportOrIdCardDetailsPage, CombinedPassportOrIdCard("GB", "1", LocalDate.of(2030, 10, 10))).success.value
-        .set(PassportOrIdCardPage, PassportOrIdCard.Passport).success.value
-        .set(NationalInsuranceNumberYesNoPage, true).success.value
+        .set(PassportDetailsPage, Passport("GB", "1", LocalDate.of(2030, 10, 10)))
+        .success
+        .value
+        .set(IdCardDetailsPage, IdCard("GB", "1", LocalDate.of(2030, 10, 10)))
+        .success
+        .value
+        .set(PassportOrIdCardDetailsYesNoPage, false)
+        .success
+        .value
+        .set(PassportOrIdCardDetailsPage, CombinedPassportOrIdCard("GB", "1", LocalDate.of(2030, 10, 10)))
+        .success
+        .value
+        .set(PassportOrIdCardPage, PassportOrIdCard.Passport)
+        .success
+        .value
+        .set(NationalInsuranceNumberYesNoPage, true)
+        .success
+        .value
 
       userAnswers.get(PassportOrIdCardDetailsYesNoPage) mustNot be(defined)
       userAnswers.get(PassportOrIdCardDetailsPage) mustNot be(defined)
@@ -59,4 +72,5 @@ class NationalInsuranceNumberYesNoPageSpec extends PageBehaviours {
     }
 
   }
+
 }

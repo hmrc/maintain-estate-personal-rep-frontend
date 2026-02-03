@@ -34,37 +34,38 @@ import views.html.business.amend.CheckBusinessDetailsView
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class CheckDetailsController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        actions: Actions,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: CheckBusinessDetailsView,
-                                        connector: EstatesConnector,
-                                        val appConfig: FrontendAppConfig,
-                                        businessPrintHelper: BusinessPrintHelper,
-                                        mapper: BusinessMapper,
-                                        errorHandler: ErrorHandler
-                                      )(implicit ec: ExecutionContext
-) extends FrontendBaseController with I18nSupport with Logging {
+class CheckDetailsController @Inject() (
+  override val messagesApi: MessagesApi,
+  actions: Actions,
+  val controllerComponents: MessagesControllerComponents,
+  view: CheckBusinessDetailsView,
+  connector: EstatesConnector,
+  val appConfig: FrontendAppConfig,
+  businessPrintHelper: BusinessPrintHelper,
+  mapper: BusinessMapper,
+  errorHandler: ErrorHandler
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Logging {
 
-  def renderFromUserAnswers() : Action[AnyContent] = actions.authWithBusinessName {
-    implicit request =>
-      val section: AnswerSection = businessPrintHelper(request.userAnswers, provisional = false, request.businessName)
-      Ok(view(Seq(section)))
+  def renderFromUserAnswers(): Action[AnyContent] = actions.authWithBusinessName { implicit request =>
+    val section: AnswerSection = businessPrintHelper(request.userAnswers, provisional = false, request.businessName)
+    Ok(view(Seq(section)))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.authWithBusinessName.async {
-    implicit request =>
-
-      mapper(request.userAnswers).map {
-        business =>
-          connector.addOrAmendPersonalRep(request.userAnswers.utr, PersonalRepresentative(None, Some(business))).map(_ =>
-            Redirect(appConfig.maintainDeclarationUrl(request.request.user.isAgent))
-          )
-      }.getOrElse{
-        logger.error(s"[Session ID: ${Session.id(hc)}][UTR: ${request.userAnswers.utr}]" +
-          s" error mapping user answers to Business Personal rep")
+  def onSubmit(): Action[AnyContent] = actions.authWithBusinessName.async { implicit request =>
+    mapper(request.userAnswers)
+      .map { business =>
+        connector
+          .addOrAmendPersonalRep(request.userAnswers.utr, PersonalRepresentative(None, Some(business)))
+          .map(_ => Redirect(appConfig.maintainDeclarationUrl(request.request.user.isAgent)))
+      }
+      .getOrElse {
+        logger.error(
+          s"[Session ID: ${Session.id(hc)}][UTR: ${request.userAnswers.utr}]" +
+            s" error mapping user answers to Business Personal rep"
+        )
         errorHandler.internalServerErrorTemplate.map(html => InternalServerError(html))
       }
   }
+
 }

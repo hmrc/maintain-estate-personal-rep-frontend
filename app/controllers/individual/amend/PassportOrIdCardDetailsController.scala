@@ -33,37 +33,35 @@ import views.html.individual.amend.PassportOrIdCardDetailsView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PassportOrIdCardDetailsController @Inject()(
-                                                   override val messagesApi: MessagesApi,
-                                                   sessionRepository: SessionRepository,
-                                                   @Individual navigator: Navigator,
-                                                   actions: Actions,
-                                                   formProvider: CombinedPassportOrIdCardDetailsFormProvider,
-                                                   val controllerComponents: MessagesControllerComponents,
-                                                   view: PassportOrIdCardDetailsView,
-                                                   val countryOptions: CountryOptions
-                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class PassportOrIdCardDetailsController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  @Individual navigator: Navigator,
+  actions: Actions,
+  formProvider: CombinedPassportOrIdCardDetailsFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: PassportOrIdCardDetailsView,
+  val countryOptions: CountryOptions
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form: Form[CombinedPassportOrIdCard] = formProvider.withPrefix("individual.passportOrIdCardDetails")
 
-  def onPageLoad(): Action[AnyContent] = actions.authWithIndividualName {
-    implicit request =>
+  def onPageLoad(): Action[AnyContent] = actions.authWithIndividualName { implicit request =>
+    val preparedForm = request.userAnswers.get(PassportOrIdCardDetailsPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(PassportOrIdCardDetailsPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm, request.individualName, countryOptions.options()))
+    Ok(view(preparedForm, request.individualName, countryOptions.options()))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.authWithIndividualName.async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
+  def onSubmit(): Action[AnyContent] = actions.authWithIndividualName.async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, request.individualName, countryOptions.options()))),
-
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(PassportOrIdCardDetailsPage, value))
@@ -71,4 +69,5 @@ class PassportOrIdCardDetailsController @Inject()(
           } yield Redirect(navigator.nextPage(PassportOrIdCardDetailsPage, CheckMode, updatedAnswers))
       )
   }
+
 }

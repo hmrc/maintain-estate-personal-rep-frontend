@@ -29,35 +29,31 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class CheckDetailsController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        actions: Actions,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        connector: EstatesConnector,
-                                        val appConfig: FrontendAppConfig,
-                                        sessionRepository: SessionRepository,
-                                        businessExtractor: BusinessExtractor,
-                                        individualExtractor: IndividualExtractor
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class CheckDetailsController @Inject() (
+  override val messagesApi: MessagesApi,
+  actions: Actions,
+  val controllerComponents: MessagesControllerComponents,
+  connector: EstatesConnector,
+  val appConfig: FrontendAppConfig,
+  sessionRepository: SessionRepository,
+  businessExtractor: BusinessExtractor,
+  individualExtractor: IndividualExtractor
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def extractAndRender(): Action[AnyContent] = actions.authWithData.async {
-    implicit request =>
-
-      connector.getPersonalRep(request.userAnswers.utr) flatMap {
-        case individual: IndividualPersonalRep =>
-          for {
-            userAnswers <- Future.fromTry(individualExtractor(request.userAnswers, individual))
-            _ <- sessionRepository.set(userAnswers)
-          } yield {
-            Redirect(controllers.individual.amend.routes.CheckDetailsController.renderFromUserAnswers())
-          }
-        case business: BusinessPersonalRep =>
-          for {
-            userAnswers <- Future.fromTry(businessExtractor(request.userAnswers, business))
-            _ <- sessionRepository.set(userAnswers)
-          } yield {
-            Redirect(controllers.business.amend.routes.CheckDetailsController.renderFromUserAnswers())
-          }
-      }
+  def extractAndRender(): Action[AnyContent] = actions.authWithData.async { implicit request =>
+    connector.getPersonalRep(request.userAnswers.utr) flatMap {
+      case individual: IndividualPersonalRep =>
+        for {
+          userAnswers <- Future.fromTry(individualExtractor(request.userAnswers, individual))
+          _           <- sessionRepository.set(userAnswers)
+        } yield Redirect(controllers.individual.amend.routes.CheckDetailsController.renderFromUserAnswers())
+      case business: BusinessPersonalRep     =>
+        for {
+          userAnswers <- Future.fromTry(businessExtractor(request.userAnswers, business))
+          _           <- sessionRepository.set(userAnswers)
+        } yield Redirect(controllers.business.amend.routes.CheckDetailsController.renderFromUserAnswers())
+    }
   }
+
 }

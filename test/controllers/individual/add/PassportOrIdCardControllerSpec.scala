@@ -31,15 +31,18 @@ import views.html.individual.add.PassportOrIdCardView
 class PassportOrIdCardControllerSpec extends SpecBase {
 
   lazy val PassportOrIdCardRoute: String = addRts.PassportOrIdCardController.onPageLoad().url
-  lazy val PassportDetailsRoute: String = addRts.PassportDetailsController.onPageLoad().url
-  lazy val IdCardDetailsRoute: String = addRts.IdCardDetailsController.onPageLoad().url
+  lazy val PassportDetailsRoute: String  = addRts.PassportDetailsController.onPageLoad().url
+  lazy val IdCardDetailsRoute: String    = addRts.IdCardDetailsController.onPageLoad().url
 
-  val formProvider = new PassportOrIdCardFormProvider()
+  val formProvider                 = new PassportOrIdCardFormProvider()
   val form: Form[PassportOrIdCard] = formProvider()
 
   val name: Name = Name("FirstName", None, "LastName")
+
   val userAnswersWithName: UserAnswers = emptyUserAnswers
-    .set(NamePage, name).success.value
+    .set(NamePage, name)
+    .success
+    .value
 
   "PassportOrIdCard Controller" must {
 
@@ -63,8 +66,14 @@ class PassportOrIdCardControllerSpec extends SpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithName
-        .set(PassportOrIdCardPage, PassportOrIdCard.values.head).success.value))
+      val application = applicationBuilder(userAnswers =
+        Some(
+          userAnswersWithName
+            .set(PassportOrIdCardPage, PassportOrIdCard.values.head)
+            .success
+            .value
+        )
+      )
         .build()
 
       val request = FakeRequest(GET, PassportOrIdCardRoute)
@@ -170,4 +179,5 @@ class PassportOrIdCardControllerSpec extends SpecBase {
       application.stop()
     }
   }
+
 }

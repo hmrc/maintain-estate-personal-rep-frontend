@@ -32,36 +32,33 @@ import views.html.business.TelephoneNumberView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TelephoneNumberController @Inject()(
-                                           override val messagesApi: MessagesApi,
-                                           val controllerComponents: MessagesControllerComponents,
-                                           sessionRepository: SessionRepository,
-                                           @Business navigator: Navigator,
-                                           actions: Actions,
-                                           formProvider: TelephoneNumberFormProvider,
-                                           view: TelephoneNumberView
-                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class TelephoneNumberController @Inject() (
+  override val messagesApi: MessagesApi,
+  val controllerComponents: MessagesControllerComponents,
+  sessionRepository: SessionRepository,
+  @Business navigator: Navigator,
+  actions: Actions,
+  formProvider: TelephoneNumberFormProvider,
+  view: TelephoneNumberView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form: Form[String] = formProvider.withPrefix("business.telephoneNumber")
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithBusinessName {
-    implicit request =>
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithBusinessName { implicit request =>
+    val preparedForm = request.userAnswers.get(TelephoneNumberPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(TelephoneNumberPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm, request.businessName, mode))
+    Ok(view(preparedForm, request.businessName, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithBusinessName.async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, request.businessName, mode))),
-
+  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithBusinessName.async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.businessName, mode))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TelephoneNumberPage, value))
@@ -69,4 +66,5 @@ class TelephoneNumberController @Inject()(
           } yield Redirect(navigator.nextPage(TelephoneNumberPage, mode, updatedAnswers))
       )
   }
+
 }

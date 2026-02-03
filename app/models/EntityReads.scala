@@ -20,12 +20,12 @@ import play.api.libs.json.{JsPath, JsSuccess, Reads}
 
 trait EntityReads {
 
-  def readAtSubPath[T: Reads](subPath: JsPath): Reads[T] = Reads (
+  def readAtSubPath[T: Reads](subPath: JsPath): Reads[T] = Reads(
     _.transform(subPath.json.pick)
       .flatMap(_.validate[T])
   )
 
-  def readNullableAtSubPath[T: Reads](subPath: JsPath): Reads[Option[T]] = Reads (
+  def readNullableAtSubPath[T: Reads](subPath: JsPath): Reads[Option[T]] = Reads(
     _.transform(subPath.json.pick)
       .flatMap(_.validate[T])
       .map(Some(_))

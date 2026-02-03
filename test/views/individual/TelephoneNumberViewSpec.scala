@@ -26,7 +26,7 @@ import views.html.individual.TelephoneNumberView
 class TelephoneNumberViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "individual.telephoneNumber"
-  val name = Name("FirstName", None, "LastName")
+  val name             = Name("FirstName", None, "LastName")
 
   override val form: Form[String] = new TelephoneNumberFormProvider().withPrefix(messageKeyPrefix)
 
@@ -45,4 +45,5 @@ class TelephoneNumberViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
   }
+
 }

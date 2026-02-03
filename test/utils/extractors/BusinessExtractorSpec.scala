@@ -27,13 +27,13 @@ import pages.business.add.StartDatePage
 
 class BusinessExtractorSpec extends SpecBase {
 
-  private val name: String = "Name"
-  private val utr: String = "1234567890"
-  private val ukAddress: UkAddress = UkAddress("value 1", "value 2", None, None, "AB1 1AB")
+  private val name: String               = "Name"
+  private val utr: String                = "1234567890"
+  private val ukAddress: UkAddress       = UkAddress("value 1", "value 2", None, None, "AB1 1AB")
   private val nonUkAddress: NonUkAddress = NonUkAddress("value 1", "value 2", None, "DE")
-  private val telephoneNumber: String = "999"
-  private val startDate: LocalDate = LocalDate.parse("2020-01-01")
-  private val email: String = "email@example.com"
+  private val telephoneNumber: String    = "999"
+  private val startDate: LocalDate       = LocalDate.parse("2020-01-01")
+  private val email: String              = "email@example.com"
 
   "Business extractor" must {
 
@@ -62,7 +62,7 @@ class BusinessExtractorSpec extends SpecBase {
         result.get(UkAddressPage).get mustEqual ukAddress
         result.get(NonUkAddressPage) mustNot be(defined)
         result.get(EmailAddressYesNoPage).get mustBe true
-        result.get(EmailAddressPage).get mustBe email
+        result.get(EmailAddressPage).get      mustBe email
         result.get(TelephoneNumberPage).get mustEqual telephoneNumber
         result.get(StartDatePage).get mustEqual startDate
       }

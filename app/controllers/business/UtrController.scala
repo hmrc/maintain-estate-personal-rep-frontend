@@ -32,39 +32,38 @@ import views.html.business.UtrView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class UtrController @Inject()(
-                               val controllerComponents: MessagesControllerComponents,
-                               actions: Actions,
-                               formProvider: UtrFormProvider,
-                               sessionRepository: SessionRepository,
-                               view: UtrView,
-                               @Business navigator: Navigator
-                             )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class UtrController @Inject() (
+  val controllerComponents: MessagesControllerComponents,
+  actions: Actions,
+  formProvider: UtrFormProvider,
+  sessionRepository: SessionRepository,
+  view: UtrView,
+  @Business navigator: Navigator
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form: Form[String] = formProvider.withPrefix("business.utr")
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithBusinessName {
-    implicit request =>
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithBusinessName { implicit request =>
+    val preparedForm = request.userAnswers.get(UtrPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(UtrPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm, request.businessName, mode))
+    Ok(view(preparedForm, request.businessName, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithBusinessName.async {
-    implicit request =>
-      form.bindFromRequest().fold(
-        (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, request.businessName, mode))),
-        value => {
+  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithBusinessName.async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors, request.businessName, mode))),
+        value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(UtrPage, value))
-            _ <- sessionRepository.set(updatedAnswers)
+            _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(UtrPage, mode, updatedAnswers))
-        }
       )
   }
+
 }

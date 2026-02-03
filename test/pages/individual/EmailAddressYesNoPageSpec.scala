@@ -30,10 +30,15 @@ class EmailAddressYesNoPageSpec extends PageBehaviours {
 
     "implement cleanup logic when NO selected" in {
       val userAnswers = emptyUserAnswers
-        .set(EmailAddressPage, "email@example.com").success.value
-        .set(EmailAddressYesNoPage, false).success.value
+        .set(EmailAddressPage, "email@example.com")
+        .success
+        .value
+        .set(EmailAddressYesNoPage, false)
+        .success
+        .value
 
       userAnswers.get(EmailAddressPage) mustNot be(defined)
     }
   }
+
 }

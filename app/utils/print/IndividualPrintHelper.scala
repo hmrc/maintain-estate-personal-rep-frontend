@@ -28,46 +28,123 @@ import pages.individual.amend.PassportOrIdCardDetailsPage
 import play.api.i18n.Messages
 import viewmodels.{AnswerRow, AnswerSection}
 
-class IndividualPrintHelper @Inject()(answerRowConverter: AnswerRowConverter) {
+class IndividualPrintHelper @Inject() (answerRowConverter: AnswerRowConverter) {
 
-  def apply(userAnswers: UserAnswers, provisional: Boolean, name: String)(implicit messages: Messages): AnswerSection = {
+  def apply(
+    userAnswers: UserAnswers,
+    provisional: Boolean,
+    name: String
+  )(implicit messages: Messages): AnswerSection = {
 
     val bound = answerRowConverter.bind(userAnswers, name)
 
     val add: Seq[AnswerRow] = Seq(
-      bound.enumQuestion(IndividualOrBusinessPage, "individualOrBusiness", controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode).url),
+      bound.enumQuestion(
+        IndividualOrBusinessPage,
+        "individualOrBusiness",
+        controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode).url
+      ),
       bound.nameQuestion(NamePage, "individual.name", rts.NameController.onPageLoad(NormalMode).url),
-      bound.dateQuestion(DateOfBirthPage, "individual.dateOfBirth", rts.DateOfBirthController.onPageLoad(NormalMode).url),
-      bound.yesNoQuestion(NationalInsuranceNumberYesNoPage, "individual.nationalInsuranceNumberYesNo",
-        rts.NationalInsuranceNumberYesNoController.onPageLoad(NormalMode).url),
-      bound.ninoQuestion(NationalInsuranceNumberPage, "individual.nationalInsuranceNumber", rts.NationalInsuranceNumberController.onPageLoad(NormalMode).url),
+      bound.dateQuestion(
+        DateOfBirthPage,
+        "individual.dateOfBirth",
+        rts.DateOfBirthController.onPageLoad(NormalMode).url
+      ),
+      bound.yesNoQuestion(
+        NationalInsuranceNumberYesNoPage,
+        "individual.nationalInsuranceNumberYesNo",
+        rts.NationalInsuranceNumberYesNoController.onPageLoad(NormalMode).url
+      ),
+      bound.ninoQuestion(
+        NationalInsuranceNumberPage,
+        "individual.nationalInsuranceNumber",
+        rts.NationalInsuranceNumberController.onPageLoad(NormalMode).url
+      ),
       bound.enumQuestion(PassportOrIdCardPage, "passportOrIdCard", addRts.PassportOrIdCardController.onPageLoad().url),
-      bound.passportDetailsQuestion(PassportDetailsPage, "individual.passportDetails", addRts.PassportDetailsController.onPageLoad().url),
-      bound.idCardDetailsQuestion(IdCardDetailsPage, "individual.idCardDetails", addRts.IdCardDetailsController.onPageLoad().url),
-      bound.yesNoQuestion(LiveInTheUkYesNoPage, "individual.liveInTheUkYesNo", rts.LiveInTheUkYesNoController.onPageLoad(NormalMode).url),
+      bound.passportDetailsQuestion(
+        PassportDetailsPage,
+        "individual.passportDetails",
+        addRts.PassportDetailsController.onPageLoad().url
+      ),
+      bound.idCardDetailsQuestion(
+        IdCardDetailsPage,
+        "individual.idCardDetails",
+        addRts.IdCardDetailsController.onPageLoad().url
+      ),
+      bound.yesNoQuestion(
+        LiveInTheUkYesNoPage,
+        "individual.liveInTheUkYesNo",
+        rts.LiveInTheUkYesNoController.onPageLoad(NormalMode).url
+      ),
       bound.addressQuestion(UkAddressPage, "individual.ukAddress", rts.UkAddressController.onPageLoad(NormalMode).url),
-      bound.addressQuestion(NonUkAddressPage, "individual.nonUkAddress", rts.NonUkAddressController.onPageLoad(NormalMode).url),
-      bound.yesNoQuestion(EmailAddressYesNoPage, "individual.emailYesNo", rts.EmailAddressYesNoController.onPageLoad(NormalMode).url),
+      bound.addressQuestion(
+        NonUkAddressPage,
+        "individual.nonUkAddress",
+        rts.NonUkAddressController.onPageLoad(NormalMode).url
+      ),
+      bound.yesNoQuestion(
+        EmailAddressYesNoPage,
+        "individual.emailYesNo",
+        rts.EmailAddressYesNoController.onPageLoad(NormalMode).url
+      ),
       bound.stringQuestion(EmailAddressPage, "individual.email", rts.EmailAddressController.onPageLoad(NormalMode).url),
-      bound.stringQuestion(TelephoneNumberPage, "individual.telephoneNumber", rts.TelephoneNumberController.onPageLoad(NormalMode).url),
+      bound.stringQuestion(
+        TelephoneNumberPage,
+        "individual.telephoneNumber",
+        rts.TelephoneNumberController.onPageLoad(NormalMode).url
+      ),
       bound.dateQuestion(StartDatePage, "individual.startDate", addRts.StartDateController.onPageLoad().url)
     ).flatten
 
     val amend: Seq[AnswerRow] = Seq(
-      bound.enumQuestion(IndividualOrBusinessPage, "individualOrBusiness", controllers.routes.IndividualOrBusinessController.onPageLoad(CheckMode).url),
+      bound.enumQuestion(
+        IndividualOrBusinessPage,
+        "individualOrBusiness",
+        controllers.routes.IndividualOrBusinessController.onPageLoad(CheckMode).url
+      ),
       bound.nameQuestion(NamePage, "individual.name", rts.NameController.onPageLoad(CheckMode).url),
-      bound.dateQuestion(DateOfBirthPage, "individual.dateOfBirth", rts.DateOfBirthController.onPageLoad(CheckMode).url),
-      bound.yesNoQuestion(NationalInsuranceNumberYesNoPage, "individual.nationalInsuranceNumberYesNo",
-        rts.NationalInsuranceNumberYesNoController.onPageLoad(CheckMode).url),
-      bound.ninoQuestion(NationalInsuranceNumberPage, "individual.nationalInsuranceNumber", rts.NationalInsuranceNumberController.onPageLoad(CheckMode).url),
-      bound.passportOrIdCardDetailsQuestion(PassportOrIdCardDetailsPage, "individual.passportOrIdCardDetails",
-        amendRts.PassportOrIdCardDetailsController.onPageLoad().url),
-      bound.yesNoQuestion(LiveInTheUkYesNoPage, "individual.liveInTheUkYesNo", rts.LiveInTheUkYesNoController.onPageLoad(CheckMode).url),
+      bound.dateQuestion(
+        DateOfBirthPage,
+        "individual.dateOfBirth",
+        rts.DateOfBirthController.onPageLoad(CheckMode).url
+      ),
+      bound.yesNoQuestion(
+        NationalInsuranceNumberYesNoPage,
+        "individual.nationalInsuranceNumberYesNo",
+        rts.NationalInsuranceNumberYesNoController.onPageLoad(CheckMode).url
+      ),
+      bound.ninoQuestion(
+        NationalInsuranceNumberPage,
+        "individual.nationalInsuranceNumber",
+        rts.NationalInsuranceNumberController.onPageLoad(CheckMode).url
+      ),
+      bound.passportOrIdCardDetailsQuestion(
+        PassportOrIdCardDetailsPage,
+        "individual.passportOrIdCardDetails",
+        amendRts.PassportOrIdCardDetailsController.onPageLoad().url
+      ),
+      bound.yesNoQuestion(
+        LiveInTheUkYesNoPage,
+        "individual.liveInTheUkYesNo",
+        rts.LiveInTheUkYesNoController.onPageLoad(CheckMode).url
+      ),
       bound.addressQuestion(UkAddressPage, "individual.ukAddress", rts.UkAddressController.onPageLoad(CheckMode).url),
-      bound.addressQuestion(NonUkAddressPage, "individual.nonUkAddress", rts.NonUkAddressController.onPageLoad(CheckMode).url),
-      bound.yesNoQuestion(EmailAddressYesNoPage, "individual.emailYesNo", rts.EmailAddressYesNoController.onPageLoad(CheckMode).url),
+      bound.addressQuestion(
+        NonUkAddressPage,
+        "individual.nonUkAddress",
+        rts.NonUkAddressController.onPageLoad(CheckMode).url
+      ),
+      bound.yesNoQuestion(
+        EmailAddressYesNoPage,
+        "individual.emailYesNo",
+        rts.EmailAddressYesNoController.onPageLoad(CheckMode).url
+      ),
       bound.stringQuestion(EmailAddressPage, "individual.email", rts.EmailAddressController.onPageLoad(CheckMode).url),
-      bound.stringQuestion(TelephoneNumberPage, "individual.telephoneNumber", rts.TelephoneNumberController.onPageLoad(CheckMode).url)
+      bound.stringQuestion(
+        TelephoneNumberPage,
+        "individual.telephoneNumber",
+        rts.TelephoneNumberController.onPageLoad(CheckMode).url
+      )
     ).flatten
 
     AnswerSection(
@@ -75,4 +152,5 @@ class IndividualPrintHelper @Inject()(answerRowConverter: AnswerRowConverter) {
       if (provisional) add else amend
     )
   }
+
 }

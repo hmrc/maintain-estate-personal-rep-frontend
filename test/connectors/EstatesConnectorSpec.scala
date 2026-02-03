@@ -23,7 +23,9 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import generators.Generators
-import models.{BusinessPersonalRep, IndividualPersonalRep, Name, NationalInsuranceNumber, PersonalRepresentative, UkAddress}
+import models.{
+  BusinessPersonalRep, IndividualPersonalRep, Name, NationalInsuranceNumber, PersonalRepresentative, UkAddress
+}
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Inside}
 import play.api.libs.json.Json
@@ -34,8 +36,14 @@ import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.duration.Duration
 
-class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
-  with Inside with BeforeAndAfterAll with BeforeAndAfterEach with IntegrationPatience {
+class EstatesConnectorSpec
+    extends SpecBase
+    with Generators
+    with ScalaFutures
+    with Inside
+    with BeforeAndAfterAll
+    with BeforeAndAfterEach
+    with IntegrationPatience {
 
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
@@ -56,11 +64,11 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
     server.stop()
   }
 
-  val utr = "1000000008"
-  val index = 0
-  val description = "description"
+  val utr             = "1000000008"
+  val index           = 0
+  val description     = "description"
   val date: LocalDate = LocalDate.parse("2019-02-03")
-  val email: String = "email@example.com"
+  val email: String   = "email@example.com"
 
   "estates connector" when {
 
@@ -98,9 +106,10 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
             .configure(
               Seq(
                 "microservice.services.estates.port" -> server.port(),
-                "auditing.enabled" -> false
+                "auditing.enabled"                   -> false
               ): _*
-            ).build()
+            )
+            .build()
 
           val connector = application.injector.instanceOf[EstatesConnector]
 
@@ -122,9 +131,10 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
             .configure(
               Seq(
                 "microservice.services.estates.port" -> server.port(),
-                "auditing.enabled" -> false
+                "auditing.enabled"                   -> false
               ): _*
-            ).build()
+            )
+            .build()
 
           val connector = application.injector.instanceOf[EstatesConnector]
 
@@ -151,9 +161,10 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
             .configure(
               Seq(
                 "microservice.services.estates.port" -> server.port(),
-                "auditing.enabled" -> false
+                "auditing.enabled"                   -> false
               ): _*
-            ).build()
+            )
+            .build()
 
           val connector = application.injector.instanceOf[EstatesConnector]
 
@@ -175,9 +186,10 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
             .configure(
               Seq(
                 "microservice.services.estates.port" -> server.port(),
-                "auditing.enabled" -> false
+                "auditing.enabled"                   -> false
               ): _*
-            ).build()
+            )
+            .build()
 
           val connector = application.injector.instanceOf[EstatesConnector]
 
@@ -206,9 +218,10 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
         .configure(
           Seq(
             "microservice.services.estates.port" -> server.port(),
-            "auditing.enabled" -> false
+            "auditing.enabled"                   -> false
           ): _*
-        ).build()
+        )
+        .build()
 
       val connector = application.injector.instanceOf[EstatesConnector]
 
@@ -217,19 +230,19 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
           .willReturn(okJson(expectedJson.toString))
       )
 
-      val result  = Await.result(connector.getDateOfDeath(utr), Duration.Inf)
+      val result = Await.result(connector.getDateOfDeath(utr), Duration.Inf)
       result mustBe expectedJson
     }
 
     "get personal rep" when {
 
-      val orgName = "Org"
-      val name = Name("John", None, "Doe")
-      val utr = "1234567890"
-      val nino = "AA000000A"
-      val ukAddress: UkAddress = UkAddress("Line 1", "Line 2", None, None, "POSTCODE")
+      val orgName                 = "Org"
+      val name                    = Name("John", None, "Doe")
+      val utr                     = "1234567890"
+      val nino                    = "AA000000A"
+      val ukAddress: UkAddress    = UkAddress("Line 1", "Line 2", None, None, "POSTCODE")
       val telephoneNumber: String = "999"
-      val date = LocalDate.parse("2010-02-03")
+      val date                    = LocalDate.parse("2010-02-03")
 
       "individual" in {
 
@@ -249,9 +262,10 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
           .configure(
             Seq(
               "microservice.services.estates.port" -> server.port(),
-              "auditing.enabled" -> false
+              "auditing.enabled"                   -> false
             ): _*
-          ).build()
+          )
+          .build()
 
         val connector = application.injector.instanceOf[EstatesConnector]
 
@@ -260,7 +274,7 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
             .willReturn(okJson(expectedJson.toString))
         )
 
-        val result  = Await.result(connector.getPersonalRep(utr), Duration.Inf)
+        val result = Await.result(connector.getPersonalRep(utr), Duration.Inf)
         result mustBe personalRep
       }
 
@@ -281,9 +295,10 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
           .configure(
             Seq(
               "microservice.services.estates.port" -> server.port(),
-              "auditing.enabled" -> false
+              "auditing.enabled"                   -> false
             ): _*
-          ).build()
+          )
+          .build()
 
         val connector = application.injector.instanceOf[EstatesConnector]
 
@@ -292,11 +307,12 @@ class EstatesConnectorSpec extends SpecBase with Generators with ScalaFutures
             .willReturn(okJson(expectedJson.toString))
         )
 
-        val result  = Await.result(connector.getPersonalRep(utr), Duration.Inf)
+        val result = Await.result(connector.getPersonalRep(utr), Duration.Inf)
         result mustBe personalRep
       }
 
     }
 
   }
+
 }

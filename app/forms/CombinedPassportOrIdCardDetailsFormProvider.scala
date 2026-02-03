@@ -23,22 +23,22 @@ import models.CombinedPassportOrIdCard
 import play.api.data.Form
 import play.api.data.Forms.mapping
 
-class CombinedPassportOrIdCardDetailsFormProvider @Inject()(appConfig: FrontendAppConfig)
-  extends Mappings with Constraints {
+class CombinedPassportOrIdCardDetailsFormProvider @Inject() (appConfig: FrontendAppConfig)
+    extends Mappings with Constraints {
 
   val maxLengthCountryField = 100
-  val maxLengthNumberField = 30
+  val maxLengthNumberField  = 30
 
   def withPrefix(prefix: String): Form[CombinedPassportOrIdCard] = Form(
     mapping(
-      "country" -> text(s"$prefix.country.error.required")
+      "country"    -> text(s"$prefix.country.error.required")
         .verifying(
           firstError(
             maxLength(maxLengthCountryField, s"$prefix.country.error.length"),
             nonEmptyString("country", s"$prefix.country.error.required")
           )
         ),
-      "number" -> text(s"$prefix.number.error.required")
+      "number"     -> text(s"$prefix.number.error.required")
         .verifying(
           firstError(
             maxLength(maxLengthNumberField, s"$prefix.number.error.length"),
@@ -47,20 +47,29 @@ class CombinedPassportOrIdCardDetailsFormProvider @Inject()(appConfig: FrontendA
           )
         ),
       "expiryDate" -> localDate(
-        invalidKey     = s"$prefix.expiryDate.error.invalid",
+        invalidKey = s"$prefix.expiryDate.error.invalid",
         allRequiredKey = s"$prefix.expiryDate.error.required.all",
         twoRequiredKey = s"$prefix.expiryDate.error.required.two",
-        requiredKey    = s"$prefix.expiryDate.error.required"
-      ).verifying(firstError(
-        maxDate(
-          appConfig.maxDate,
-          s"$prefix.expiryDate.error.future", "day", "month", "year"
-        ),
-        minDate(
-          appConfig.minDate,
-          s"$prefix.expiryDate.error.past", "day", "month", "year"
+        requiredKey = s"$prefix.expiryDate.error.required"
+      ).verifying(
+        firstError(
+          maxDate(
+            appConfig.maxDate,
+            s"$prefix.expiryDate.error.future",
+            "day",
+            "month",
+            "year"
+          ),
+          minDate(
+            appConfig.minDate,
+            s"$prefix.expiryDate.error.past",
+            "day",
+            "month",
+            "year"
+          )
         )
-      ))
+      )
     )(CombinedPassportOrIdCard.apply)(CombinedPassportOrIdCard.unapply)
   )
+
 }

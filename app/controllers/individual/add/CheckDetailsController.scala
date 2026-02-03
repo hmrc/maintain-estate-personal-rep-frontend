@@ -32,36 +32,36 @@ import views.html.individual.add.CheckDetailsView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class CheckDetailsController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        actions: Actions,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: CheckDetailsView,
-                                        val appConfig: FrontendAppConfig,
-                                        printHelper: IndividualPrintHelper,
-                                        mapper: IndividualMapper,
-                                        connector: EstatesConnector
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
+class CheckDetailsController @Inject() (
+  override val messagesApi: MessagesApi,
+  actions: Actions,
+  val controllerComponents: MessagesControllerComponents,
+  view: CheckDetailsView,
+  val appConfig: FrontendAppConfig,
+  printHelper: IndividualPrintHelper,
+  mapper: IndividualMapper,
+  connector: EstatesConnector
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Logging {
 
-  def onPageLoad(): Action[AnyContent] = actions.authWithIndividualName {
-    implicit request =>
-
-      val section: AnswerSection = printHelper(request.userAnswers, provisional = true, request.individualName)
-      Ok(view(Seq(section)))
+  def onPageLoad(): Action[AnyContent] = actions.authWithIndividualName { implicit request =>
+    val section: AnswerSection = printHelper(request.userAnswers, provisional = true, request.individualName)
+    Ok(view(Seq(section)))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.authWithIndividualName.async {
-    implicit request =>
-
-      mapper(request.userAnswers) match {
-        case None =>
-          logger.error(s"[Session ID: ${utils.Session.id(hc)}][UTR: ${request.userAnswers.utr}]" +
-            s" error mapping user answers to Individual Personal rep")
-          Future.successful(InternalServerError)
-        case Some(individual) =>
-          connector.addOrAmendPersonalRep(request.userAnswers.utr, PersonalRepresentative(Some(individual), None)).map(_ =>
-            Redirect(appConfig.maintainDeclarationUrl(request.request.user.isAgent))
-          )
-      }
+  def onSubmit(): Action[AnyContent] = actions.authWithIndividualName.async { implicit request =>
+    mapper(request.userAnswers) match {
+      case None             =>
+        logger.error(
+          s"[Session ID: ${utils.Session.id(hc)}][UTR: ${request.userAnswers.utr}]" +
+            s" error mapping user answers to Individual Personal rep"
+        )
+        Future.successful(InternalServerError)
+      case Some(individual) =>
+        connector
+          .addOrAmendPersonalRep(request.userAnswers.utr, PersonalRepresentative(Some(individual), None))
+          .map(_ => Redirect(appConfig.maintainDeclarationUrl(request.request.user.isAgent)))
+    }
   }
+
 }

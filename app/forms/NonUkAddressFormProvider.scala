@@ -28,7 +28,7 @@ class NonUkAddressFormProvider @Inject() extends Mappings {
 
   def apply(): Form[NonUkAddress] = Form(
     mapping(
-      "line1" ->
+      "line1"   ->
         text("nonUkAddress.line1.error.required")
           .verifying(
             firstError(
@@ -37,7 +37,7 @@ class NonUkAddressFormProvider @Inject() extends Mappings {
               regexp(Validation.addressLineRegex, "nonUkAddress.line1.error.invalid")
             )
           ),
-      "line2" ->
+      "line2"   ->
         text("nonUkAddress.line2.error.required")
           .verifying(
             firstError(
@@ -46,15 +46,15 @@ class NonUkAddressFormProvider @Inject() extends Mappings {
               regexp(Validation.addressLineRegex, "nonUkAddress.line2.error.invalid")
             )
           ),
-      "line3" ->
+      "line3"   ->
         optional(
           text()
-          .verifying(
-            firstError(
-              maxLength(35, "nonUkAddress.line3.error.length"),
-              regexp(Validation.addressLineRegex, "nonUkAddress.line3.error.invalid")
+            .verifying(
+              firstError(
+                maxLength(35, "nonUkAddress.line3.error.length"),
+                regexp(Validation.addressLineRegex, "nonUkAddress.line3.error.invalid")
+              )
             )
-          )
         ).transform(emptyToNone, identity[Option[String]]),
       "country" ->
         text("nonUkAddress.country.error.required")
@@ -66,4 +66,5 @@ class NonUkAddressFormProvider @Inject() extends Mappings {
           )
     )(NonUkAddress.apply)(NonUkAddress.unapply)
   )
+
 }

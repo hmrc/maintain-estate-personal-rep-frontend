@@ -44,4 +44,5 @@ class IndividualOrBusinessViewSpec extends OptionsViewBehaviours {
 
     behave like pageWithASubmitButton(applyView(form))
   }
+
 }

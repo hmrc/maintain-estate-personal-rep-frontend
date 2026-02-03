@@ -38,5 +38,5 @@ class CheckBusinessDetailsViewSpec extends ViewBehaviours {
 
     behave like pageWithASubmitButton(applyView())
   }
-}
 
+}

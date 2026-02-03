@@ -33,37 +33,36 @@ import utils.Session
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class CheckDetailsController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        actions: Actions,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: CheckDetailsView,
-                                        val appConfig: FrontendAppConfig,
-                                        printHelper: BusinessPrintHelper,
-                                        mapper: BusinessMapper,
-                                        connector: EstatesConnector
-                                      )(implicit ec: ExecutionContext
-) extends FrontendBaseController with I18nSupport with Logging {
+class CheckDetailsController @Inject() (
+  override val messagesApi: MessagesApi,
+  actions: Actions,
+  val controllerComponents: MessagesControllerComponents,
+  view: CheckDetailsView,
+  val appConfig: FrontendAppConfig,
+  printHelper: BusinessPrintHelper,
+  mapper: BusinessMapper,
+  connector: EstatesConnector
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Logging {
 
-  def onPageLoad(): Action[AnyContent] = actions.authWithBusinessName {
-    implicit request =>
-
-      val section: AnswerSection = printHelper(request.userAnswers, provisional = true, request.businessName)
-      Ok(view(Seq(section)))
+  def onPageLoad(): Action[AnyContent] = actions.authWithBusinessName { implicit request =>
+    val section: AnswerSection = printHelper(request.userAnswers, provisional = true, request.businessName)
+    Ok(view(Seq(section)))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.authWithBusinessName.async {
-    implicit request =>
-
-      mapper(request.userAnswers) match {
-        case None =>
-          logger.error(s"[Session ID: ${Session.id(hc)}][UTR: ${request.userAnswers.utr}]" +
-            s" error in mapping user answers to Business Personal rep")
-          Future.successful(InternalServerError)
-        case Some(business) =>
-          connector.addOrAmendPersonalRep(request.userAnswers.utr, PersonalRepresentative(None, Some(business))).map(_ =>
-            Redirect(appConfig.maintainDeclarationUrl(request.request.user.isAgent))
-          )
-      }
+  def onSubmit(): Action[AnyContent] = actions.authWithBusinessName.async { implicit request =>
+    mapper(request.userAnswers) match {
+      case None           =>
+        logger.error(
+          s"[Session ID: ${Session.id(hc)}][UTR: ${request.userAnswers.utr}]" +
+            s" error in mapping user answers to Business Personal rep"
+        )
+        Future.successful(InternalServerError)
+      case Some(business) =>
+        connector
+          .addOrAmendPersonalRep(request.userAnswers.utr, PersonalRepresentative(None, Some(business)))
+          .map(_ => Redirect(appConfig.maintainDeclarationUrl(request.request.user.isAgent)))
+    }
   }
+
 }

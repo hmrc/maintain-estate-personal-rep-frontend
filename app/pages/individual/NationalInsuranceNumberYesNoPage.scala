@@ -30,18 +30,19 @@ case object NationalInsuranceNumberYesNoPage extends QuestionPage[Boolean] {
 
   override def toString: String = "nationalInsuranceNumberYesNo"
 
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     value match {
-      case Some(true) =>
-        userAnswers.remove(PassportOrIdCardDetailsYesNoPage)
+      case Some(true)  =>
+        userAnswers
+          .remove(PassportOrIdCardDetailsYesNoPage)
           .flatMap(_.remove(PassportOrIdCardDetailsPage))
           .flatMap(_.remove(PassportDetailsPage))
           .flatMap(_.remove(IdCardDetailsPage))
           .flatMap(_.remove(PassportOrIdCardPage))
       case Some(false) =>
         userAnswers.remove(NationalInsuranceNumberPage)
-      case _ =>
+      case _           =>
         super.cleanup(value, userAnswers)
     }
-  }
+
 }

@@ -28,34 +28,38 @@ import utils.Session
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EstateAuthenticationServiceImpl @Inject()(authConnector: EstatesAuthConnector)(implicit ec: ExecutionContext) extends EstateAuthenticationService with Logging {
+class EstateAuthenticationServiceImpl @Inject() (authConnector: EstatesAuthConnector)(implicit ec: ExecutionContext)
+    extends EstateAuthenticationService with Logging {
 
-  override def authenticateAgent()(implicit hc: HeaderCarrier): Future[Either[Result, String]] = {
+  override def authenticateAgent()(implicit hc: HeaderCarrier): Future[Either[Result, String]] =
 
     authConnector.agentIsAuthorised.flatMap {
-      case AuthAgentAllowed(arn) =>
+      case AuthAgentAllowed(arn)   =>
         Future.successful(Right(arn))
       case AuthDenied(redirectUrl) =>
         Future.successful(Left(Redirect(redirectUrl)))
-      case _ =>
-        logger.warn(s"[authenticateAgent][Session ID: ${Session.id(hc)}] Unable to authenticate agent with estates-auth")
+      case _                       =>
+        logger.warn(
+          s"[authenticateAgent][Session ID: ${Session.id(hc)}] Unable to authenticate agent with estates-auth"
+        )
         Future.successful(Left(Unauthorized))
     }
-  }
 
-  override def authenticateForUtr[A](utr: String)
-                                    (implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]] = {
+  override def authenticateForUtr[A](
+    utr: String
+  )(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]] =
 
     authConnector.authorisedForUtr(utr).flatMap {
-      case _: AuthAllowed =>
+      case _: AuthAllowed          =>
         Future.successful(Right(request))
       case AuthDenied(redirectUrl) =>
         Future.successful(Left(Redirect(redirectUrl)))
-      case _ =>
-        logger.warn(s"[authenticateForUtr][Session ID: ${Session.id(hc)}][UTR: $utr] Unable to authenticate for utr with estates-auth")
+      case _                       =>
+        logger.warn(
+          s"[authenticateForUtr][Session ID: ${Session.id(hc)}][UTR: $utr] Unable to authenticate for utr with estates-auth"
+        )
         Future.successful(Left(Unauthorized))
     }
-  }
 
 }
 
@@ -63,6 +67,8 @@ trait EstateAuthenticationService {
 
   def authenticateAgent()(implicit hc: HeaderCarrier): Future[Either[Result, String]]
 
-  def authenticateForUtr[A](utr: String)
-                           (implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]]
+  def authenticateForUtr[A](
+    utr: String
+  )(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]]
+
 }

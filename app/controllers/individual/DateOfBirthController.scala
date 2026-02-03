@@ -34,35 +34,33 @@ import views.html.individual.DateOfBirthView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DateOfBirthController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       @Individual navigator: Navigator,
-                                       actions: Actions,
-                                       formProvider: DateFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: DateOfBirthView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class DateOfBirthController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  @Individual navigator: Navigator,
+  actions: Actions,
+  formProvider: DateFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: DateOfBirthView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   def form: Form[LocalDate] = formProvider.withConfig("individual.dateOfBirth")
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithIndividualName {
-    implicit request =>
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithIndividualName { implicit request =>
+    val preparedForm = request.userAnswers.get(DateOfBirthPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(DateOfBirthPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm, request.individualName, mode))
+    Ok(view(preparedForm, request.individualName, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithIndividualName.async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, request.individualName, mode))),
+  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithIndividualName.async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.individualName, mode))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DateOfBirthPage, value))
@@ -70,4 +68,5 @@ class DateOfBirthController @Inject()(
           } yield Redirect(navigator.nextPage(DateOfBirthPage, mode, updatedAnswers))
       )
   }
+
 }

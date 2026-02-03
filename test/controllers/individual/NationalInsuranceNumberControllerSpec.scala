@@ -36,11 +36,10 @@ import scala.concurrent.Future
 class NationalInsuranceNumberControllerSpec extends SpecBase with MockitoSugar {
 
   private val formProvider = new NationalInsuranceNumberFormProvider()
-  private val form = formProvider.withPrefix("individual.nationalInsuranceNumber")
+  private val form         = formProvider.withPrefix("individual.nationalInsuranceNumber")
 
-  private val name = Name("FirstName", None, "LastName")
-  private val userAnswersWithName = emptyUserAnswers.set(NamePage, name)
-    .success.value
+  private val name                = Name("FirstName", None, "LastName")
+  private val userAnswersWithName = emptyUserAnswers.set(NamePage, name).success.value
 
   private lazy val nationalInsuranceNumberRoute = routes.NationalInsuranceNumberController.onPageLoad(NormalMode).url
 
@@ -66,8 +65,14 @@ class NationalInsuranceNumberControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithName
-        .set(NationalInsuranceNumberPage, "answer").success.value))
+      val application = applicationBuilder(userAnswers =
+        Some(
+          userAnswersWithName
+            .set(NationalInsuranceNumberPage, "answer")
+            .success
+            .value
+        )
+      )
         .build()
 
       val request = FakeRequest(GET, nationalInsuranceNumberRoute)
@@ -161,4 +166,5 @@ class NationalInsuranceNumberControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
   }
+
 }

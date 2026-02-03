@@ -30,22 +30,24 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class DefaultSessionRepository @Inject()(val mongo: MongoComponent,
-                                         val config: Configuration
-                                        )(implicit val ec: ExecutionContext)
-  extends PlayMongoRepository[UserAnswers](
-    mongoComponent = mongo,
-    collectionName = "user-answers",
-    domainFormat = Format(UserAnswers.reads, UserAnswers.writes),
-    indexes = Seq(
-      IndexModel(
-        Indexes.ascending("lastUpdated"),
-        IndexOptions().name("user-answers-last-updated-index")
-          .expireAfter(config.get[Int]("mongodb.timeToLiveInSeconds"), TimeUnit.SECONDS)
-          .unique(false))
-    ),
-    replaceIndexes = config.getOptional[Boolean]("microservice.services.features.mongo.dropIndexes").getOrElse(false)
-  ) with SessionRepository {
+class DefaultSessionRepository @Inject() (val mongo: MongoComponent, val config: Configuration)(implicit
+  val ec: ExecutionContext
+) extends PlayMongoRepository[UserAnswers](
+      mongoComponent = mongo,
+      collectionName = "user-answers",
+      domainFormat = Format(UserAnswers.reads, UserAnswers.writes),
+      indexes = Seq(
+        IndexModel(
+          Indexes.ascending("lastUpdated"),
+          IndexOptions()
+            .name("user-answers-last-updated-index")
+            .expireAfter(config.get[Int]("mongodb.timeToLiveInSeconds"), TimeUnit.SECONDS)
+            .unique(false)
+        )
+      ),
+      replaceIndexes = config.getOptional[Boolean]("microservice.services.features.mongo.dropIndexes").getOrElse(false)
+    )
+    with SessionRepository {
 
   private def byId(id: String) = Filters.eq("_id", id)
 
@@ -60,12 +62,14 @@ class DefaultSessionRepository @Inject()(val mongo: MongoComponent,
 
   override def set(userAnswers: UserAnswers): Future[Boolean] = {
     val selector = byId(userAnswers.id)
-    val options =  new ReplaceOptions().upsert(true)
+    val options  = new ReplaceOptions().upsert(true)
 
-    collection.replaceOne(selector, userAnswers.copy(lastUpdated = LocalDateTime.now), options)
+    collection
+      .replaceOne(selector, userAnswers.copy(lastUpdated = LocalDateTime.now), options)
       .headOption()
       .map(_.exists(_.wasAcknowledged()))
   }
+
 }
 
 trait SessionRepository {

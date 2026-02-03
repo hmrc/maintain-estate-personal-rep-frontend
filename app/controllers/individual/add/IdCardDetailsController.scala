@@ -34,37 +34,35 @@ import views.html.individual.add.IdCardDetailsView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class IdCardDetailsController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         @Individual navigator: Navigator,
-                                         actions: Actions,
-                                         formProvider: IdCardDetailsFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: IdCardDetailsView,
-                                         val countryOptions: CountryOptions
-                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class IdCardDetailsController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  @Individual navigator: Navigator,
+  actions: Actions,
+  formProvider: IdCardDetailsFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: IdCardDetailsView,
+  val countryOptions: CountryOptions
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form: Form[IdCard] = formProvider.withPrefix("individual")
 
-  def onPageLoad(): Action[AnyContent] = actions.authWithIndividualName {
-    implicit request =>
+  def onPageLoad(): Action[AnyContent] = actions.authWithIndividualName { implicit request =>
+    val preparedForm = request.userAnswers.get(IdCardDetailsPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(IdCardDetailsPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm, countryOptions.options(), request.individualName))
+    Ok(view(preparedForm, countryOptions.options(), request.individualName))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.authWithIndividualName.async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
+  def onSubmit(): Action[AnyContent] = actions.authWithIndividualName.async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, countryOptions.options(), request.individualName))),
-
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(IdCardDetailsPage, value))
@@ -72,4 +70,5 @@ class IdCardDetailsController @Inject()(
           } yield Redirect(navigator.nextPage(IdCardDetailsPage, NormalMode, updatedAnswers))
       )
   }
+
 }

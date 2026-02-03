@@ -47,12 +47,13 @@ class IndexControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfter
 
       "populate user answers with UTR and DOD and redirect to Individual or Business" in {
 
-        val utr: String = "UTR"
+        val utr: String         = "UTR"
         val dateOfDeath: String = "1996-02-03"
 
         val mockEstatesConnector: EstatesConnector = mock[EstatesConnector]
 
-        when(mockEstatesConnector.getDateOfDeath(any())(any(), any())).thenReturn(Future.successful(Json.toJson(dateOfDeath)))
+        when(mockEstatesConnector.getDateOfDeath(any())(any(), any()))
+          .thenReturn(Future.successful(Json.toJson(dateOfDeath)))
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
@@ -64,7 +65,9 @@ class IndexControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfter
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result) mustBe Some(controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode).url)
+        redirectLocation(result) mustBe Some(
+          controllers.routes.IndividualOrBusinessController.onPageLoad(NormalMode).url
+        )
 
         val uaCaptor: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
         verify(fakeRepository).set(uaCaptor.capture)
@@ -81,12 +84,13 @@ class IndexControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfter
 
       "populate user answers with UTR and DOD and redirect to Individual or Business" in {
 
-        val utr: String = "UTR"
+        val utr: String         = "UTR"
         val dateOfDeath: String = "1996-02-03"
 
         val mockEstatesConnector: EstatesConnector = mock[EstatesConnector]
 
-        when(mockEstatesConnector.getDateOfDeath(any())(any(), any())).thenReturn(Future.successful(Json.toJson(dateOfDeath)))
+        when(mockEstatesConnector.getDateOfDeath(any())(any(), any()))
+          .thenReturn(Future.successful(Json.toJson(dateOfDeath)))
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
@@ -109,4 +113,5 @@ class IndexControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfter
       }
     }
   }
+
 }

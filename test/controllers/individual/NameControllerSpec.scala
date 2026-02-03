@@ -36,7 +36,7 @@ import scala.concurrent.Future
 class NameControllerSpec extends SpecBase with MockitoSugar {
 
   private val formProvider = new NameFormProvider()
-  private val form = formProvider.withPrefix("individual.name")
+  private val form         = formProvider.withPrefix("individual.name")
 
   private lazy val nameRoute = routes.NameController.onPageLoad(NormalMode).url
 
@@ -61,7 +61,7 @@ class NameControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
-      val ua = emptyUserAnswers.set(NamePage, Name("FirstName", None, "LastName"))
+      val ua          = emptyUserAnswers.set(NamePage, Name("FirstName", None, "LastName"))
       val application = applicationBuilder(userAnswers = Some(ua.success.value)).build()
 
       val request = FakeRequest(GET, nameRoute)
@@ -90,7 +90,6 @@ class NameControllerSpec extends SpecBase with MockitoSugar {
             bind[Navigator].qualifiedWith(classOf[Individual]).toInstance(new FakeNavigator(onwardRoute))
           )
           .build()
-
 
       val request =
         FakeRequest(POST, nameRoute)
@@ -158,4 +157,5 @@ class NameControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
   }
+
 }

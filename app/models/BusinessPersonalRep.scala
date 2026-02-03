@@ -21,12 +21,14 @@ import java.time.LocalDate
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-final case class BusinessPersonalRep(name: String,
-                                     phoneNumber: String,
-                                     utr: Option[String],
-                                     address: Address,
-                                     email: Option[String],
-                                     entityStart: LocalDate) extends PersonalRep
+final case class BusinessPersonalRep(
+  name: String,
+  phoneNumber: String,
+  utr: Option[String],
+  address: Address,
+  email: Option[String],
+  entityStart: LocalDate
+) extends PersonalRep
 
 object BusinessPersonalRep extends EntityReads {
 
@@ -36,10 +38,8 @@ object BusinessPersonalRep extends EntityReads {
       __.lazyRead(readNullableAtSubPath[String](__ \ Symbol("identification") \ Symbol("utr"))) and
       __.lazyRead(readAtSubPath[Address](__ \ Symbol("identification") \ Symbol("address"))) and
       (__ \ Symbol("email")).readNullable[String] and
-      (__ \ Symbol("entityStart")).read[LocalDate]).tupled.map {
-
-      case (name, phoneNumber, utr, address, email, date) =>
-        BusinessPersonalRep(name, phoneNumber, utr, address, email, date)
+      (__ \ Symbol("entityStart")).read[LocalDate]).tupled.map { case (name, phoneNumber, utr, address, email, date) =>
+      BusinessPersonalRep(name, phoneNumber, utr, address, email, date)
     }
 
   implicit val writes: Writes[BusinessPersonalRep] =
@@ -48,7 +48,6 @@ object BusinessPersonalRep extends EntityReads {
       (__ \ Symbol("identification") \ Symbol("utr")).writeNullable[String] and
       (__ \ Symbol("identification") \ Symbol("address")).write[Address] and
       (__ \ "email").writeNullable[String] and
-      (__ \ Symbol("entityStart")).write[LocalDate]
-      ).apply(unlift(BusinessPersonalRep.unapply))
+      (__ \ Symbol("entityStart")).write[LocalDate]).apply(unlift(BusinessPersonalRep.unapply))
 
 }

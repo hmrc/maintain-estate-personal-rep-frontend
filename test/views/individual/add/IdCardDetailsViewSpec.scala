@@ -28,7 +28,7 @@ import views.html.individual.add.IdCardDetailsView
 class IdCardDetailsViewSpec extends QuestionViewBehaviours[IdCard] {
 
   val messageKeyPrefix = "individual.idCardDetails"
-  val name: Name = Name("First", Some("Middle"), "Last")
+  val name: Name       = Name("First", Some("Middle"), "Last")
 
   override val form: Form[IdCard] = new IdCardDetailsFormProvider().withPrefix(messageKeyPrefix)
 
@@ -60,4 +60,5 @@ class IdCardDetailsViewSpec extends QuestionViewBehaviours[IdCard] {
 
     behave like pageWithASubmitButton(applyView(form))
   }
+
 }

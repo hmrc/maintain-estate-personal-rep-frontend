@@ -36,11 +36,10 @@ import scala.concurrent.Future
 
 class TelephoneNumberControllerSpec extends SpecBase with MockitoSugar {
 
-  private val formProvider = new TelephoneNumberFormProvider()
-  private val form: Form[String] = formProvider.withPrefix("individual.telephoneNumber")
-  private val name = Name("FirstName", None, "LastName")
-  private val userAnswersWithName = emptyUserAnswers.set(NamePage, name)
-    .success.value
+  private val formProvider        = new TelephoneNumberFormProvider()
+  private val form: Form[String]  = formProvider.withPrefix("individual.telephoneNumber")
+  private val name                = Name("FirstName", None, "LastName")
+  private val userAnswersWithName = emptyUserAnswers.set(NamePage, name).success.value
 
   private val validAnswer = "1234567890"
 
@@ -68,7 +67,7 @@ class TelephoneNumberControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val ua = userAnswersWithName.set(TelephoneNumberPage, validAnswer)
+      val ua          = userAnswersWithName.set(TelephoneNumberPage, validAnswer)
       val application = applicationBuilder(userAnswers = Some(ua.success.value)).build()
 
       val request = FakeRequest(GET, telephoneNumberRoute)
@@ -164,4 +163,5 @@ class TelephoneNumberControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
   }
+
 }

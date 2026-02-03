@@ -32,14 +32,16 @@ class EmailAddressControllerSpec extends SpecBase {
 
   lazy val emailAddressRoute: String = routes.EmailAddressController.onPageLoad(NormalMode).url
 
-  val formProvider = new EmailAddressFormProvider()
+  val formProvider       = new EmailAddressFormProvider()
   val form: Form[String] = formProvider.withPrefix("individual.email")
-  val name: Name = Name("First", None, "Last")
+  val name: Name         = Name("First", None, "Last")
 
   val validAnswer: String = "email@example.com"
 
   val baseAnswers: UserAnswers = emptyUserAnswers
-    .set(NamePage, name).success.value
+    .set(NamePage, name)
+    .success
+    .value
 
   "EmailAddress Controller" must {
 
@@ -64,7 +66,9 @@ class EmailAddressControllerSpec extends SpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = baseAnswers
-        .set(EmailAddressPage, validAnswer).success.value
+        .set(EmailAddressPage, validAnswer)
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -157,4 +161,5 @@ class EmailAddressControllerSpec extends SpecBase {
       application.stop()
     }
   }
+
 }

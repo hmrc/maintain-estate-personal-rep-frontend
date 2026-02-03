@@ -28,52 +28,70 @@ import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage, PassportOrI
 import pages.individual.amend.PassportOrIdCardDetailsPage
 import play.api.mvc.Call
 
-class IndividualNavigator @Inject()() extends Navigator {
+class IndividualNavigator @Inject() () extends Navigator {
 
   override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = routes(mode)(page)(userAnswers)
 
   private def simpleNavigation(mode: Mode): PartialFunction[Page, Call] = {
-    case NamePage => rts.DateOfBirthController.onPageLoad(mode)
-    case DateOfBirthPage => rts.NationalInsuranceNumberYesNoController.onPageLoad(mode)
+    case NamePage                                                                                            => rts.DateOfBirthController.onPageLoad(mode)
+    case DateOfBirthPage                                                                                     => rts.NationalInsuranceNumberYesNoController.onPageLoad(mode)
     case NationalInsuranceNumberPage | IdCardDetailsPage | PassportDetailsPage | PassportOrIdCardDetailsPage =>
       rts.LiveInTheUkYesNoController.onPageLoad(mode)
-    case UkAddressPage | NonUkAddressPage => rts.EmailAddressYesNoController.onPageLoad(mode)
-    case EmailAddressPage => rts.TelephoneNumberController.onPageLoad(mode)
-    case TelephoneNumberPage => telephoneNumberRoute(mode)
-    case StartDatePage => addRts.CheckDetailsController.onPageLoad()
+    case UkAddressPage | NonUkAddressPage                                                                    => rts.EmailAddressYesNoController.onPageLoad(mode)
+    case EmailAddressPage                                                                                    => rts.TelephoneNumberController.onPageLoad(mode)
+    case TelephoneNumberPage                                                                                 => telephoneNumberRoute(mode)
+    case StartDatePage                                                                                       => addRts.CheckDetailsController.onPageLoad()
   }
 
   private def conditionalNavigation(mode: Mode): PartialFunction[Page, UserAnswers => Call] = {
-    case NationalInsuranceNumberYesNoPage => ua =>
-      yesNoNav(ua, NationalInsuranceNumberYesNoPage, rts.NationalInsuranceNumberController.onPageLoad(mode), combinedOrSeparateDetailsRoute(mode))
-    case PassportOrIdCardPage => ua => passportOrIdCardDetailsRoute(ua)
-    case LiveInTheUkYesNoPage => ua =>
-      yesNoNav(ua, LiveInTheUkYesNoPage, rts.UkAddressController.onPageLoad(mode), rts.NonUkAddressController.onPageLoad(mode))
-    case EmailAddressYesNoPage => ua =>
-      yesNoNav(ua, EmailAddressYesNoPage, rts.EmailAddressController.onPageLoad(mode), rts.TelephoneNumberController.onPageLoad(mode))
+    case NationalInsuranceNumberYesNoPage =>
+      ua =>
+        yesNoNav(
+          ua,
+          NationalInsuranceNumberYesNoPage,
+          rts.NationalInsuranceNumberController.onPageLoad(mode),
+          combinedOrSeparateDetailsRoute(mode)
+        )
+    case PassportOrIdCardPage             => ua => passportOrIdCardDetailsRoute(ua)
+    case LiveInTheUkYesNoPage             =>
+      ua =>
+        yesNoNav(
+          ua,
+          LiveInTheUkYesNoPage,
+          rts.UkAddressController.onPageLoad(mode),
+          rts.NonUkAddressController.onPageLoad(mode)
+        )
+    case EmailAddressYesNoPage            =>
+      ua =>
+        yesNoNav(
+          ua,
+          EmailAddressYesNoPage,
+          rts.EmailAddressController.onPageLoad(mode),
+          rts.TelephoneNumberController.onPageLoad(mode)
+        )
   }
 
   private def routes(mode: Mode): PartialFunction[Page, UserAnswers => Call] =
-    simpleNavigation(mode) andThen (c => (_:UserAnswers) => c) orElse
+    simpleNavigation(mode) andThen (c => (_: UserAnswers) => c) orElse
       conditionalNavigation(mode)
 
   private def passportOrIdCardDetailsRoute(ua: UserAnswers): Call =
     ua.get(PassportOrIdCardPage) match {
-      case Some(IdCard) => addRts.IdCardDetailsController.onPageLoad()
+      case Some(IdCard)   => addRts.IdCardDetailsController.onPageLoad()
       case Some(Passport) => addRts.PassportDetailsController.onPageLoad()
-      case _ => controllers.routes.SessionExpiredController.onPageLoad
+      case _              => controllers.routes.SessionExpiredController.onPageLoad
     }
 
   private def combinedOrSeparateDetailsRoute(mode: Mode): Call =
     mode match {
       case NormalMode => addRts.PassportOrIdCardController.onPageLoad()
-      case CheckMode => amendRts.PassportOrIdCardDetailsController.onPageLoad()
+      case CheckMode  => amendRts.PassportOrIdCardDetailsController.onPageLoad()
     }
 
   private def telephoneNumberRoute(mode: Mode): Call =
     mode match {
       case NormalMode => addRts.StartDateController.onPageLoad()
-      case CheckMode => amendRts.CheckDetailsController.renderFromUserAnswers()
+      case CheckMode  => amendRts.CheckDetailsController.renderFromUserAnswers()
     }
 
 }

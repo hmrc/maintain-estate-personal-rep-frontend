@@ -24,7 +24,7 @@ sealed trait User {
   val affinityGroup: AffinityGroup
   val enrolments: Enrolments
 
-  def isAgent : Boolean = affinityGroup == Agent
+  def isAgent: Boolean = affinityGroup == Agent
 }
 
 case class AgentUser(internalId: String, enrolments: Enrolments, agentReferenceNumber: String) extends User {

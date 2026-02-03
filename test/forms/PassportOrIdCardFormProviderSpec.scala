@@ -26,13 +26,13 @@ class PassportOrIdCardFormProviderSpec extends OptionFieldBehaviours {
 
   ".value" must {
 
-    val fieldName = "value"
+    val fieldName   = "value"
     val requiredKey = "passportOrIdCard.error.required"
 
     behave like optionsField[PassportOrIdCard](
       form,
       fieldName,
-      validValues  = PassportOrIdCard.values,
+      validValues = PassportOrIdCard.values,
       invalidError = FormError(fieldName, "error.invalid")
     )
 
@@ -42,4 +42,5 @@ class PassportOrIdCardFormProviderSpec extends OptionFieldBehaviours {
       requiredError = FormError(fieldName, requiredKey)
     )
   }
+
 }

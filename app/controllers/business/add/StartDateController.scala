@@ -34,38 +34,35 @@ import views.html.business.add.StartDateView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class StartDateController @Inject()(
-                                     override val messagesApi: MessagesApi,
-                                     val controllerComponents: MessagesControllerComponents,
-                                     sessionRepository: SessionRepository,
-                                     @Business navigator: Navigator,
-                                     actions: Actions,
-                                     formProvider: DateFormProvider,
-                                     view: StartDateView
-                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class StartDateController @Inject() (
+  override val messagesApi: MessagesApi,
+  val controllerComponents: MessagesControllerComponents,
+  sessionRepository: SessionRepository,
+  @Business navigator: Navigator,
+  actions: Actions,
+  formProvider: DateFormProvider,
+  view: StartDateView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = actions.authWithBusinessName {
-    implicit request =>
+  def onPageLoad(): Action[AnyContent] = actions.authWithBusinessName { implicit request =>
+    val form: Form[LocalDate] = formProvider.withConfig("business.startDate", request.userAnswers.dateOfDeath)
 
-      val form: Form[LocalDate] = formProvider.withConfig("business.startDate", request.userAnswers.dateOfDeath)
+    val preparedForm = request.userAnswers.get(StartDatePage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(StartDatePage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm, request.businessName))
+    Ok(view(preparedForm, request.businessName))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.authWithBusinessName.async {
-    implicit request =>
+  def onSubmit(): Action[AnyContent] = actions.authWithBusinessName.async { implicit request =>
+    val form: Form[LocalDate] = formProvider.withConfig("business.startDate", request.userAnswers.dateOfDeath)
 
-      val form: Form[LocalDate] = formProvider.withConfig("business.startDate", request.userAnswers.dateOfDeath)
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, request.businessName))),
-
+    form
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.businessName))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(StartDatePage, value))
@@ -73,4 +70,5 @@ class StartDateController @Inject()(
           } yield Redirect(navigator.nextPage(StartDatePage, NormalMode, updatedAnswers))
       )
   }
+
 }

@@ -42,15 +42,20 @@ class DateFormProviderSpec extends DateBehaviours with FakeEstatesApp {
 
     behave like mandatoryDateField(form, "value", s"$prefix.error.required.all")
 
-    behave like dateFieldWithMax(form, "value",
+    behave like dateFieldWithMax(
+      form,
+      "value",
       max = max,
       FormError("value", s"$prefix.error.future", List("day", "month", "year"))
     )
 
-    behave like dateFieldWithMin(form, "value",
+    behave like dateFieldWithMin(
+      form,
+      "value",
       min = min,
       FormError("value", s"$prefix.error.past", List("day", "month", "year"))
     )
 
   }
+
 }

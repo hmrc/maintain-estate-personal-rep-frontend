@@ -21,13 +21,15 @@ import java.time.LocalDate
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-final case class IndividualPersonalRep(name: Name,
-                                       dateOfBirth: LocalDate,
-                                       identification: IndividualIdentification,
-                                       address : Address,
-                                       phoneNumber: String,
-                                       email: Option[String],
-                                       entityStart: LocalDate) extends PersonalRep
+final case class IndividualPersonalRep(
+  name: Name,
+  dateOfBirth: LocalDate,
+  identification: IndividualIdentification,
+  address: Address,
+  phoneNumber: String,
+  email: Option[String],
+  entityStart: LocalDate
+) extends PersonalRep
 
 object IndividualPersonalRep extends EntityReads {
 
@@ -38,7 +40,7 @@ object IndividualPersonalRep extends EntityReads {
       __.lazyRead(readAtSubPath[Address](__ \ Symbol("identification") \ Symbol("address"))) and
       (__ \ Symbol("phoneNumber")).read[String] and
       (__ \ Symbol("email")).readNullable[String] and
-      (__ \ "entityStart").read[LocalDate]).tupled.map{
+      (__ \ "entityStart").read[LocalDate]).tupled.map {
 
       case (name, dob, nino, identification, phoneNumber, email, entityStart) =>
         IndividualPersonalRep(name, dob, nino, identification, phoneNumber, email, entityStart)
@@ -52,7 +54,6 @@ object IndividualPersonalRep extends EntityReads {
       (__ \ Symbol("identification") \ Symbol("address")).write[Address] and
       (__ \ Symbol("phoneNumber")).write[String] and
       (__ \ Symbol("email")).writeNullable[String] and
-      (__ \ "entityStart").write[LocalDate]
-      ).apply(unlift(IndividualPersonalRep.unapply))
+      (__ \ "entityStart").write[LocalDate]).apply(unlift(IndividualPersonalRep.unapply))
 
 }

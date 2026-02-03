@@ -41,14 +41,16 @@ import scala.concurrent.Future
 
 class PassportOrIdCardDetailsControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new CombinedPassportOrIdCardDetailsFormProvider(frontendAppConfig)
+  val formProvider                         = new CombinedPassportOrIdCardDetailsFormProvider(frontendAppConfig)
   val form: Form[CombinedPassportOrIdCard] = formProvider.withPrefix("individual.passportOrIdCardDetails")
-  val name: Name = Name("John", None, "Doe")
+  val name: Name                           = Name("John", None, "Doe")
 
   val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptions].options()
 
   val baseAnswers: UserAnswers = emptyUserAnswers
-    .set(NamePage, name).success.value
+    .set(NamePage, name)
+    .success
+    .value
 
   lazy val passportOrIdCardDetailsRoute: String = routes.PassportOrIdCardDetailsController.onPageLoad().url
 
@@ -107,8 +109,8 @@ class PassportOrIdCardDetailsControllerSpec extends SpecBase with MockitoSugar {
       val request =
         FakeRequest(POST, passportOrIdCardDetailsRoute)
           .withFormUrlEncodedBody(
-            "country" -> "country",
-            "number" -> "123456",
+            "country"          -> "country",
+            "number"           -> "123456",
             "expiryDate.day"   -> validData.expirationDate.getDayOfMonth.toString,
             "expiryDate.month" -> validData.expirationDate.getMonthValue.toString,
             "expiryDate.year"  -> validData.expirationDate.getYear.toString
@@ -177,4 +179,5 @@ class PassportOrIdCardDetailsControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
   }
+
 }

@@ -25,18 +25,18 @@ import play.api.mvc.{ActionRefiner, Result}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class NameRequiredAction @Inject()(implicit val executionContext: ExecutionContext)
-  extends ActionRefiner[DataRequest, IndividualNameRequest] {
+class NameRequiredAction @Inject() (implicit val executionContext: ExecutionContext)
+    extends ActionRefiner[DataRequest, IndividualNameRequest] {
 
-  override protected def refine[A](request: DataRequest[A]): Future[Either[Result, IndividualNameRequest[A]]] = {
+  override protected def refine[A](request: DataRequest[A]): Future[Either[Result, IndividualNameRequest[A]]] =
 
     Future.successful(
       request.userAnswers.get(NamePage) match {
-        case None =>
+        case None       =>
           Left(Redirect(controllers.individual.routes.NameController.onPageLoad(NormalMode)))
         case Some(name) =>
           Right(IndividualNameRequest(request, name.displayName))
       }
     )
-  }
+
 }

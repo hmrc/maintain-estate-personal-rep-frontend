@@ -23,7 +23,7 @@ import forms.mappings.Validation
 
 class NationalInsuranceNumberFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "individual.nationalInsuranceNumber.error.required"
+  val requiredKey      = "individual.nationalInsuranceNumber.error.required"
   val invalidFormatKey = "individual.nationalInsuranceNumber.error.invalidFormat"
 
   val form = new NationalInsuranceNumberFormProvider().withPrefix("individual.nationalInsuranceNumber")
@@ -56,4 +56,5 @@ class NationalInsuranceNumberFormProviderSpec extends StringFieldBehaviours {
       requiredError = FormError(fieldName, invalidFormatKey, Seq(fieldName))
     )
   }
+
 }

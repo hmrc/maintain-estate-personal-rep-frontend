@@ -26,18 +26,18 @@ import play.api.data.Forms.mapping
 
 class PassportDetailsFormProvider @Inject() extends Mappings with Constraints {
   val maxLengthCountryField = 100
-  val maxLengthNumberField = 30
+  val maxLengthNumberField  = 30
 
   def withPrefix(prefix: String): Form[Passport] = Form(
     mapping(
-      "country" -> text(s"$prefix.passportDetails.country.error.required")
+      "country"    -> text(s"$prefix.passportDetails.country.error.required")
         .verifying(
           firstError(
             maxLength(maxLengthCountryField, s"$prefix.passportDetails.country.error.length"),
             nonEmptyString("country", s"$prefix.passportDetails.country.error.required")
           )
         ),
-      "number" -> text(s"$prefix.passportDetails.number.error.required")
+      "number"     -> text(s"$prefix.passportDetails.number.error.required")
         .verifying(
           firstError(
             maxLength(maxLengthNumberField, s"$prefix.passportDetails.number.error.length"),
@@ -46,20 +46,29 @@ class PassportDetailsFormProvider @Inject() extends Mappings with Constraints {
           )
         ),
       "expiryDate" -> localDate(
-        invalidKey     = s"$prefix.passportDetails.expiryDate.error.invalid",
+        invalidKey = s"$prefix.passportDetails.expiryDate.error.invalid",
         allRequiredKey = s"$prefix.passportDetails.expiryDate.error.required.all",
         twoRequiredKey = s"$prefix.passportDetails.expiryDate.error.required.two",
-        requiredKey    = s"$prefix.passportDetails.expiryDate.error.required"
-      ).verifying(firstError(
-        maxDate(
-          LocalDate.of(2099, 12, 31),
-          s"$prefix.passportDetails.expiryDate.error.future", "day", "month", "year"
-        ),
-        minDate(
-          LocalDate.of(1500,1,1),
-          s"$prefix.passportDetails.expiryDate.error.past", "day", "month", "year"
+        requiredKey = s"$prefix.passportDetails.expiryDate.error.required"
+      ).verifying(
+        firstError(
+          maxDate(
+            LocalDate.of(2099, 12, 31),
+            s"$prefix.passportDetails.expiryDate.error.future",
+            "day",
+            "month",
+            "year"
+          ),
+          minDate(
+            LocalDate.of(1500, 1, 1),
+            s"$prefix.passportDetails.expiryDate.error.past",
+            "day",
+            "month",
+            "year"
+          )
         )
-      ))
+      )
     )(Passport.apply)(Passport.unapply)
   )
+
 }

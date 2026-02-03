@@ -26,7 +26,7 @@ import views.html.individual.NationalInsuranceNumberYesNoView
 class NationalInsuranceNumberYesNoViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "individual.nationalInsuranceNumberYesNo"
-  val name: Name = Name("First", Some("Middle"), "Last")
+  val name: Name       = Name("First", Some("Middle"), "Last")
 
   val form: Form[Boolean] = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
@@ -48,4 +48,5 @@ class NationalInsuranceNumberYesNoViewSpec extends YesNoViewBehaviours {
     behave like pageWithHint(form, applyView, messageKeyPrefix + ".hint")
 
   }
+
 }

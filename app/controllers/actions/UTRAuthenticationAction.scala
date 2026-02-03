@@ -25,9 +25,9 @@ import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class UTRAuthenticationActionImpl @Inject()(val parser: BodyParsers.Default,
-                                            service: EstateAuthenticationService
-                                            )(override implicit val executionContext: ExecutionContext) extends UTRAuthenticationAction {
+class UTRAuthenticationActionImpl @Inject() (val parser: BodyParsers.Default, service: EstateAuthenticationService)(
+  implicit override val executionContext: ExecutionContext
+) extends UTRAuthenticationAction {
 
   override def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
 
@@ -35,6 +35,7 @@ class UTRAuthenticationActionImpl @Inject()(val parser: BodyParsers.Default,
 
     service.authenticateForUtr(request.userAnswers.utr)(request, hc)
   }
+
 }
 
 @ImplementedBy(classOf[UTRAuthenticationActionImpl])

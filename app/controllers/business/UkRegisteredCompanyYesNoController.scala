@@ -32,36 +32,33 @@ import views.html.business.UkRegisteredCompanyYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class UkRegisteredCompanyYesNoController @Inject()(
-                                                    override val messagesApi: MessagesApi,
-                                                    sessionRepository: SessionRepository,
-                                                    @Business navigator: Navigator,
-                                                    actions: Actions,
-                                                    formProvider: YesNoFormProvider,
-                                                    val controllerComponents: MessagesControllerComponents,
-                                                    view: UkRegisteredCompanyYesNoView
-                                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class UkRegisteredCompanyYesNoController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  @Business navigator: Navigator,
+  actions: Actions,
+  formProvider: YesNoFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: UkRegisteredCompanyYesNoView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = formProvider.withPrefix("business.ukRegisteredCompanyYesNo")
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithData {
-    implicit request =>
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithData { implicit request =>
+    val preparedForm = request.userAnswers.get(UkRegisteredCompanyYesNoPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(UkRegisteredCompanyYesNoPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm, mode))
+    Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithData.async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
+  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithData.async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(UkRegisteredCompanyYesNoPage, value))
@@ -69,4 +66,5 @@ class UkRegisteredCompanyYesNoController @Inject()(
           } yield Redirect(navigator.nextPage(UkRegisteredCompanyYesNoPage, mode, updatedAnswers))
       )
   }
+
 }

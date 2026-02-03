@@ -42,27 +42,49 @@ import scala.concurrent.Future
 
 class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFutures {
 
-  private lazy val checkDetailsRoute = controllers.individual.amend.routes.CheckDetailsController.renderFromUserAnswers().url
+  private lazy val checkDetailsRoute =
+    controllers.individual.amend.routes.CheckDetailsController.renderFromUserAnswers().url
+
   private lazy val submitDetailsRoute = controllers.individual.amend.routes.CheckDetailsController.onSubmit().url
 
-  private val name: Name = Name("John", None, "Doe")
-  private val dateOfBirth = LocalDate.parse("1996-03-09")
-  private val nino = "AA000000A"
-  private val ukAddress = UkAddress("line1", "line2", Some("line3"), Some("line4"), "POSTCODE")
+  private val name: Name              = Name("John", None, "Doe")
+  private val dateOfBirth             = LocalDate.parse("1996-03-09")
+  private val nino                    = "AA000000A"
+  private val ukAddress               = UkAddress("line1", "line2", Some("line3"), Some("line4"), "POSTCODE")
   private val telephoneNumber: String = "999"
-  private val startDate = LocalDate.parse("2019-03-09")
+  private val startDate               = LocalDate.parse("2019-03-09")
 
   private val userAnswers = emptyUserAnswers
-    .set(IndividualOrBusinessPage, Individual).success.value
-    .set(NamePage, name).success.value
-    .set(DateOfBirthPage, dateOfBirth).success.value
-    .set(NationalInsuranceNumberYesNoPage, true).success.value
-    .set(NationalInsuranceNumberPage, nino).success.value
-    .set(LiveInTheUkYesNoPage, true).success.value
-    .set(UkAddressPage, ukAddress).success.value
-    .set(EmailAddressYesNoPage, false).success.value
-    .set(TelephoneNumberPage, telephoneNumber).success.value
-    .set(StartDatePage, startDate).success.value
+    .set(IndividualOrBusinessPage, Individual)
+    .success
+    .value
+    .set(NamePage, name)
+    .success
+    .value
+    .set(DateOfBirthPage, dateOfBirth)
+    .success
+    .value
+    .set(NationalInsuranceNumberYesNoPage, true)
+    .success
+    .value
+    .set(NationalInsuranceNumberPage, nino)
+    .success
+    .value
+    .set(LiveInTheUkYesNoPage, true)
+    .success
+    .value
+    .set(UkAddressPage, ukAddress)
+    .success
+    .value
+    .set(EmailAddressYesNoPage, false)
+    .success
+    .value
+    .set(TelephoneNumberPage, telephoneNumber)
+    .success
+    .value
+    .set(StartDatePage, startDate)
+    .success
+    .value
 
   "Individual Amend - CheckDetails Controller" must {
 
@@ -74,8 +96,8 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[CheckIndividualDetailsView]
-      val printHelper = application.injector.instanceOf[IndividualPrintHelper]
+      val view          = application.injector.instanceOf[CheckIndividualDetailsView]
+      val printHelper   = application.injector.instanceOf[IndividualPrintHelper]
       val answerSection = printHelper(userAnswers, provisional = false, name.displayName)
 
       status(result) mustEqual OK
@@ -87,7 +109,8 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
     "submitting" when {
 
       val mockEstatesConnector = mock[EstatesConnector]
-      when(mockEstatesConnector.addOrAmendPersonalRep(any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
+      when(mockEstatesConnector.addOrAmendPersonalRep(any(), any())(any(), any()))
+        .thenReturn(Future.successful(HttpResponse(OK, "")))
 
       "individual" must {
         "redirect to declaration page" in {
@@ -113,9 +136,11 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
         "redirect to agent declaration questions" in {
 
           val application =
-            applicationBuilderForUser(userAnswers = Some(userAnswers),
+            applicationBuilderForUser(
+              userAnswers = Some(userAnswers),
               user = AgentUser("id", Enrolments(Set()), "arn"),
-              affinityGroup = AffinityGroup.Agent)
+              affinityGroup = AffinityGroup.Agent
+            )
               .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
               .build()
 
@@ -133,4 +158,5 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
     }
 
   }
+
 }

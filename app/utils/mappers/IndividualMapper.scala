@@ -38,44 +38,40 @@ class IndividualMapper extends Logging {
           TelephoneNumberPage.path.read[String] and
           readEmailAddress and
           StartDatePage.path.read[LocalDate]
-        ) (IndividualPersonalRep.apply _)
+      )(IndividualPersonalRep.apply _)
 
     answers.data.validate[IndividualPersonalRep](readFromUserAnswers) match {
       case JsSuccess(value, _) =>
         Some(value)
-      case JsError(errors) =>
+      case JsError(errors)     =>
         logger.error(s"Failed to rehydrate IndividualPersonalRep from UserAnswers due to $errors")
         None
     }
   }
 
-  private def readIdentification: Reads[IndividualIdentification] = {
+  private def readIdentification: Reads[IndividualIdentification] =
     NationalInsuranceNumberYesNoPage.path.read[Boolean].flatMap[IndividualIdentification] {
-      case true => NationalInsuranceNumberPage.path.read[String].map(NationalInsuranceNumber(_))
+      case true  => NationalInsuranceNumberPage.path.read[String].map(NationalInsuranceNumber(_))
       case false => readPassportOrIdCard
     }
-  }
 
-  private def readPassportOrIdCard: Reads[IndividualIdentification] = {
+  private def readPassportOrIdCard: Reads[IndividualIdentification] =
     PassportOrIdCardPage.path.readNullable[PassportOrIdCard].flatMap[IndividualIdentification] {
       case Some(PassportOrIdCard.Passport) => PassportDetailsPage.path.read[Passport].widen[IndividualIdentification]
-      case Some(PassportOrIdCard.IdCard) => IdCardDetailsPage.path.read[IdCard].widen[IndividualIdentification]
-      case _ => PassportOrIdCardDetailsPage.path.read[CombinedPassportOrIdCard].widen[IndividualIdentification]
+      case Some(PassportOrIdCard.IdCard)   => IdCardDetailsPage.path.read[IdCard].widen[IndividualIdentification]
+      case _                               => PassportOrIdCardDetailsPage.path.read[CombinedPassportOrIdCard].widen[IndividualIdentification]
     }
-  }
 
-  private def readAddress: Reads[Address] = {
+  private def readAddress: Reads[Address] =
     LiveInTheUkYesNoPage.path.read[Boolean].flatMap[Address] {
-      case true => UkAddressPage.path.read[UkAddress].widen[Address]
+      case true  => UkAddressPage.path.read[UkAddress].widen[Address]
       case false => NonUkAddressPage.path.read[NonUkAddress].widen[Address]
     }
-  }
 
-  private def readEmailAddress: Reads[Option[String]] = {
+  private def readEmailAddress: Reads[Option[String]] =
     EmailAddressYesNoPage.path.read[Boolean].flatMap[Option[String]] {
-      case true => EmailAddressPage.path.read[String].map(Some(_))
+      case true  => EmailAddressPage.path.read[String].map(Some(_))
       case false => Reads(_ => JsSuccess(None))
     }
-  }
 
 }

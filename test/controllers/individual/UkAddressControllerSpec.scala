@@ -37,7 +37,7 @@ class UkAddressControllerSpec extends SpecBase with MockitoSugar {
 
   private val form = new UkAddressFormProvider()()
 
-  private val name = Name("FirstName", None, "LastName")
+  private val name                             = Name("FirstName", None, "LastName")
   private val userAnswersWithName: UserAnswers = emptyUserAnswers.set(NamePage, name).success.value
 
   private val validAnswer: UkAddress = UkAddress("value 1", "value 2", None, None, "AB1 1AB")
@@ -67,7 +67,9 @@ class UkAddressControllerSpec extends SpecBase with MockitoSugar {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = userAnswersWithName
-        .set(UkAddressPage, validAnswer).success.value
+        .set(UkAddressPage, validAnswer)
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -163,4 +165,5 @@ class UkAddressControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
   }
+
 }

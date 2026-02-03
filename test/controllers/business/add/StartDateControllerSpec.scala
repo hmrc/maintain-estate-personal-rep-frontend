@@ -35,14 +35,16 @@ class StartDateControllerSpec extends SpecBase {
 
   lazy val startDateRoute: String = routes.StartDateController.onPageLoad().url
 
-  val formProvider = new DateFormProvider(frontendAppConfig)
+  val formProvider          = new DateFormProvider(frontendAppConfig)
   val form: Form[LocalDate] = formProvider.withConfig("business.startDate")
-  val name: String = "Name"
+  val name: String          = "Name"
 
   val validAnswer: LocalDate = LocalDate.parse("2019-02-03")
 
   val baseAnswers: UserAnswers = emptyUserAnswers
-    .set(NamePage, name).success.value
+    .set(NamePage, name)
+    .success
+    .value
 
   "StartDate controller" must {
 
@@ -67,7 +69,9 @@ class StartDateControllerSpec extends SpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = baseAnswers
-        .set(StartDatePage, validAnswer).success.value
+        .set(StartDatePage, validAnswer)
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -168,4 +172,5 @@ class StartDateControllerSpec extends SpecBase {
       application.stop()
     }
   }
+
 }

@@ -28,7 +28,8 @@ import scala.util.Try
 class IndividualExtractor {
 
   def apply(answers: UserAnswers, individual: IndividualPersonalRep): Try[UserAnswers] =
-    answers.deleteAtPath(pages.individual.basePath)
+    answers
+      .deleteAtPath(pages.individual.basePath)
       .flatMap(_.set(IndividualOrBusinessPage, Individual))
       .flatMap(_.set(NamePage, individual.name))
       .flatMap(_.set(TelephoneNumberPage, individual.phoneNumber))
@@ -38,47 +39,51 @@ class IndividualExtractor {
       .flatMap(answers => extractEmailAddress(individual.email, answers))
       .flatMap(_.set(StartDatePage, individual.entityStart))
 
-  private def extractAddress(address: Address, answers: UserAnswers) : Try[UserAnswers] = {
+  private def extractAddress(address: Address, answers: UserAnswers): Try[UserAnswers] =
     address match {
-      case uk: UkAddress =>
-        answers.set(LiveInTheUkYesNoPage, true)
+      case uk: UkAddress       =>
+        answers
+          .set(LiveInTheUkYesNoPage, true)
           .flatMap(_.set(UkAddressPage, uk))
       case nonUk: NonUkAddress =>
-        answers.set(LiveInTheUkYesNoPage, false)
+        answers
+          .set(LiveInTheUkYesNoPage, false)
           .flatMap(_.set(NonUkAddressPage, nonUk))
     }
-  }
 
-  private def extractIdentification(individual: IndividualPersonalRep,
-                                    answers: UserAnswers) : Try[UserAnswers] = {
+  private def extractIdentification(individual: IndividualPersonalRep, answers: UserAnswers): Try[UserAnswers] =
 
     individual.identification match {
-      case NationalInsuranceNumber(nino) =>
-        answers.set(NationalInsuranceNumberYesNoPage, true)
+      case NationalInsuranceNumber(nino)      =>
+        answers
+          .set(NationalInsuranceNumberYesNoPage, true)
           .flatMap(_.set(NationalInsuranceNumberPage, nino))
-      case p: Passport =>
-        answers.set(NationalInsuranceNumberYesNoPage, false)
+      case p: Passport                        =>
+        answers
+          .set(NationalInsuranceNumberYesNoPage, false)
           .flatMap(_.set(PassportOrIdCardPage, PassportOrIdCard.Passport))
           .flatMap(_.set(PassportDetailsPage, p))
-      case id: IdCard =>
-        answers.set(NationalInsuranceNumberYesNoPage, false)
+      case id: IdCard                         =>
+        answers
+          .set(NationalInsuranceNumberYesNoPage, false)
           .flatMap(_.set(PassportOrIdCardPage, PassportOrIdCard.IdCard))
           .flatMap(_.set(IdCardDetailsPage, id))
       case combined: CombinedPassportOrIdCard =>
-        answers.set(NationalInsuranceNumberYesNoPage, false)
+        answers
+          .set(NationalInsuranceNumberYesNoPage, false)
           .flatMap(_.set(PassportOrIdCardDetailsPage, combined))
-      case _ =>
+      case _                                  =>
         answers.set(NationalInsuranceNumberYesNoPage, false)
     }
-  }
 
-  private def extractEmailAddress(emailAddress: Option[String], userAnswers: UserAnswers): Try[UserAnswers] = {
+  private def extractEmailAddress(emailAddress: Option[String], userAnswers: UserAnswers): Try[UserAnswers] =
     emailAddress match {
       case Some(email) =>
-        userAnswers.set(EmailAddressYesNoPage, true)
+        userAnswers
+          .set(EmailAddressYesNoPage, true)
           .flatMap(_.set(EmailAddressPage, email))
-      case None =>
+      case None        =>
         userAnswers.set(EmailAddressYesNoPage, false)
     }
-  }
+
 }

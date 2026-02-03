@@ -26,7 +26,7 @@ import views.html.individual.add.PassportOrIdCardView
 class PassportOrIdCardViewSpec extends OptionsViewBehaviours {
 
   val messageKeyPrefix = "passportOrIdCard"
-  val name: Name = Name("First", Some("Middle"), "Last")
+  val name: Name       = Name("First", Some("Middle"), "Last")
 
   val form = new PassportOrIdCardFormProvider()()
 
@@ -45,4 +45,5 @@ class PassportOrIdCardViewSpec extends OptionsViewBehaviours {
 
     behave like pageWithASubmitButton(applyView(form))
   }
+
 }

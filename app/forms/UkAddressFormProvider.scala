@@ -28,7 +28,7 @@ class UkAddressFormProvider @Inject() extends Mappings {
 
   def apply(): Form[UkAddress] = Form(
     mapping(
-      "line1" ->
+      "line1"    ->
         text("ukAddress.line1.error.required")
           .verifying(
             firstError(
@@ -37,7 +37,7 @@ class UkAddressFormProvider @Inject() extends Mappings {
               regexp(Validation.addressLineRegex, "ukAddress.line1.error.invalid")
             )
           ),
-      "line2" ->
+      "line2"    ->
         text("ukAddress.line2.error.required")
           .verifying(
             firstError(
@@ -46,23 +46,25 @@ class UkAddressFormProvider @Inject() extends Mappings {
               regexp(Validation.addressLineRegex, "ukAddress.line2.error.invalid")
             )
           ),
-      "line3" ->
-        optional(text()
-          .verifying(
-            firstError(
-              maxLength(35, "ukAddress.line3.error.length"),
-              regexp(Validation.addressLineRegex, "ukAddress.line3.error.invalid")
+      "line3"    ->
+        optional(
+          text()
+            .verifying(
+              firstError(
+                maxLength(35, "ukAddress.line3.error.length"),
+                regexp(Validation.addressLineRegex, "ukAddress.line3.error.invalid")
+              )
             )
-          )
         ).transform(emptyToNone, identity[Option[String]]),
-      "line4" ->
-        optional(text()
-          .verifying(
-            firstError(
-              maxLength(35, "ukAddress.line4.error.length"),
-              regexp(Validation.addressLineRegex, "ukAddress.line4.error.invalid")
+      "line4"    ->
+        optional(
+          text()
+            .verifying(
+              firstError(
+                maxLength(35, "ukAddress.line4.error.length"),
+                regexp(Validation.addressLineRegex, "ukAddress.line4.error.invalid")
+              )
             )
-          )
         ).transform(emptyToNone, identity[Option[String]]),
       "postcode" ->
         postcode("ukAddress.postcode.error.required", "ukAddress.postcode.error.invalid")
@@ -74,4 +76,5 @@ class UkAddressFormProvider @Inject() extends Mappings {
           )
     )(UkAddress.apply)(UkAddress.unapply)
   )
+
 }

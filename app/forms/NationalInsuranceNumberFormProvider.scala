@@ -29,7 +29,8 @@ class NationalInsuranceNumberFormProvider @Inject() extends Mappings {
           firstError(
             nonEmptyString("value", s"$messagePrefix.error.required"),
             isNinoValid("value", s"$messagePrefix.error.invalidFormat")
-          ))
+          )
+        )
     )
-}
 
+}
