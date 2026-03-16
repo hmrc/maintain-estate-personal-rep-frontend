@@ -1,6 +1,6 @@
 import scoverage.ScoverageKeys
 
-ThisBuild / scalaVersion := "2.13.16"
+ThisBuild / scalaVersion := "2.13.18"
 ThisBuild / majorVersion := 0
 
 lazy val appName: String = "maintain-estate-personal-rep-frontend"
