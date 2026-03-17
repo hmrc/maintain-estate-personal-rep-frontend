@@ -1,6 +1,4 @@
-import scoverage.ScoverageKeys
-
-ThisBuild / scalaVersion := "2.13.16"
+ThisBuild / scalaVersion := "2.13.18"
 ThisBuild / majorVersion := 0
 
 lazy val appName: String = "maintain-estate-personal-rep-frontend"
@@ -21,10 +19,7 @@ lazy val microservice = Project(appName, file("."))
       "controllers.routes._"
     ),
     PlayKeys.playDefaultPort := 8829,
-    ScoverageKeys.coverageExcludedFiles := "<empty>;.*components.*;.*Mode.*;.*Routes.*;",
-    ScoverageKeys.coverageMinimumStmtTotal := 91,
-    ScoverageKeys.coverageFailOnMinimum := true,
-    ScoverageKeys.coverageHighlighting := true,
+    CodeCoverageSettings(),
     scalacOptions ++= Seq(
       "-Wconf:src=routes/.*:s",
       "-Wconf:cat=unused-imports&src=views/.*:s"
