@@ -59,7 +59,7 @@ class LogoutController @Inject() (
 
     }
 
-    Redirect(appConfig.logoutUrl).withSession(session = ("feedbackId", Session.id(hc)))
+    Redirect(appConfig.logoutWithBasGatewayUrl, Map("continue" -> Seq(appConfig.feedbackFrontendUrl)))
 
   }
 
