@@ -17,10 +17,8 @@
 package config
 
 import com.google.inject.{Inject, Singleton}
-import controllers.routes
 import play.api.Configuration
 import play.api.i18n.Lang
-import play.api.mvc.Call
 import uk.gov.hmrc.hmrcfrontend.config.ContactFrontendConfig
 
 import java.time.LocalDate
@@ -32,15 +30,11 @@ class FrontendAppConfig @Inject() (configuration: Configuration, contactFrontend
   final val WELSH           = "cy"
   final val UK_COUNTRY_CODE = "GB"
 
-  val betaFeedbackUrl =
-    s"${contactFrontendConfig.baseUrl.get}/contact/beta-feedback?service=${contactFrontendConfig.serviceId.get}"
-
-  lazy val authUrl: String                 = configuration.get[Service]("auth").baseUrl
   lazy val loginUrl: String                = configuration.get[String]("urls.login")
   lazy val loginContinueUrl: String        = configuration.get[String]("urls.loginContinue")
   lazy val logoutUrl: String               = configuration.get[String]("urls.logout")
   lazy val basGatewayBaseUrl: String       = configuration.get[String]("bas-gateway.host")
-  lazy val feedbackFrontendUrl: String     = configuration.get[String]("feedback-frontend.url")
+  lazy val feedbackFrontendUrl: String     = s"${configuration.get[String]("feedback-frontend.url")}?useServiceNavigation"
   lazy val timeOutUrl: String              = configuration.get[String]("urls.timeOut")
   lazy val logoutWithBasGatewayUrl: String = s"$basGatewayBaseUrl$logoutUrl"
 
@@ -56,9 +50,6 @@ class FrontendAppConfig @Inject() (configuration: Configuration, contactFrontend
   lazy val estatesUrl: String     = configuration.get[Service]("microservice.services.estates").baseUrl
   lazy val estatesAuthUrl: String = configuration.get[Service]("microservice.services.estates-auth").baseUrl
 
-  lazy val languageTranslationEnabled: Boolean =
-    configuration.get[Boolean]("microservice.services.features.welsh-translation")
-
   lazy val locationCanonicalList: String   = configuration.get[String]("location.canonical.list.all")
   lazy val locationCanonicalListCY: String = configuration.get[String]("location.canonical.list.allCY")
 
@@ -66,9 +57,6 @@ class FrontendAppConfig @Inject() (configuration: Configuration, contactFrontend
     "english" -> Lang(ENGLISH),
     "cymraeg" -> Lang(WELSH)
   )
-
-  def routeToSwitchLanguage: String => Call =
-    (lang: String) => routes.LanguageSwitchController.switchToLanguage(lang)
 
   private val minDay: Int     = configuration.get[Int]("dates.minimum.day")
   private val minMonth: Int   = configuration.get[Int]("dates.minimum.month")
