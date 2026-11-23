@@ -23,7 +23,7 @@
         heading: Heading
 )
 
-@()(implicit request: RequestHeader, messages: Messages)
+@()(using request: RequestHeader, messages: Messages)
 
 @mainTemplate(
     title = messages("session_expired.title"),
@@ -36,7 +36,7 @@
     <p>@messages("session_expired.guidance")</p>
     <p>@messages("session_expired.guidance.2")</p>
 
-    @formHelper(action = SessionExpiredController.onSubmit, Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.SessionExpiredController.onSubmit, Symbol("autoComplete") -> "off") {
         @submitButton(Some(messages("site.sign_in")))
     }
 

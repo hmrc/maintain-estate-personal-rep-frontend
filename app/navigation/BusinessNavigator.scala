@@ -22,7 +22,7 @@ import controllers.business.amend.{routes => amendRts}
 import javax.inject.Inject
 import models.{CheckMode, Mode, NormalMode, UserAnswers}
 import pages.Page
-import pages.business._
+import pages.business.*
 import pages.business.add.StartDatePage
 import play.api.mvc.Call
 

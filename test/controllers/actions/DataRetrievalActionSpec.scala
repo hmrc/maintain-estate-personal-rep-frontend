@@ -41,7 +41,7 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with ScalaFutur
       "set userAnswers to 'None' in the request" in {
 
         val sessionRepository = mock[SessionRepository]
-        when(sessionRepository.get("id")) thenReturn Future(None)
+        when(sessionRepository.get("id")).thenReturn(Future(None))
         val action            = new Harness(sessionRepository)
 
         val futureResult =
@@ -58,8 +58,10 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar with ScalaFutur
       "build a userAnswers object and add it to the request" in {
 
         val sessionRepository = mock[SessionRepository]
-        when(sessionRepository.get("id")) thenReturn Future(
-          Some(new UserAnswers("id", "UTR", frontendAppConfig.minDate))
+        when(sessionRepository.get("id")).thenReturn(
+          Future(
+            Some(new UserAnswers("id", "UTR", frontendAppConfig.minDate))
+          )
         )
         val action            = new Harness(sessionRepository)
 

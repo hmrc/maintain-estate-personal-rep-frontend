@@ -25,7 +25,7 @@ import play.api.mvc.{ActionRefiner, Result}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class NameRequiredAction @Inject() (implicit val executionContext: ExecutionContext)
+class NameRequiredAction @Inject() ()(using val executionContext: ExecutionContext)
     extends ActionRefiner[DataRequest, IndividualNameRequest] {
 
   override protected def refine[A](request: DataRequest[A]): Future[Either[Result, IndividualNameRequest[A]]] =

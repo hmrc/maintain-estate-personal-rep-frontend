@@ -27,7 +27,7 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 
 import scala.concurrent.Future
 
@@ -61,7 +61,7 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
       "extract answers and redirect" in {
 
         val mockEstatesConnector = mock[EstatesConnector]
-        when(mockEstatesConnector.getPersonalRep(any())(any(), any())).thenReturn(Future.successful(personalRep))
+        when(mockEstatesConnector.getPersonalRep(any())(using any(), any())).thenReturn(Future.successful(personalRep))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
@@ -92,7 +92,7 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
       "extract answers and redirect" in {
 
         val mockEstatesConnector = mock[EstatesConnector]
-        when(mockEstatesConnector.getPersonalRep(any())(any(), any())).thenReturn(Future.successful(personalRep))
+        when(mockEstatesConnector.getPersonalRep(any())(using any(), any())).thenReturn(Future.successful(personalRep))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))

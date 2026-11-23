@@ -31,7 +31,7 @@
     formGroupClasses: Set[String] = Set.empty,
     labelClasses: Set[String] = Set("govuk-label--l"),
     selectAttribute: Map[String, String] = Map.empty
-)(implicit messages: Messages)
+)(using messages: Messages)
 
 @govukSelect(Select(
     id = field.id,
@@ -50,6 +50,6 @@
             )),
     classes = formGroupClasses.mkString(" "),
     attributes = selectAttribute,
-    errorMessage = field.error.map(err => ErrorMessage.errorMessageWithDefaultStringsTranslated(content = Text(messages(err.message, err.args: _*))))
+    errorMessage = field.error.map(err => ErrorMessage.errorMessageWithDefaultStringsTranslated(content = Text(messages(err.message, err.args*))))
 ).asAccessibleAutocomplete())
 

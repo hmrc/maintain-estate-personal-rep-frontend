@@ -23,7 +23,7 @@ import scala.util.{Success, Try}
 
 trait MongoDateTimeFormats {
 
-  implicit val localDateTimeRead: Reads[LocalDateTime] = {
+  given localDateTimeRead: Reads[LocalDateTime] = {
     case JsObject(map) if map.contains("$date") =>
       map("$date") match {
         case JsNumber(bigDecimal)   =>
@@ -53,7 +53,7 @@ trait MongoDateTimeFormats {
     case _                                      => JsError("Unexpected LocalDateTime Format")
   }
 
-  implicit val localDateTimeWrite: Writes[LocalDateTime] = (dateTime: LocalDateTime) =>
+  given localDateTimeWrite: Writes[LocalDateTime] = (dateTime: LocalDateTime) =>
     Json.obj(
       "$date" -> dateTime.atZone(ZoneOffset.UTC).toInstant.toEpochMilli
     )

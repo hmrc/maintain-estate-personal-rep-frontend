@@ -21,17 +21,17 @@ import connectors.EstatesAuthConnector
 import models.auth.{AuthAgentAllowed, AuthAllowed, AuthDenied}
 import models.requests.DataRequest
 import play.api.Logging
-import play.api.mvc.Results._
-import play.api.mvc._
+import play.api.mvc.Results.*
+import play.api.mvc.*
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Session
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EstateAuthenticationServiceImpl @Inject() (authConnector: EstatesAuthConnector)(implicit ec: ExecutionContext)
+class EstateAuthenticationServiceImpl @Inject() (authConnector: EstatesAuthConnector)(using ec: ExecutionContext)
     extends EstateAuthenticationService with Logging {
 
-  override def authenticateAgent()(implicit hc: HeaderCarrier): Future[Either[Result, String]] =
+  override def authenticateAgent()(using hc: HeaderCarrier): Future[Either[Result, String]] =
 
     authConnector.agentIsAuthorised.flatMap {
       case AuthAgentAllowed(arn)   =>
@@ -47,7 +47,7 @@ class EstateAuthenticationServiceImpl @Inject() (authConnector: EstatesAuthConne
 
   override def authenticateForUtr[A](
     utr: String
-  )(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]] =
+  )(using request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]] =
 
     authConnector.authorisedForUtr(utr).flatMap {
       case _: AuthAllowed          =>
@@ -65,10 +65,10 @@ class EstateAuthenticationServiceImpl @Inject() (authConnector: EstatesAuthConne
 
 trait EstateAuthenticationService {
 
-  def authenticateAgent()(implicit hc: HeaderCarrier): Future[Either[Result, String]]
+  def authenticateAgent()(using hc: HeaderCarrier): Future[Either[Result, String]]
 
   def authenticateForUtr[A](
     utr: String
-  )(implicit request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]]
+  )(using request: DataRequest[A], hc: HeaderCarrier): Future[Either[Result, DataRequest[A]]]
 
 }

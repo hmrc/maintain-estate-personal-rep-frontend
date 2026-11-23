@@ -24,7 +24,7 @@ import play.api.data.Form
 
 trait OptionalFieldBehaviours extends FormSpec with ScalaCheckPropertyChecks with Generators {
 
-  def optionalField(form: Form[_], fieldName: String, validDataGenerator: Gen[String]): Unit = {
+  def optionalField(form: Form[?], fieldName: String, validDataGenerator: Gen[String]): Unit = {
 
     "bind valid data" in
       forAll(validDataGenerator) { dataItem =>

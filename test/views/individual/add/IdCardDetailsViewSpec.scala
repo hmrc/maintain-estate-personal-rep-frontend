@@ -38,8 +38,8 @@ class IdCardDetailsViewSpec extends QuestionViewBehaviours[IdCard] {
 
     val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptions].options()
 
-    def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, countryOptions, name.displayName)(fakeRequest, messages)
+    def applyView(form: Form[?]): HtmlFormat.Appendable =
+      view.apply(form, countryOptions, name.displayName)(using fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.displayName)
 

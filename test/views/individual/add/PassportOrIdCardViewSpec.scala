@@ -32,8 +32,8 @@ class PassportOrIdCardViewSpec extends OptionsViewBehaviours {
 
   val view: PassportOrIdCardView = viewFor[PassportOrIdCardView](Some(emptyUserAnswers))
 
-  def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, name.displayName)(fakeRequest, messages)
+  def applyView(form: Form[?]): HtmlFormat.Appendable =
+    view.apply(form, name.displayName)(using fakeRequest, messages)
 
   "PassportOrIdCardView" must {
 

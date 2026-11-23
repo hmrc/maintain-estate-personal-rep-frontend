@@ -34,8 +34,8 @@ class LiveInTheUkYesNoViewSpec extends YesNoViewBehaviours {
 
     val view = viewFor[LiveInTheUkYesNoView](Some(emptyUserAnswers))
 
-    def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, mode, name.displayName)(fakeRequest, messages)
+    def applyView(form: Form[?]): HtmlFormat.Appendable =
+      view.apply(form, mode, name.displayName)(using fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.displayName)
 

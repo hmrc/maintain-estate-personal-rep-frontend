@@ -30,8 +30,8 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class DefaultSessionRepository @Inject() (val mongo: MongoComponent, val config: Configuration)(implicit
-  val ec: ExecutionContext
+class DefaultSessionRepository @Inject() (val mongo: MongoComponent, val config: Configuration)(using
+  ec: ExecutionContext
 ) extends PlayMongoRepository[UserAnswers](
       mongoComponent = mongo,
       collectionName = "user-answers",
@@ -41,7 +41,7 @@ class DefaultSessionRepository @Inject() (val mongo: MongoComponent, val config:
           Indexes.ascending("lastUpdated"),
           IndexOptions()
             .name("user-answers-last-updated-index")
-            .expireAfter(config.get[Int]("mongodb.timeToLiveInSeconds"), TimeUnit.SECONDS)
+            .expireAfter(config.get[Int]("mongodb.timeToLiveInSeconds").toLong, TimeUnit.SECONDS)
             .unique(false)
         )
       ),

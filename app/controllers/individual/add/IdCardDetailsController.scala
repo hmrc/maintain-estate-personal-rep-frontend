@@ -43,7 +43,7 @@ class IdCardDetailsController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: IdCardDetailsView,
   val countryOptions: CountryOptions
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   val form: Form[IdCard] = formProvider.withPrefix("individual")

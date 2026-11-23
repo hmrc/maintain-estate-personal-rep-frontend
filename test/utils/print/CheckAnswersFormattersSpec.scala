@@ -40,7 +40,7 @@ class CheckAnswersFormattersSpec extends SpecBase {
       "in English mode" must {
         "format date in English" in {
 
-          val result: Html = checkAnswersFormatters.formatDate(date)(messages("en"))
+          val result: Html = checkAnswersFormatters.formatDate(date)(using messages("en"))
           result mustBe Html("3 February 1996")
         }
       }
@@ -48,7 +48,7 @@ class CheckAnswersFormattersSpec extends SpecBase {
       "in Welsh mode" must {
         "format date in Welsh" in {
 
-          val result: Html = checkAnswersFormatters.formatDate(date)(messages("cy"))
+          val result: Html = checkAnswersFormatters.formatDate(date)(using messages("cy"))
           result mustBe Html("3 Chwefror 1996")
         }
       }

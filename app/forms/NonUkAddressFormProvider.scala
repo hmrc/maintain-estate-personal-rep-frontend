@@ -16,11 +16,12 @@
 
 package forms
 
-import forms.helpers.FormHelper._
+import forms.helpers.FormHelper.*
 import forms.mappings.{Mappings, Validation}
 import models.NonUkAddress
+import org.apache.pekko.japi.Option.some
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 
 import javax.inject.Inject
 
@@ -64,7 +65,9 @@ class NonUkAddressFormProvider @Inject() extends Mappings {
               nonEmptyString("country", "nonUkAddress.country.error.required")
             )
           )
-    )(NonUkAddress.apply)(NonUkAddress.unapply)
+    )(NonUkAddress.apply)((nonUkAddress: NonUkAddress) =>
+      some((nonUkAddress.line1, nonUkAddress.line2, nonUkAddress.line3, nonUkAddress.country))
+    )
   )
 
 }

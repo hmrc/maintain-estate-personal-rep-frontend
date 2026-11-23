@@ -17,10 +17,11 @@
 package forms
 
 import java.time.LocalDate
-
 import forms.mappings.{Constraints, Mappings, Validation}
+
 import javax.inject.Inject
 import models.IdCard
+import org.apache.pekko.japi.Option.some
 import play.api.data.Form
 import play.api.data.Forms.mapping
 
@@ -68,7 +69,7 @@ class IdCardDetailsFormProvider @Inject() extends Mappings with Constraints {
           )
         )
       )
-    )(IdCard.apply)(IdCard.unapply)
+    )(IdCard.apply)((idCard: IdCard) => some((idCard.countryOfIssue, idCard.number, idCard.expirationDate)))
   )
 
 }

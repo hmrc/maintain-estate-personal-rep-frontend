@@ -39,7 +39,7 @@ class NonUkCompanyNameController @Inject() (
   formProvider: StringFormProvider,
   sessionRepository: SessionRepository,
   view: NonUkCompanyNameView
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   val form: Form[String] = formProvider.withPrefix("business.nonUkCompanyName", 53)
@@ -57,7 +57,7 @@ class NonUkCompanyNameController @Inject() (
     form
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors, mode))),
+        (formWithErrors: Form[?]) => Future.successful(BadRequest(view(formWithErrors, mode))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(NamePage, value))

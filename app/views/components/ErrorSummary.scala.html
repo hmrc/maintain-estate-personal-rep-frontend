@@ -14,18 +14,19 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
-@import utils.DateErrorFormatter._
+@import uk.gov.hmrc.govukfrontend.views.html.components.implicits.*
+@import utils.DateErrorFormatter.*
 @import viewmodels.RadioOption
+
 
 @this(
         govUkErrorSummary: GovukErrorSummary
 )
 
-@(errors: Seq[FormError], radioOptions: Seq[RadioOption] = Nil, isYesNo: Boolean = false)(implicit messages: Messages)
+@(errors: Seq[FormError], radioOptions: Seq[RadioOption] = Nil, isYesNo: Boolean = false)(using messages: Messages)
 
     @if(errors.nonEmpty) {
-        @govUkErrorSummary(ErrorSummary(
+        @govUkErrorSummary(uk.gov.hmrc.govukfrontend.views.viewmodels.errorsummary.ErrorSummary(
             errorList = errors
                     .map(err => err.copy(key = errorHref(err, radioOptions, isYesNo), args = formatArgs(err.args)))
                     .asTextErrorLinks,

@@ -164,7 +164,7 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
             doc,
             "title",
             ViewUtils.breadcrumbTitle(
-              s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title", args: _*)}"""
+              s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title", args*)}"""
             )
           )
         }
@@ -210,7 +210,7 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
             doc,
             "title",
             ViewUtils.breadcrumbTitle(
-              s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title", args: _*)}"""
+              s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title", args*)}"""
             )
           )
         }
@@ -256,7 +256,7 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
             doc,
             "title",
             ViewUtils.breadcrumbTitle(
-              s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title", args: _*)}"""
+              s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title", args*)}"""
             )
           )
         }

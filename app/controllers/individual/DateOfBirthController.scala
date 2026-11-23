@@ -42,7 +42,7 @@ class DateOfBirthController @Inject() (
   formProvider: DateFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: DateOfBirthView
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   def form: Form[LocalDate] = formProvider.withConfig("individual.dateOfBirth")

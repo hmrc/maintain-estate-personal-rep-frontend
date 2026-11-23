@@ -22,8 +22,8 @@ trait PersonalRep
 
 object PersonalRep {
 
-  implicit val reads: Reads[PersonalRep] =
-    __.read[BusinessPersonalRep](BusinessPersonalRep.reads).widen[PersonalRep] orElse
-      __.read[IndividualPersonalRep](IndividualPersonalRep.reads).widen[PersonalRep]
+  given reads: Reads[PersonalRep] =
+    __.read[BusinessPersonalRep](using BusinessPersonalRep.reads).widen[PersonalRep] orElse
+      __.read[IndividualPersonalRep](using IndividualPersonalRep.reads).widen[PersonalRep]
 
 }

@@ -18,8 +18,8 @@ package models
 
 import java.time.{LocalDate, LocalDateTime}
 
-import pages._
-import play.api.libs.json._
+import pages.*
+import play.api.libs.json.*
 
 import scala.util.{Failure, Success, Try}
 
@@ -31,10 +31,10 @@ final case class UserAnswers(
   lastUpdated: LocalDateTime = LocalDateTime.now
 ) {
 
-  def get[A](page: QuestionPage[A])(implicit rds: Reads[A]): Option[A] =
-    Reads.optionNoError(Reads.at(page.path)).reads(data).getOrElse(None)
+  def get[A](page: QuestionPage[A])(using rds: Reads[A]): Option[A] =
+    Reads.optionNoError(using Reads.at(page.path)).reads(data).getOrElse(None)
 
-  def set[A](page: QuestionPage[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] = {
+  def set[A](page: QuestionPage[A], value: A)(using writes: Writes[A]): Try[UserAnswers] = {
 
     val updatedData = data.setObject(page.path, Json.toJson(value)) match {
       case JsSuccess(jsValue, _) =>
@@ -77,7 +77,7 @@ final case class UserAnswers(
 
 object UserAnswers {
 
-  implicit lazy val reads: Reads[UserAnswers] = {
+  given reads: Reads[UserAnswers] = {
 
     import play.api.libs.functional.syntax._
 
@@ -86,11 +86,11 @@ object UserAnswers {
         (__ \ "utr").read[String] and
         (__ \ "dateOfDeath").read[LocalDate] and
         (__ \ "data").read[JsObject] and
-        (__ \ "lastUpdated").read(MongoDateTimeFormats.localDateTimeRead)
-    )(UserAnswers.apply _)
+        (__ \ "lastUpdated").read(using MongoDateTimeFormats.localDateTimeRead)
+    )(UserAnswers.apply)
   }
 
-  implicit lazy val writes: OWrites[UserAnswers] = {
+  given writes: OWrites[UserAnswers] = {
 
     import play.api.libs.functional.syntax._
 
@@ -99,8 +99,8 @@ object UserAnswers {
         (__ \ "utr").write[String] and
         (__ \ "dateOfDeath").write[LocalDate] and
         (__ \ "data").write[JsObject] and
-        (__ \ "lastUpdated").write(MongoDateTimeFormats.localDateTimeWrite)
-    )(unlift(UserAnswers.unapply))
+        (__ \ "lastUpdated").write(using MongoDateTimeFormats.localDateTimeWrite)
+    )(ua => (ua.id, ua.utr, ua.dateOfDeath, ua.data, ua.lastUpdated))
   }
 
 }

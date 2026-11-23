@@ -19,24 +19,23 @@ package config
 import com.google.inject.{Inject, Singleton}
 import play.api.Configuration
 import play.api.i18n.Lang
-import uk.gov.hmrc.hmrcfrontend.config.ContactFrontendConfig
 
 import java.time.LocalDate
 
 @Singleton
-class FrontendAppConfig @Inject() (configuration: Configuration, contactFrontendConfig: ContactFrontendConfig) {
+class FrontendAppConfig @Inject() (configuration: Configuration) {
 
   final val ENGLISH         = "en"
   final val WELSH           = "cy"
   final val UK_COUNTRY_CODE = "GB"
 
-  lazy val loginUrl: String                = configuration.get[String]("urls.login")
-  lazy val loginContinueUrl: String        = configuration.get[String]("urls.loginContinue")
-  lazy val logoutUrl: String               = configuration.get[String]("urls.logout")
-  lazy val basGatewayBaseUrl: String       = configuration.get[String]("bas-gateway.host")
-  lazy val feedbackFrontendUrl: String     = s"${configuration.get[String]("feedback-frontend.url")}?useServiceNavigation"
-  lazy val timeOutUrl: String              = configuration.get[String]("urls.timeOut")
-  lazy val logoutWithBasGatewayUrl: String = s"$basGatewayBaseUrl$logoutUrl"
+  lazy val loginUrl: String                  = configuration.get[String]("urls.login")
+  lazy val loginContinueUrl: String          = configuration.get[String]("urls.loginContinue")
+  private lazy val logoutUrl: String         = configuration.get[String]("urls.logout")
+  private lazy val basGatewayBaseUrl: String = configuration.get[String]("bas-gateway.host")
+  lazy val feedbackFrontendUrl: String       = s"${configuration.get[String]("feedback-frontend.url")}?useServiceNavigation"
+  lazy val timeOutUrl: String                = configuration.get[String]("urls.timeOut")
+  lazy val logoutWithBasGatewayUrl: String   = s"$basGatewayBaseUrl$logoutUrl"
 
   lazy val logoutAudit: Boolean =
     configuration.get[Boolean]("microservice.services.features.auditing.logout")
@@ -44,8 +43,8 @@ class FrontendAppConfig @Inject() (configuration: Configuration, contactFrontend
   lazy val countdownLength: Int = configuration.get[Int]("timeout.countdown")
   lazy val timeoutLength: Int   = configuration.get[Int]("timeout.length")
 
-  lazy val organisationDeclarationUrl: String = configuration.get[String]("urls.declaration.organisation")
-  lazy val agentDeclarationUrl: String        = configuration.get[String]("urls.declaration.agent")
+  private lazy val organisationDeclarationUrl: String = configuration.get[String]("urls.declaration.organisation")
+  private lazy val agentDeclarationUrl: String        = configuration.get[String]("urls.declaration.agent")
 
   lazy val estatesUrl: String     = configuration.get[Service]("microservice.services.estates").baseUrl
   lazy val estatesAuthUrl: String = configuration.get[Service]("microservice.services.estates-auth").baseUrl

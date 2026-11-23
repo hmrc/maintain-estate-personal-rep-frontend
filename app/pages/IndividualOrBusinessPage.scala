@@ -16,7 +16,7 @@
 
 package pages
 
-import models.IndividualOrBusiness._
+import models.IndividualOrBusiness.*
 import models.{IndividualOrBusiness, UserAnswers}
 import play.api.libs.json.JsPath
 

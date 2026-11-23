@@ -18,12 +18,12 @@ package utils.mappers
 
 import java.time.LocalDate
 
-import models._
-import pages.individual._
-import pages.individual.add._
+import models.*
+import pages.individual.*
+import pages.individual.add.*
 import pages.individual.amend.PassportOrIdCardDetailsPage
 import play.api.Logging
-import play.api.libs.functional.syntax._
+import play.api.libs.functional.syntax.*
 import play.api.libs.json.{JsError, JsSuccess, Reads}
 
 class IndividualMapper extends Logging {
@@ -38,9 +38,9 @@ class IndividualMapper extends Logging {
           TelephoneNumberPage.path.read[String] and
           readEmailAddress and
           StartDatePage.path.read[LocalDate]
-      )(IndividualPersonalRep.apply _)
+      )(IndividualPersonalRep.apply)
 
-    answers.data.validate[IndividualPersonalRep](readFromUserAnswers) match {
+    answers.data.validate[IndividualPersonalRep](using readFromUserAnswers) match {
       case JsSuccess(value, _) =>
         Some(value)
       case JsError(errors)     =>

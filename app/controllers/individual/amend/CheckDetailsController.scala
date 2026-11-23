@@ -23,7 +23,7 @@ import handlers.ErrorHandler
 import models.PersonalRepresentative
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc._
+import play.api.mvc.*
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.mappers.IndividualMapper
 import utils.print.IndividualPrintHelper
@@ -43,7 +43,7 @@ class CheckDetailsController @Inject() (
   printHelper: IndividualPrintHelper,
   mapper: IndividualMapper,
   errorHandler: ErrorHandler
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
   def renderFromUserAnswers(): Action[AnyContent] = actions.authWithIndividualName { implicit request =>

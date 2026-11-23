@@ -17,10 +17,11 @@
 package forms
 
 import java.time.LocalDate
-
 import forms.mappings.{Constraints, Mappings, Validation}
+
 import javax.inject.Inject
 import models.Passport
+import org.apache.pekko.japi.Option.some
 import play.api.data.Form
 import play.api.data.Forms.mapping
 
@@ -68,7 +69,7 @@ class PassportDetailsFormProvider @Inject() extends Mappings with Constraints {
           )
         )
       )
-    )(Passport.apply)(Passport.unapply)
+    )(Passport.apply)((passport: Passport) => some((passport.countryOfIssue, passport.number, passport.expirationDate)))
   )
 
 }

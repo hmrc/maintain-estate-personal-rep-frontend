@@ -23,7 +23,7 @@ import utils.extractors.{BusinessExtractor, IndividualExtractor}
 import javax.inject.Inject
 import models.{BusinessPersonalRep, IndividualPersonalRep}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc._
+import play.api.mvc.*
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
@@ -38,7 +38,7 @@ class CheckDetailsController @Inject() (
   sessionRepository: SessionRepository,
   businessExtractor: BusinessExtractor,
   individualExtractor: IndividualExtractor
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   def extractAndRender(): Action[AnyContent] = actions.authWithData.async { implicit request =>

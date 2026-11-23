@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.individual.routes._
+@import controllers.individual.routes.*
 @import views.html.components.{ErrorSummary, InternationalAddress, SubmitButton}
 @import utils.InputOption
 
@@ -26,7 +26,7 @@
         submitButton: SubmitButton
 )
 
-@(form: Form[_], countryOptions: Seq[InputOption], name: String, mode: Mode)(implicit request: RequestHeader, messages: Messages)
+@(form: Form[?], countryOptions: Seq[InputOption], name: String, mode: Mode)(using request: RequestHeader, messages: Messages)
 
 @mainTemplate(
     title = s"${errorPrefix(form)}${messages("individual.nonUkAddress.title")}",

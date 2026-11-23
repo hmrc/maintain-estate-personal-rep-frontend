@@ -42,7 +42,7 @@ class StartDateController @Inject() (
   actions: Actions,
   formProvider: DateFormProvider,
   view: StartDateView
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = actions.authWithBusinessName { implicit request =>

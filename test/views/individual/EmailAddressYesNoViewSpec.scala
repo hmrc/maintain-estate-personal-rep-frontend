@@ -32,8 +32,8 @@ class EmailAddressYesNoViewSpec extends YesNoViewBehaviours {
 
   val view: EmailAddressYesNoView = viewFor[EmailAddressYesNoView](Some(emptyUserAnswers))
 
-  def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode, name.displayName)(fakeRequest, messages)
+  def applyView(form: Form[?]): HtmlFormat.Appendable =
+    view.apply(form, NormalMode, name.displayName)(using fakeRequest, messages)
 
   "EmailAddressYesNo View" must {
 

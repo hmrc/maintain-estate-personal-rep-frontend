@@ -103,13 +103,13 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(Seq(answerSection))(request, messages).toString
+        view(Seq(answerSection))(using request, messages).toString
     }
 
     "submitting" when {
 
       val mockEstatesConnector = mock[EstatesConnector]
-      when(mockEstatesConnector.addOrAmendPersonalRep(any(), any())(any(), any()))
+      when(mockEstatesConnector.addOrAmendPersonalRep(any(), any())(using any(), any()))
         .thenReturn(Future.successful(HttpResponse(OK, "")))
 
       "individual" must {

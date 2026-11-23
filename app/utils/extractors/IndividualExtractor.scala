@@ -17,10 +17,10 @@
 package utils.extractors
 
 import models.IndividualOrBusiness.Individual
-import models._
+import models.*
 import pages.IndividualOrBusinessPage
-import pages.individual._
-import pages.individual.add._
+import pages.individual.*
+import pages.individual.add.*
 import pages.individual.amend.PassportOrIdCardDetailsPage
 
 import scala.util.Try
@@ -72,7 +72,7 @@ class IndividualExtractor {
         answers
           .set(NationalInsuranceNumberYesNoPage, false)
           .flatMap(_.set(PassportOrIdCardDetailsPage, combined))
-      case _                                  =>
+      case null                               =>
         answers.set(NationalInsuranceNumberYesNoPage, false)
     }
 

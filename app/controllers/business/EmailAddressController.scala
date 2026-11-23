@@ -39,7 +39,7 @@ class EmailAddressController @Inject() (
   view: EmailAddressView,
   repository: SessionRepository,
   @Business navigator: Navigator
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   val form: Form[String] = formProvider.withPrefix("business.email")

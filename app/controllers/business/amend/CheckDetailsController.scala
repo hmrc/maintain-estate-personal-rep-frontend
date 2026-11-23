@@ -44,7 +44,7 @@ class CheckDetailsController @Inject() (
   businessPrintHelper: BusinessPrintHelper,
   mapper: BusinessMapper,
   errorHandler: ErrorHandler
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
   def renderFromUserAnswers(): Action[AnyContent] = actions.authWithBusinessName { implicit request =>

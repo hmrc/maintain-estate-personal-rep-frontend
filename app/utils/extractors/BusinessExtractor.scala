@@ -19,7 +19,7 @@ package utils.extractors
 import models.IndividualOrBusiness.Business
 import models.{Address, BusinessPersonalRep, NonUkAddress, UkAddress, UserAnswers}
 import pages.IndividualOrBusinessPage
-import pages.business._
+import pages.business.*
 import pages.business.add.StartDatePage
 
 import scala.util.Try

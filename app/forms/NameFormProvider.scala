@@ -16,11 +16,12 @@
 
 package forms
 
-import forms.helpers.FormHelper._
+import forms.helpers.FormHelper.*
 import forms.mappings.{Mappings, Validation}
 import models.Name
+import org.apache.pekko.japi.Option.some
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 
 import javax.inject.Inject
 
@@ -53,7 +54,7 @@ class NameFormProvider @Inject() extends Mappings {
             regexp(Validation.nameRegex, s"$prefix.error.lastName.invalid")
           )
         )
-    )(Name.apply)(Name.unapply)
+    )(Name.apply)((name: Name) => some((name.firstName, name.middleName, name.lastName)))
   )
 
 }

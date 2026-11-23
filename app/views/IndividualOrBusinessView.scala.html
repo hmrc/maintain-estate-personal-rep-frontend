@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.routes._
+@import controllers.routes.*
 @import models.IndividualOrBusiness
 @import views.html.components.{ErrorSummary, InputRadio, SubmitButton}
 
@@ -27,14 +27,14 @@
 )
 
 
-@(form: Form[_], mode: Mode)(implicit request: RequestHeader, messages: Messages)
+@(form: Form[?], mode: Mode)(using request: RequestHeader, messages: Messages)
 
 @mainTemplate(
     title = s"${errorPrefix(form)}${messages("individualOrBusiness.title")}",
     showBackLink = true
 ) {
 
-    @formHelper(action = IndividualOrBusinessController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.IndividualOrBusinessController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @errorSummary(form.errors, radioOptions = IndividualOrBusiness.options.toSeq)
 

@@ -22,8 +22,8 @@ import controllers.individual.amend.{routes => amendRts}
 import controllers.individual.{routes => rts}
 import models.{CheckMode, NormalMode, UserAnswers}
 import pages.IndividualOrBusinessPage
-import pages.individual._
-import pages.individual.add._
+import pages.individual.*
+import pages.individual.add.*
 import pages.individual.amend.PassportOrIdCardDetailsPage
 import play.api.i18n.Messages
 import viewmodels.{AnswerRow, AnswerSection}
@@ -34,7 +34,7 @@ class IndividualPrintHelper @Inject() (answerRowConverter: AnswerRowConverter) {
     userAnswers: UserAnswers,
     provisional: Boolean,
     name: String
-  )(implicit messages: Messages): AnswerSection = {
+  )(using messages: Messages): AnswerSection = {
 
     val bound = answerRowConverter.bind(userAnswers, name)
 

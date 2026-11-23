@@ -19,7 +19,8 @@ package connectors
 import config.FrontendAppConfig
 import models.{PersonalRep, PersonalRepresentative}
 import play.api.libs.json.{JsValue, Json}
-import uk.gov.hmrc.http.HttpReads.Implicits._
+import play.api.libs.ws.WSBodyWritables.writeableOf_JsValue
+import uk.gov.hmrc.http.HttpReads.Implicits.*
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 
@@ -30,7 +31,7 @@ class EstatesConnector @Inject() (http: HttpClientV2, config: FrontendAppConfig)
 
   private def getPersonalRepUrl(utr: String) = s"${config.estatesUrl}/estates/$utr/transformed/personal-representative"
 
-  def getPersonalRep(utr: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[PersonalRep] = {
+  def getPersonalRep(utr: String)(using hc: HeaderCarrier, ec: ExecutionContext): Future[PersonalRep] = {
     val fullUrl = getPersonalRepUrl(utr)
     http.get(url"$fullUrl").execute[PersonalRep]
   }

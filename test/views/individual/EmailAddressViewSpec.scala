@@ -32,8 +32,8 @@ class EmailAddressViewSpec extends QuestionViewBehaviours[String] {
 
   val view: EmailAddressView = viewFor[EmailAddressView](Some(emptyUserAnswers))
 
-  def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode, name.displayName)(fakeRequest, messages)
+  def applyView(form: Form[?]): HtmlFormat.Appendable =
+    view.apply(form, NormalMode, name.displayName)(using fakeRequest, messages)
 
   "EmailAddress View" must {
 

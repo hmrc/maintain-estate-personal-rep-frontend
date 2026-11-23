@@ -72,7 +72,7 @@ class DateOfBirthControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, name.displayName, NormalMode)(getRequest, messages).toString
+        view(form, name.displayName, NormalMode)(using getRequest, messages).toString
 
       application.stop()
     }
@@ -96,7 +96,7 @@ class DateOfBirthControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), name.displayName, NormalMode)(getRequest, messages).toString
+        view(form.fill(validAnswer), name.displayName, NormalMode)(using getRequest, messages).toString
 
       application.stop()
     }
@@ -105,7 +105,7 @@ class DateOfBirthControllerSpec extends SpecBase with MockitoSugar {
 
       val mockPlaybackRepository = mock[SessionRepository]
 
-      when(mockPlaybackRepository.set(any())) thenReturn Future.successful(true)
+      when(mockPlaybackRepository.set(any())).thenReturn(Future.successful(true))
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswersWithName))
@@ -140,7 +140,7 @@ class DateOfBirthControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, name.displayName, NormalMode)(request, messages).toString
+        view(boundForm, name.displayName, NormalMode)(using request, messages).toString
 
       application.stop()
     }

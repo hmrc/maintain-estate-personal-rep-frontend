@@ -71,7 +71,7 @@ class PassportOrIdCardDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, name.displayName, countryOptions)(request, messages).toString
+        view(form, name.displayName, countryOptions)(using request, messages).toString
 
       application.stop()
     }
@@ -91,7 +91,7 @@ class PassportOrIdCardDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validData), name.displayName, countryOptions)(request, messages).toString
+        view(form.fill(validData), name.displayName, countryOptions)(using request, messages).toString
 
       application.stop()
     }
@@ -100,7 +100,7 @@ class PassportOrIdCardDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val mockPlaybackRepository = mock[SessionRepository]
 
-      when(mockPlaybackRepository.set(any())) thenReturn Future.successful(true)
+      when(mockPlaybackRepository.set(any())).thenReturn(Future.successful(true))
 
       val application = applicationBuilder(userAnswers = Some(baseAnswers))
         .overrides(bind[Navigator].qualifiedWith(classOf[Individual]).toInstance(new FakeNavigator(onwardRoute)))
@@ -142,7 +142,7 @@ class PassportOrIdCardDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, name.displayName, countryOptions)(request, messages).toString
+        view(boundForm, name.displayName, countryOptions)(using request, messages).toString
 
       application.stop()
     }

@@ -57,7 +57,7 @@ class UkRegisteredCompanyYesNoControllerSpec extends SpecBase with MockitoSugar 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, NormalMode)(using request, messages).toString
 
       application.stop()
     }
@@ -77,7 +77,7 @@ class UkRegisteredCompanyYesNoControllerSpec extends SpecBase with MockitoSugar 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode)(request, messages).toString
+        view(form.fill(true), NormalMode)(using request, messages).toString
 
       application.stop()
     }
@@ -86,7 +86,7 @@ class UkRegisteredCompanyYesNoControllerSpec extends SpecBase with MockitoSugar 
 
       val mockPlaybackRepository = mock[SessionRepository]
 
-      when(mockPlaybackRepository.set(any())) thenReturn Future.successful(true)
+      when(mockPlaybackRepository.set(any())).thenReturn(Future.successful(true))
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -123,7 +123,7 @@ class UkRegisteredCompanyYesNoControllerSpec extends SpecBase with MockitoSugar 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(request, messages).toString
+        view(boundForm, NormalMode)(using request, messages).toString
 
       application.stop()
     }

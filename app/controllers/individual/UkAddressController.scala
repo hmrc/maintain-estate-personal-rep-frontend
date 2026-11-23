@@ -40,7 +40,7 @@ class UkAddressController @Inject() (
   formProvider: UkAddressFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: UkAddressView
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   val form: Form[UkAddress] = formProvider()

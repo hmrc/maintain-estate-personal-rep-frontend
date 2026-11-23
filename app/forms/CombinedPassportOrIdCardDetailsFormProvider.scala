@@ -18,8 +18,10 @@ package forms
 
 import config.FrontendAppConfig
 import forms.mappings.{Constraints, Mappings, Validation}
+
 import javax.inject.Inject
 import models.CombinedPassportOrIdCard
+import org.apache.pekko.japi.Option.some
 import play.api.data.Form
 import play.api.data.Forms.mapping
 
@@ -69,7 +71,15 @@ class CombinedPassportOrIdCardDetailsFormProvider @Inject() (appConfig: Frontend
           )
         )
       )
-    )(CombinedPassportOrIdCard.apply)(CombinedPassportOrIdCard.unapply)
+    )(CombinedPassportOrIdCard.apply)((combinedPassportOrIdCard: CombinedPassportOrIdCard) =>
+      some(
+        (
+          combinedPassportOrIdCard.countryOfIssue,
+          combinedPassportOrIdCard.number,
+          combinedPassportOrIdCard.expirationDate
+        )
+      )
+    )
   )
 
 }

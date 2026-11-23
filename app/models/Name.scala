@@ -16,7 +16,7 @@
 
 package models
 
-import play.api.libs.json._
+import play.api.libs.json.*
 
 case class Name(firstName: String, middleName: Option[String], lastName: String) {
   lazy val displayName: String = firstName + " " + lastName
@@ -26,5 +26,5 @@ case class Name(firstName: String, middleName: Option[String], lastName: String)
 }
 
 object Name {
-  implicit lazy val formats: Format[Name] = Json.format[Name]
+  given formats: Format[Name] = Json.format[Name]
 }

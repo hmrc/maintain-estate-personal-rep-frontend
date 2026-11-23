@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
+@import uk.gov.hmrc.govukfrontend.views.html.components.implicits.*
 
 @this(
 govukInput: GovukInput
@@ -31,7 +31,7 @@ govukInput: GovukInput
   suffix: Option[String] = None,
   inputMode: Option[String] = None,
   readOnly: Boolean = false
-)(implicit messages: Messages)
+)(using messages: Messages)
 
 @govukInput(
     Input(
@@ -44,7 +44,7 @@ govukInput: GovukInput
      autocomplete = Some("tel"),
      hint = hint.map(hint => Hint(content = Text(hint))),
      errorMessage = field.error match {
-     case Some(e) => Some(ErrorMessage.errorMessageWithDefaultStringsTranslated(content = Text(messages(e.message, e.args: _*))))
+     case Some(e) => Some(ErrorMessage.errorMessageWithDefaultStringsTranslated(content = Text(messages(e.message, e.args*))))
      case None => None
 },
  spellcheck = Some(false),

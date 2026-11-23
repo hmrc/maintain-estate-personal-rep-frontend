@@ -40,7 +40,7 @@ class TelephoneNumberController @Inject() (
   actions: Actions,
   formProvider: TelephoneNumberFormProvider,
   view: TelephoneNumberView
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   val form: Form[String] = formProvider.withPrefix("individual.telephoneNumber")

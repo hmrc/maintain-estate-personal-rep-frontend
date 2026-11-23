@@ -57,7 +57,7 @@ class NonUkCompanyNameControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, NormalMode)(using request, messages).toString
 
       application.stop()
     }
@@ -76,7 +76,7 @@ class NonUkCompanyNameControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(name), NormalMode)(request, messages).toString
+        view(form.fill(name), NormalMode)(using request, messages).toString
 
       application.stop()
     }
@@ -85,7 +85,7 @@ class NonUkCompanyNameControllerSpec extends SpecBase with MockitoSugar {
 
       val mockSessionRepository = mock[SessionRepository]
 
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -124,7 +124,7 @@ class NonUkCompanyNameControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(request, messages).toString
+        view(boundForm, NormalMode)(using request, messages).toString
 
       application.stop()
     }

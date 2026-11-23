@@ -19,10 +19,10 @@ package utils.mappers
 import java.time.LocalDate
 
 import models.{Address, BusinessPersonalRep, NonUkAddress, UkAddress, UserAnswers}
-import pages.business._
+import pages.business.*
 import pages.business.add.StartDatePage
 import play.api.Logging
-import play.api.libs.functional.syntax._
+import play.api.libs.functional.syntax.*
 import play.api.libs.json.{JsError, JsSuccess, Reads}
 
 class BusinessMapper extends Logging {
@@ -36,9 +36,9 @@ class BusinessMapper extends Logging {
           readAddress and
           readEmailAddress and
           StartDatePage.path.read[LocalDate]
-      )(BusinessPersonalRep.apply _)
+      )(BusinessPersonalRep.apply)
 
-    answers.data.validate[BusinessPersonalRep](readFromUserAnswers) match {
+    answers.data.validate[BusinessPersonalRep](using readFromUserAnswers) match {
       case JsSuccess(value, _) =>
         Some(value)
       case JsError(errors)     =>

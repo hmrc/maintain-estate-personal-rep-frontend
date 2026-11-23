@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.individual.add.routes._
+@import controllers.individual.add.routes.*
 @import views.html.components.{ErrorSummary, Heading, InputSelect, InputText, InputDate, SubmitButton}
 @import utils.InputOption
 
@@ -29,7 +29,7 @@
         heading: Heading
 )
 
-@(form: Form[_], countryOptions: Seq[InputOption], name: String)(implicit request: RequestHeader, messages: Messages)
+@(form: Form[?], countryOptions: Seq[InputOption], name: String)(using request: RequestHeader, messages: Messages)
 
 @mainTemplate(
     title = s"${errorPrefix(form)}${messages("individual.passportDetails.title")}",

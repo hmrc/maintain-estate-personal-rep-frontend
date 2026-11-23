@@ -39,7 +39,7 @@ class EmailAddressYesNoController @Inject() (
   view: EmailAddressYesNoView,
   repository: SessionRepository,
   @Business navigator: Navigator
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = formProvider.withPrefix("business.emailYesNo")

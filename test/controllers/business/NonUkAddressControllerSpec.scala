@@ -67,7 +67,7 @@ class NonUkAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, countryOptions, name, NormalMode)(request, messages).toString
+        view(form, countryOptions, name, NormalMode)(using request, messages).toString
 
       application.stop()
     }
@@ -90,7 +90,7 @@ class NonUkAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), countryOptions, name, NormalMode)(request, messages).toString
+        view(form.fill(validAnswer), countryOptions, name, NormalMode)(using request, messages).toString
 
       application.stop()
     }
@@ -99,7 +99,7 @@ class NonUkAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val mockPlaybackRepository = mock[SessionRepository]
 
-      when(mockPlaybackRepository.set(any())) thenReturn Future.successful(true)
+      when(mockPlaybackRepository.set(any())).thenReturn(Future.successful(true))
 
       val application =
         applicationBuilder(userAnswers = Some(baseAnswers))
@@ -138,7 +138,7 @@ class NonUkAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, countryOptions, name, NormalMode)(request, messages).toString
+        view(boundForm, countryOptions, name, NormalMode)(using request, messages).toString
 
       application.stop()
     }

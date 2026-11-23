@@ -52,7 +52,7 @@ class IndexControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfter
 
         val mockEstatesConnector: EstatesConnector = mock[EstatesConnector]
 
-        when(mockEstatesConnector.getDateOfDeath(any())(any(), any()))
+        when(mockEstatesConnector.getDateOfDeath(any())(using any(), any()))
           .thenReturn(Future.successful(Json.toJson(dateOfDeath)))
 
         val application = applicationBuilder(userAnswers = None)
@@ -89,7 +89,7 @@ class IndexControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfter
 
         val mockEstatesConnector: EstatesConnector = mock[EstatesConnector]
 
-        when(mockEstatesConnector.getDateOfDeath(any())(any(), any()))
+        when(mockEstatesConnector.getDateOfDeath(any())(using any(), any()))
           .thenReturn(Future.successful(Json.toJson(dateOfDeath)))
 
         val application = applicationBuilder(userAnswers = None)

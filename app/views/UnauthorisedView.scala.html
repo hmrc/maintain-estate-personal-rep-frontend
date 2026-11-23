@@ -21,7 +21,7 @@
         heading: Heading
 )
 
-@()(implicit request: RequestHeader, messages: Messages)
+@()(using request: RequestHeader, messages: Messages)
 
 @mainTemplate(
  title = messages("unauthorised.title")
