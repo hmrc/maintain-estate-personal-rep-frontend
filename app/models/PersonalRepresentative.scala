@@ -17,7 +17,7 @@
 package models
 
 import play.api.libs.json.*
-import play.api.libs.json.{Reads, __}
+import play.api.libs.json.Reads
 
 case class PersonalRepresentative(
   estatePerRepInd: Option[IndividualPersonalRep] = None,

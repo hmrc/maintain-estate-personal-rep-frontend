@@ -34,7 +34,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.*
 import scala.concurrent.duration.Duration
-import play.api.libs.json.{Json, OWrites}
+import play.api.libs.json.Json
 
 class EstatesConnectorSpec
     extends SpecBase
@@ -279,7 +279,6 @@ class EstatesConnectorSpec
       }
 
       "business" in {
-        given writes: OWrites[BusinessPersonalRep] = Json.writes[BusinessPersonalRep]
 
         val personalRep: BusinessPersonalRep = BusinessPersonalRep(
           name = orgName,

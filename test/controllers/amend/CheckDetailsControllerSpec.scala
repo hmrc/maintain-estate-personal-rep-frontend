@@ -107,6 +107,20 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
         redirectLocation(result).value mustEqual
           controllers.business.amend.routes.CheckDetailsController.renderFromUserAnswers().url
       }
+      "no user answers exist in session" must {
+
+        "redirect to Session Expired" in {
+
+          val application = applicationBuilder(userAnswers = None).build()
+
+          running(application) {
+            val result = route(application, FakeRequest(GET, checkDetailsRoute)).value
+
+            status(result) mustEqual SEE_OTHER
+            redirectLocation(result).value mustEqual controllers.routes.SessionExpiredController.onPageLoad.url
+          }
+        }
+      }
     }
 
   }

@@ -23,9 +23,9 @@ sealed trait EstatesAuthResponse
 object EstatesAuthResponse {
 
   given reads: Reads[EstatesAuthResponse] =
-    __.read[AuthAllowed].widen[EstatesAuthResponse] orElse
+    __.read[AuthDenied].widen[EstatesAuthResponse] orElse
       __.read[AuthAgentAllowed].widen[EstatesAuthResponse] orElse
-      __.read[AuthDenied].widen[EstatesAuthResponse]
+      __.read[AuthAllowed].widen[EstatesAuthResponse]
 
 }
 

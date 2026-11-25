@@ -45,7 +45,7 @@ object Enumerable {
           JsError("error.invalid")
       }
 
-    given writes[A: Enumerable]: Writes[A] =
+    given [A: Enumerable]: Writes[A] =
       Writes(value => JsString(value.toString))
 
   }

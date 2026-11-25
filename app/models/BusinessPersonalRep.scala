@@ -42,12 +42,12 @@ object BusinessPersonalRep extends EntityReads {
       BusinessPersonalRep(name, phoneNumber, utr, address, email, date)
     }
 
-  val writes: Writes[BusinessPersonalRep] =
+  given writes: Writes[BusinessPersonalRep] =
     ((__ \ Symbol("orgName")).write[String] and
       (__ \ Symbol("phoneNumber")).write[String] and
       (__ \ Symbol("identification") \ Symbol("utr")).writeNullable[String] and
       (__ \ Symbol("identification") \ Symbol("address")).write[Address] and
-      (__ \ "email").writeNullable[String] and
+      (__ \ Symbol("email")).writeNullable[String] and
       (__ \ Symbol("entityStart")).write[LocalDate])(rep =>
       (rep.name, rep.phoneNumber, rep.utr, rep.address, rep.email, rep.entityStart)
     )
