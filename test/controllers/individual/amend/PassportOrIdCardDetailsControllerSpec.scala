@@ -31,7 +31,7 @@ import pages.individual.amend.PassportOrIdCardDetailsPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import repositories.SessionRepository
 import utils.InputOption
 import utils.countryOptions.CountryOptions

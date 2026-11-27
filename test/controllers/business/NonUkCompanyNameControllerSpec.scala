@@ -21,14 +21,14 @@ import config.annotations.Business
 import forms.StringFormProvider
 import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
-import org.mockito.ArgumentMatchers._
-import org.mockito.Mockito._
+import org.mockito.ArgumentMatchers.*
+import org.mockito.Mockito.*
 import org.scalatestplus.mockito.MockitoSugar
 import pages.business.NamePage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import repositories.SessionRepository
 import views.html.business.NonUkCompanyNameView
 

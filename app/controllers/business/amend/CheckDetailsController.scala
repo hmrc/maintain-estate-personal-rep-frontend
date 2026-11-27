@@ -23,7 +23,7 @@ import handlers.ErrorHandler
 import models.PersonalRepresentative
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc._
+import play.api.mvc.*
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.Session
 import utils.mappers.BusinessMapper

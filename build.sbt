@@ -25,7 +25,7 @@ lazy val microservice = Project(appName, file("."))
     CodeCoverageSettings(),
     scalacOptions ++= Seq(
       "-Wconf:src=routes/.*:s",
-      "-Wconf:msg=unused-imports&src=views/.*:s",
+      "-Wconf:msg=unused import&src=html/.*:s",
       "-feature"
     ),
     Test / javaOptions ++= Seq(

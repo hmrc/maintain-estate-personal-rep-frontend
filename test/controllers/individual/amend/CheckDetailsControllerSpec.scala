@@ -28,11 +28,11 @@ import org.mockito.Mockito.when
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
 import pages.IndividualOrBusinessPage
-import pages.individual._
+import pages.individual.*
 import pages.individual.add.StartDatePage
 import play.api.inject.bind
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 import uk.gov.hmrc.http.HttpResponse
 import utils.print.IndividualPrintHelper

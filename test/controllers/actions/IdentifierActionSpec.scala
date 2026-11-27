@@ -20,17 +20,17 @@ import base.SpecBase
 import config.FrontendAppConfig
 import models.FakeUser
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito._
+import org.mockito.Mockito.*
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.Application
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{Action, AnyContent, BodyParsers, Results}
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import services.{EstateAuthenticationService, FakeAllowedEstateAuthenticationService}
 import uk.gov.hmrc.auth.core.*
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
 
-import scala.concurrent.ExecutionContext.Implicits._
+import scala.concurrent.ExecutionContext.Implicits.*
 import scala.concurrent.Future
 
 class IdentifierActionSpec extends SpecBase with MockitoSugar {

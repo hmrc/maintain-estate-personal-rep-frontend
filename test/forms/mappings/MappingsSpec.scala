@@ -44,7 +44,7 @@ class MappingsSpec extends AnyWordSpec with Matchers with OptionValues with Mapp
   private val smartApostrophesOpen: Char  = '‘'
   private val smartApostrophesClose: Char = '’'
 
-  import MappingsSpec._
+  import MappingsSpec.*
 
   "text" must {
 

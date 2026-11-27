@@ -27,7 +27,7 @@ import models.{
   CheckMode, CombinedPassportOrIdCard, IdCard, Name, NonUkAddress, NormalMode, Passport, PassportOrIdCard, UkAddress
 }
 import pages.IndividualOrBusinessPage
-import pages.individual._
+import pages.individual.*
 import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage, PassportOrIdCardPage, StartDatePage}
 import pages.individual.amend.PassportOrIdCardDetailsPage
 import play.twirl.api.Html

@@ -38,7 +38,7 @@ class EstatesConnector @Inject() (http: HttpClientV2, config: FrontendAppConfig)
 
   private def addOrAmendPersonalRepUrl(utr: String) = s"${config.estatesUrl}/estates/personal-rep/add-or-amend/$utr"
 
-  def addOrAmendPersonalRep(utr: String, personalRep: PersonalRepresentative)(implicit
+  def addOrAmendPersonalRep(utr: String, personalRep: PersonalRepresentative)(using
     hc: HeaderCarrier,
     ec: ExecutionContext
   ): Future[HttpResponse] = {
@@ -51,7 +51,7 @@ class EstatesConnector @Inject() (http: HttpClientV2, config: FrontendAppConfig)
 
   private def getDateOfDeathUrl(utr: String) = s"${config.estatesUrl}/estates/$utr/date-of-death"
 
-  def getDateOfDeath(utr: String)(implicit hc: HeaderCarrier, ex: ExecutionContext): Future[JsValue] = {
+  def getDateOfDeath(utr: String)(using hc: HeaderCarrier, ex: ExecutionContext): Future[JsValue] = {
     val fullUrl = getDateOfDeathUrl(utr)
     http.get(url"$fullUrl").execute[JsValue]
   }

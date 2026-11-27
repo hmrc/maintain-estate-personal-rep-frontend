@@ -20,7 +20,7 @@ import com.mongodb.client.model.{FindOneAndUpdateOptions, Indexes, ReturnDocumen
 import models.UserAnswers
 import org.mongodb.scala.model.{Filters, IndexModel, IndexOptions, ReplaceOptions}
 import play.api.Configuration
-import play.api.libs.json._
+import play.api.libs.json.*
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 

@@ -25,7 +25,7 @@ import pages.individual.{EmailAddressYesNoPage, NamePage}
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.individual.EmailAddressYesNoView
 
 class EmailAddressYesNoControllerSpec extends SpecBase {

@@ -27,7 +27,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import pages.business.{NamePage, UkAddressPage}
 import play.api.inject.bind
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import repositories.SessionRepository
 import views.html.business.UkAddressView
 
