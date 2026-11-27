@@ -31,9 +31,9 @@ class UTRAuthenticationActionImpl @Inject() (val parser: BodyParsers.Default, se
 
   override def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
 
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+    given hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
-    service.authenticateForUtr(request.userAnswers.utr)(request, hc)
+    service.authenticateForUtr(request.userAnswers.utr)(using request, hc)
   }
 
 }

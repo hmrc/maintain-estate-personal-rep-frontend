@@ -27,7 +27,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 
 import java.time.LocalDate
 import scala.concurrent.Future
@@ -52,7 +52,7 @@ class IndexControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfter
 
         val mockEstatesConnector: EstatesConnector = mock[EstatesConnector]
 
-        when(mockEstatesConnector.getDateOfDeath(any())(any(), any()))
+        when(mockEstatesConnector.getDateOfDeath(any())(using any(), any()))
           .thenReturn(Future.successful(Json.toJson(dateOfDeath)))
 
         val application = applicationBuilder(userAnswers = None)
@@ -89,7 +89,7 @@ class IndexControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfter
 
         val mockEstatesConnector: EstatesConnector = mock[EstatesConnector]
 
-        when(mockEstatesConnector.getDateOfDeath(any())(any(), any()))
+        when(mockEstatesConnector.getDateOfDeath(any())(using any(), any()))
           .thenReturn(Future.successful(Json.toJson(dateOfDeath)))
 
         val application = applicationBuilder(userAnswers = None)

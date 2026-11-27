@@ -21,13 +21,13 @@ import config.annotations.Individual
 import forms.NameFormProvider
 import models.{Name, NormalMode}
 import navigation.{FakeNavigator, Navigator}
-import org.mockito.ArgumentMatchers._
-import org.mockito.Mockito._
+import org.mockito.ArgumentMatchers.*
+import org.mockito.Mockito.*
 import org.scalatestplus.mockito.MockitoSugar
 import pages.individual.NamePage
 import play.api.inject.bind
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import repositories.SessionRepository
 import views.html.individual.NameView
 
@@ -54,8 +54,7 @@ class NameControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual OK
 
-      contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+      contentAsString(result).mustEqual(view(form, NormalMode)(using request, messages).toString)
 
       application.stop()
     }
@@ -73,7 +72,7 @@ class NameControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(Name("FirstName", None, "LastName")), NormalMode)(request, messages).toString
+        view(form.fill(Name("FirstName", None, "LastName")), NormalMode)(using request, messages).toString
 
       application.stop()
     }
@@ -82,7 +81,7 @@ class NameControllerSpec extends SpecBase with MockitoSugar {
 
       val mockPlaybackRepository = mock[SessionRepository]
 
-      when(mockPlaybackRepository.set(any())) thenReturn Future.successful(true)
+      when(mockPlaybackRepository.set(any())).thenReturn(Future.successful(true))
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -121,7 +120,7 @@ class NameControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(request, messages).toString
+        view(boundForm, NormalMode)(using request, messages).toString
 
       application.stop()
     }

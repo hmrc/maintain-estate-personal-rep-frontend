@@ -34,7 +34,7 @@ object PassportOrIdCard extends Enumerable.Implicits {
     RadioOption("passportOrIdCard", value.toString)
   }
 
-  implicit val enumerable: Enumerable[PassportOrIdCard] =
-    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+  given enumerable: Enumerable[PassportOrIdCard] =
+    Enumerable(values.toSeq.map(v => v.toString -> v)*)
 
 }

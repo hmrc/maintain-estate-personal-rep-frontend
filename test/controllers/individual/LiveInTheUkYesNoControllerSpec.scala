@@ -27,7 +27,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import pages.individual.{LiveInTheUkYesNoPage, NamePage}
 import play.api.inject.bind
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import repositories.SessionRepository
 import views.html.individual.LiveInTheUkYesNoView
 
@@ -57,7 +57,7 @@ class LiveInTheUkYesNoControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, name.displayName)(request, messages).toString
+        view(form, NormalMode, name.displayName)(using request, messages).toString
 
       application.stop()
     }
@@ -83,7 +83,7 @@ class LiveInTheUkYesNoControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, name.displayName)(request, messages).toString
+        view(form.fill(true), NormalMode, name.displayName)(using request, messages).toString
 
       application.stop()
     }
@@ -92,7 +92,7 @@ class LiveInTheUkYesNoControllerSpec extends SpecBase with MockitoSugar {
 
       val mockPlaybackRepository = mock[SessionRepository]
 
-      when(mockPlaybackRepository.set(any())) thenReturn Future.successful(true)
+      when(mockPlaybackRepository.set(any())).thenReturn(Future.successful(true))
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswersWithName))
@@ -128,8 +128,7 @@ class LiveInTheUkYesNoControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual BAD_REQUEST
 
-      contentAsString(result) mustEqual
-        view(boundForm, NormalMode, name.displayName)(request, messages).toString
+      contentAsString(result).mustEqual(view(boundForm, NormalMode, name.displayName)(using request, messages).toString)
 
       application.stop()
     }

@@ -21,14 +21,14 @@ import config.annotations.Individual
 import forms.TelephoneNumberFormProvider
 import models.{Name, NormalMode}
 import navigation.{FakeNavigator, Navigator}
-import org.mockito.ArgumentMatchers._
-import org.mockito.Mockito._
+import org.mockito.ArgumentMatchers.*
+import org.mockito.Mockito.*
 import org.scalatestplus.mockito.MockitoSugar
 import pages.individual.{NamePage, TelephoneNumberPage}
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import repositories.SessionRepository
 import views.html.individual.TelephoneNumberView
 
@@ -60,7 +60,7 @@ class TelephoneNumberControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, name.displayName, NormalMode)(request, messages).toString
+        view(form, name.displayName, NormalMode)(using request, messages).toString
 
       application.stop()
     }
@@ -79,7 +79,7 @@ class TelephoneNumberControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), name.displayName, NormalMode)(request, messages).toString
+        view(form.fill(validAnswer), name.displayName, NormalMode)(using request, messages).toString
 
       application.stop()
     }
@@ -88,7 +88,7 @@ class TelephoneNumberControllerSpec extends SpecBase with MockitoSugar {
 
       val mockPlaybackRepository = mock[SessionRepository]
 
-      when(mockPlaybackRepository.set(any())) thenReturn Future.successful(true)
+      when(mockPlaybackRepository.set(any())).thenReturn(Future.successful(true))
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswersWithName.set(TelephoneNumberPage, validAnswer).success.value))
@@ -127,7 +127,7 @@ class TelephoneNumberControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, name.displayName, NormalMode)(request, messages).toString
+        view(boundForm, name.displayName, NormalMode)(using request, messages).toString
 
       application.stop()
     }

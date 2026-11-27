@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.individual.routes._
+@import controllers.individual.routes.*
 @import views.html.components.{ErrorSummary, InputDate, SubmitButton}
 
 @this(
@@ -25,7 +25,7 @@
         submitButton: SubmitButton
 )
 
-@(form: Form[_], name: String, mode: Mode)(implicit request: RequestHeader, messages: Messages)
+@(form: Form[?], name: String, mode: Mode)(using request: RequestHeader, messages: Messages)
 
 @mainTemplate(
     title = s"${errorPrefix(form)}${messages("individual.dateOfBirth.title", name)}",

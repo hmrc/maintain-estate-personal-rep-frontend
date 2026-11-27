@@ -18,7 +18,7 @@ package config
 
 import com.google.inject.AbstractModule
 import config.annotations.{Business, Individual}
-import controllers.actions._
+import controllers.actions.*
 import navigation.{BusinessNavigator, IndividualNavigator, Navigator}
 import repositories.{DefaultSessionRepository, SessionRepository}
 import services.{EstateAuthenticationService, EstateAuthenticationServiceImpl}

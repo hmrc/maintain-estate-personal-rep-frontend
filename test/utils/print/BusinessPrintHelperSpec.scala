@@ -22,7 +22,7 @@ import base.SpecBase
 import models.IndividualOrBusiness.Business
 import models.{CheckMode, NonUkAddress, NormalMode, UkAddress}
 import pages.IndividualOrBusinessPage
-import pages.business._
+import pages.business.*
 import pages.business.add.StartDatePage
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}

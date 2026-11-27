@@ -25,7 +25,7 @@ case object NormalMode extends Mode
 
 object Mode {
 
-  implicit val jsLiteral: JavascriptLiteral[Mode] = {
+  given jsLiteral: JavascriptLiteral[Mode] = {
     case NormalMode => "NormalMode"
     case CheckMode  => "CheckMode"
   }

@@ -27,7 +27,7 @@ import scala.reflect.ClassTag
 
 trait ViewSpecBase extends SpecBase {
 
-  def viewFor[A](data: Option[UserAnswers] = None)(implicit tag: ClassTag[A]): A = {
+  def viewFor[A](data: Option[UserAnswers] = None)(using tag: ClassTag[A]): A = {
     val application = applicationBuilder(data).build()
     val view        = application.injector.instanceOf[A]
     application.stop()
@@ -37,7 +37,7 @@ trait ViewSpecBase extends SpecBase {
   def asDocument(html: Html): Document = Jsoup.parse(html.toString())
 
   def assertEqualsMessage(doc: Document, cssSelector: String, expectedMessageKey: String, args: Any*): Assertion =
-    assertEqualsValue(doc, cssSelector, ViewUtils.breadcrumbTitle(messages(expectedMessageKey, args: _*)))
+    assertEqualsValue(doc, cssSelector, ViewUtils.breadcrumbTitle(messages(expectedMessageKey, args*)))
 
   def assertEqualsValue(doc: Document, cssSelector: String, expectedValue: String) = {
     val elements = doc.select(cssSelector)
@@ -51,7 +51,7 @@ trait ViewSpecBase extends SpecBase {
   def assertPageTitleEqualsMessage(doc: Document, expectedMessageKey: String, args: Any*) = {
     val headers = doc.getElementsByTag("h1")
     headers.size                                 mustBe 1
-    headers.first.text.replaceAll("\u00a0", " ") mustBe messages(expectedMessageKey, args: _*).replaceAll("&nbsp;", " ")
+    headers.first.text.replaceAll("\u00a0", " ") mustBe messages(expectedMessageKey, args*).replaceAll("&nbsp;", " ")
   }
 
   def assertContainsText(doc: Document, text: String) =

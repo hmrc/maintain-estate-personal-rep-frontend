@@ -72,7 +72,7 @@ trait UkAddressViewBehaviours extends ViewBehaviours {
             doc,
             "title",
             ViewUtils.breadcrumbTitle(
-              s"""${messages("error.browser.title.prefix")} ${messages(s"$prefix.title", args: _*)}"""
+              s"""${messages("error.browser.title.prefix")} ${messages(s"$prefix.title", args*)}"""
             )
           )
         }

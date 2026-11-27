@@ -22,7 +22,7 @@ import base.SpecBase
 import models.IndividualOrBusiness.Individual
 import models.{CombinedPassportOrIdCard, IndividualPersonalRep, Name, NationalInsuranceNumber, NonUkAddress, UkAddress}
 import pages.IndividualOrBusinessPage
-import pages.individual._
+import pages.individual.*
 import pages.individual.add.StartDatePage
 import pages.individual.amend.PassportOrIdCardDetailsPage
 

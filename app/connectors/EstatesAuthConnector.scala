@@ -19,7 +19,7 @@ package connectors
 import com.google.inject.ImplementedBy
 import config.FrontendAppConfig
 import models.auth.{AuthInternalServerError, EstatesAuthResponse}
-import uk.gov.hmrc.http.HttpReads.Implicits._
+import uk.gov.hmrc.http.HttpReads.Implicits.*
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 
@@ -28,16 +28,16 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @ImplementedBy(classOf[EstatesAuthConnectorImpl])
 trait EstatesAuthConnector {
-  def agentIsAuthorised(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[EstatesAuthResponse]
+  def agentIsAuthorised(using hc: HeaderCarrier, ec: ExecutionContext): Future[EstatesAuthResponse]
 
-  def authorisedForUtr(utr: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[EstatesAuthResponse]
+  def authorisedForUtr(utr: String)(using hc: HeaderCarrier, ec: ExecutionContext): Future[EstatesAuthResponse]
 }
 
 class EstatesAuthConnectorImpl @Inject() (http: HttpClientV2, config: FrontendAppConfig) extends EstatesAuthConnector {
 
   val baseUrl: String = config.estatesAuthUrl + "/estates-auth"
 
-  override def agentIsAuthorised(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[EstatesAuthResponse] = {
+  override def agentIsAuthorised(using hc: HeaderCarrier, ec: ExecutionContext): Future[EstatesAuthResponse] = {
     val fullUrl = s"$baseUrl/agent-authorised"
     http
       .get(url"$fullUrl")
@@ -49,7 +49,7 @@ class EstatesAuthConnectorImpl @Inject() (http: HttpClientV2, config: FrontendAp
 
   override def authorisedForUtr(
     utr: String
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[EstatesAuthResponse] = {
+  )(using hc: HeaderCarrier, ec: ExecutionContext): Future[EstatesAuthResponse] = {
     val fullUrl = s"$baseUrl/authorised/$utr"
     http
       .get(url"$fullUrl")

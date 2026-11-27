@@ -32,8 +32,8 @@ object MappingsSpec {
 
     val values: Set[Foo] = Set(Bar, Baz)
 
-    implicit val fooEnumerable: Enumerable[Foo] =
-      Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+    given fooEnumerable: Enumerable[Foo] =
+      Enumerable(values.toSeq.map(v => v.toString -> v)*)
 
   }
 
@@ -44,7 +44,7 @@ class MappingsSpec extends AnyWordSpec with Matchers with OptionValues with Mapp
   private val smartApostrophesOpen: Char  = '‘'
   private val smartApostrophesClose: Char = '’'
 
-  import MappingsSpec._
+  import MappingsSpec.*
 
   "text" must {
 

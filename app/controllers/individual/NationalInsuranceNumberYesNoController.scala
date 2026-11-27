@@ -39,7 +39,7 @@ class NationalInsuranceNumberYesNoController @Inject() (
   formProvider: YesNoFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: NationalInsuranceNumberYesNoView
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   val form = formProvider.withPrefix("individual.nationalInsuranceNumberYesNo")

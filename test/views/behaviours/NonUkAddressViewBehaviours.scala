@@ -66,7 +66,7 @@ trait NonUkAddressViewBehaviours extends ViewBehaviours {
             doc,
             "title",
             ViewUtils.breadcrumbTitle(
-              s"""${messages("error.browser.title.prefix")} ${messages(s"$titlePrefix.title", args: _*)}"""
+              s"""${messages("error.browser.title.prefix")} ${messages(s"$titlePrefix.title", args*)}"""
             )
           )
         }

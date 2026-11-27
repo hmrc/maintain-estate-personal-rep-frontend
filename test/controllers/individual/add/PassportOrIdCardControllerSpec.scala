@@ -18,7 +18,7 @@ package controllers.individual.add
 
 import base.SpecBase
 import controllers.individual.add.{routes => addRts}
-import controllers.routes._
+import controllers.routes.*
 import forms.PassportOrIdCardFormProvider
 import models.{Name, PassportOrIdCard, UserAnswers}
 import pages.individual.NamePage
@@ -59,7 +59,7 @@ class PassportOrIdCardControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, name.displayName)(request, messages).toString
+        view(form, name.displayName)(using request, messages).toString
 
       application.stop()
     }
@@ -85,7 +85,7 @@ class PassportOrIdCardControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(PassportOrIdCard.values.head), name.displayName)(request, messages).toString
+        view(form.fill(PassportOrIdCard.values.head), name.displayName)(using request, messages).toString
 
       application.stop()
     }
@@ -143,7 +143,7 @@ class PassportOrIdCardControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, name.displayName)(request, messages).toString
+        view(boundForm, name.displayName)(using request, messages).toString
 
       application.stop()
     }

@@ -16,7 +16,8 @@
 
 package models
 
-import play.api.libs.json._
+import play.api.libs.json.*
+import play.api.libs.json.Reads
 
 case class PersonalRepresentative(
   estatePerRepInd: Option[IndividualPersonalRep] = None,
@@ -24,5 +25,9 @@ case class PersonalRepresentative(
 )
 
 object PersonalRepresentative {
-  implicit val personalRepFormats: Format[PersonalRepresentative] = Json.format[PersonalRepresentative]
+
+  given businessPersonalRepFormat: OFormat[BusinessPersonalRep]     = Json.format[BusinessPersonalRep]
+  given individualPersonalRepFormat: OFormat[IndividualPersonalRep] = Json.format[IndividualPersonalRep]
+
+  given personalRepFormats: OFormat[PersonalRepresentative] = Json.format[PersonalRepresentative]
 }

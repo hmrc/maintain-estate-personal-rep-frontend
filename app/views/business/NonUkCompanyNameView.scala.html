@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.business.routes._
+@import controllers.business.routes.*
 @import views.html.components.{ErrorSummary, InputText, SubmitButton}
 
 @this(
@@ -25,7 +25,7 @@
     submitButton: SubmitButton
 )
 
-@(form: Form[_], mode: Mode)(implicit request: RequestHeader, messages: Messages)
+@(form: Form[?], mode: Mode)(using request: RequestHeader, messages: Messages)
 
 @mainTemplate(
     title = s"${errorPrefix(form)}${messages("business.nonUkCompanyName.title")}",

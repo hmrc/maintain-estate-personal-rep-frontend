@@ -31,18 +31,18 @@ class DateErrorFormatterSpec extends SpecBase {
 
         val messages: MessagesImpl = MessagesImpl(Lang("en"), messagesApi)
 
-        val result = DateErrorFormatter.formatArgs(args)(messages)
+        val result = DateErrorFormatter.formatArgs(args)(using messages)
 
-        result mustEqual Seq("day", "month", "year")
+        result mustEqual (Seq("day", "month", "year"))
       }
 
       "language set to Welsh" in {
 
         val messages: MessagesImpl = MessagesImpl(Lang("cy"), messagesApi)
 
-        val result = DateErrorFormatter.formatArgs(args)(messages)
+        val result = DateErrorFormatter.formatArgs(args)(using messages)
 
-        result mustEqual Seq("diwrnod", "mis", "blwyddyn")
+        result mustEqual (Seq("diwrnod", "mis", "blwyddyn"))
       }
     }
   }

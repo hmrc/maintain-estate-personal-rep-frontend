@@ -19,7 +19,7 @@ package controllers
 import controllers.actions.Actions
 import forms.IndividualOrBusinessFormProvider
 import javax.inject.Inject
-import models.IndividualOrBusiness._
+import models.IndividualOrBusiness.*
 import models.{CheckMode, Enumerable, IndividualOrBusiness, Mode, NormalMode}
 import pages.IndividualOrBusinessPage
 import play.api.data.Form
@@ -38,7 +38,7 @@ class IndividualOrBusinessController @Inject() (
   formProvider: IndividualOrBusinessFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: IndividualOrBusinessView
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
   val form: Form[IndividualOrBusiness] = formProvider()
@@ -56,7 +56,7 @@ class IndividualOrBusinessController @Inject() (
     form
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors, mode))),
+        (formWithErrors: Form[?]) => Future.successful(BadRequest(view(formWithErrors, mode))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(IndividualOrBusinessPage, value))

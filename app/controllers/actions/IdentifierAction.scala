@@ -20,11 +20,11 @@ import com.google.inject.Inject
 import config.FrontendAppConfig
 import models.requests.{AgentUser, IdentifierRequest, OrganisationUser}
 import play.api.Logging
-import play.api.mvc.Results._
-import play.api.mvc._
+import play.api.mvc.Results.*
+import play.api.mvc.*
 import services.EstateAuthenticationService
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
-import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.*
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.http.HeaderCarrier
@@ -41,14 +41,14 @@ class AuthenticatedIdentifierAction @Inject() (
   config: FrontendAppConfig,
   val parser: BodyParsers.Default,
   authenticationService: EstateAuthenticationService
-)(implicit val executionContext: ExecutionContext)
+)(using val executionContext: ExecutionContext)
     extends IdentifierAction with AuthorisedFunctions with Logging {
 
   private def authoriseAgent[A](
     internalId: String,
     enrolments: Enrolments,
     block: IdentifierRequest[A] => Future[Result]
-  )(implicit request: Request[A], hc: HeaderCarrier) =
+  )(using request: Request[A], hc: HeaderCarrier) =
 
     authenticationService.authenticateAgent() flatMap {
       case Right(arn)           => block(IdentifierRequest(request, AgentUser(internalId, enrolments, arn)))
@@ -59,12 +59,12 @@ class AuthenticatedIdentifierAction @Inject() (
     internalId: String,
     enrolments: Enrolments,
     block: IdentifierRequest[A] => Future[Result]
-  )(implicit request: Request[A]) =
+  )(using request: Request[A]) =
     block(IdentifierRequest(request, OrganisationUser(internalId, enrolments)))
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
 
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+    given hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     val retrievals = Retrievals.internalId and
       Retrievals.affinityGroup and
@@ -72,10 +72,10 @@ class AuthenticatedIdentifierAction @Inject() (
 
     authorised().retrieve(retrievals) {
       case Some(internalId) ~ Some(Agent) ~ enrolments =>
-        authoriseAgent(internalId, enrolments, block)(request, hc)
+        authoriseAgent(internalId, enrolments, block)(using request, hc)
 
       case Some(internalId) ~ Some(Organisation) ~ enrolments =>
-        authenticateOrganisation(internalId, enrolments, block)(request)
+        authenticateOrganisation(internalId, enrolments, block)(using request)
 
       case Some(_) ~ _ ~ _ =>
         Future.successful(Redirect(controllers.routes.UnauthorisedController.onPageLoad))

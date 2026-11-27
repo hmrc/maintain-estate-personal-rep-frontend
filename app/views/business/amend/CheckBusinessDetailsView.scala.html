@@ -15,7 +15,7 @@
  *@
 
 @import viewmodels.AnswerSection
-@import controllers.business.amend.routes._
+@import controllers.business.amend.routes.*
 @import utils.SectionFormatter.formatSections
 @import views.html.components.{Heading, SubmitButton}
 
@@ -27,7 +27,7 @@
     heading: Heading
 )
 
-@(answerSection: Seq[AnswerSection])(implicit request: RequestHeader, messages: Messages)
+@(answerSection: Seq[AnswerSection])(using request: RequestHeader, messages: Messages)
 
 @mainTemplate(
     title = messages("business.checkDetails.title"),

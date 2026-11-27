@@ -31,8 +31,8 @@ class IndividualOrBusinessViewSpec extends OptionsViewBehaviours {
 
   val view: IndividualOrBusinessView = viewFor[IndividualOrBusinessView](Some(emptyUserAnswers))
 
-  def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, NormalMode)(fakeRequest, messages)
+  def applyView(form: Form[?]): HtmlFormat.Appendable =
+    view.apply(form, NormalMode)(using fakeRequest, messages)
 
   "IndividualOrBusinessView" must {
 

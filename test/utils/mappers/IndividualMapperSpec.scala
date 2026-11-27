@@ -24,8 +24,8 @@ import models.{
   CombinedPassportOrIdCard, IdCard, Name, NationalInsuranceNumber, NonUkAddress, Passport, PassportOrIdCard, UkAddress
 }
 import pages.IndividualOrBusinessPage
-import pages.individual._
-import pages.individual.add._
+import pages.individual.*
+import pages.individual.add.*
 import pages.individual.amend.PassportOrIdCardDetailsPage
 
 class IndividualMapperSpec extends SpecBase {

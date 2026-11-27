@@ -27,8 +27,8 @@ case class TelephoneNumber(value: String) {
 
 object TelephoneNumber extends (String => TelephoneNumber) {
 
-  implicit val writes: Writes[TelephoneNumber] = new SimpleObjectWrites[TelephoneNumber](_.value)
-  implicit val reads: Reads[TelephoneNumber]   = new SimpleObjectReads[TelephoneNumber]("value", TelephoneNumber.apply)
+  given writes: Writes[TelephoneNumber] = new SimpleObjectWrites[TelephoneNumber](_.value)
+  given reads: Reads[TelephoneNumber]   = new SimpleObjectReads[TelephoneNumber]("value", TelephoneNumber.apply)
 
   implicit class TelephoneNumberRequirements(tel: String) {
 

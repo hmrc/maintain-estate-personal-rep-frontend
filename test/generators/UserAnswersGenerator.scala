@@ -21,25 +21,25 @@ import java.time.LocalDate
 import models.UserAnswers
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues
-import pages._
+import pages.*
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersGenerator extends TryValues {
   self: Generators =>
 
-  val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
+  val generators: Seq[Gen[(QuestionPage[?], JsValue)]] =
     Nil
 
   implicit lazy val arbitraryUserData: Arbitrary[UserAnswers] = {
 
-    import models._
+    import models.*
 
     Arbitrary {
       for {
         id   <- nonEmptyString
         utr  <- nonEmptyString
         data <- generators match {
-                  case Nil => Gen.const(Map[QuestionPage[_], JsValue]())
+                  case Nil => Gen.const(Map[QuestionPage[?], JsValue]())
                   case _   => Gen.mapOf(oneOf(generators))
                 }
       } yield UserAnswers(

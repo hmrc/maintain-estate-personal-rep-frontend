@@ -20,10 +20,10 @@ import controllers.individual.add.{routes => addRts}
 import controllers.individual.amend.{routes => amendRts}
 import controllers.individual.{routes => rts}
 import javax.inject.Inject
-import models.PassportOrIdCard._
+import models.PassportOrIdCard.*
 import models.{CheckMode, Mode, NormalMode, UserAnswers}
 import pages.Page
-import pages.individual._
+import pages.individual.*
 import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage, PassportOrIdCardPage, StartDatePage}
 import pages.individual.amend.PassportOrIdCardDetailsPage
 import play.api.mvc.Call

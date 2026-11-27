@@ -34,8 +34,8 @@ class UkCompanyNameViewSpec extends QuestionViewBehaviours[String] {
 
     val view = viewFor[UkCompanyNameView](Some(emptyUserAnswers))
 
-    def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+    def applyView(form: Form[?]): HtmlFormat.Appendable =
+      view.apply(form, NormalMode)(using fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 

@@ -39,8 +39,8 @@ trait FakeEstatesApp extends GuiceOneAppPerSuite {
 
   def injectedParsers: BodyParsers.Default = injector.instanceOf[BodyParsers.Default]
 
-  implicit def executionContext: ExecutionContext = injector.instanceOf[ExecutionContext]
+  given ExecutionContext = injector.instanceOf[ExecutionContext]
 
-  implicit def messages: Messages = messagesApi.preferred(fakeRequest)
+  given Messages = messagesApi.preferred(fakeRequest)
 
 }

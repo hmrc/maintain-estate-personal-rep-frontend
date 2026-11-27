@@ -27,7 +27,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import pages.business.{NamePage, UkAddressPage}
 import play.api.inject.bind
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import repositories.SessionRepository
 import views.html.business.UkAddressView
 
@@ -64,7 +64,7 @@ class UkAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, name, NormalMode)(request, messages).toString
+        view(form, name, NormalMode)(using request, messages).toString
 
       application.stop()
     }
@@ -87,7 +87,7 @@ class UkAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), name, NormalMode)(request, messages).toString
+        view(form.fill(validAnswer), name, NormalMode)(using request, messages).toString
 
       application.stop()
     }
@@ -96,7 +96,7 @@ class UkAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val mockPlaybackRepository = mock[SessionRepository]
 
-      when(mockPlaybackRepository.set(any())) thenReturn Future.successful(true)
+      when(mockPlaybackRepository.set(any())).thenReturn(Future.successful(true))
 
       val application =
         applicationBuilder(userAnswers = Some(baseAnswers))
@@ -135,7 +135,7 @@ class UkAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, name, NormalMode)(request, messages).toString
+        view(boundForm, name, NormalMode)(using request, messages).toString
 
       application.stop()
     }

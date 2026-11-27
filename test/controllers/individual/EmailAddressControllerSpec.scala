@@ -25,7 +25,7 @@ import pages.individual.{EmailAddressPage, NamePage}
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.individual.EmailAddressView
 
 class EmailAddressControllerSpec extends SpecBase {
@@ -58,7 +58,7 @@ class EmailAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, name.displayName)(request, messages).toString
+        view(form, NormalMode, name.displayName)(using request, messages).toString
 
       application.stop()
     }
@@ -81,7 +81,7 @@ class EmailAddressControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode, name.displayName)(request, messages).toString
+        view(form.fill(validAnswer), NormalMode, name.displayName)(using request, messages).toString
 
       application.stop()
     }
@@ -125,7 +125,7 @@ class EmailAddressControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, name.displayName)(request, messages).toString
+        view(boundForm, NormalMode, name.displayName)(using request, messages).toString
 
       application.stop()
     }

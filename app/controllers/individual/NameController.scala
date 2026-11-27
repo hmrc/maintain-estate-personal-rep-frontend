@@ -39,7 +39,7 @@ class NameController @Inject() (
   formProvider: NameFormProvider,
   sessionRepository: SessionRepository,
   view: NameView
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   val form: Form[Name] = formProvider.withPrefix("individual.name")
@@ -57,7 +57,7 @@ class NameController @Inject() (
     form
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors, mode))),
+        (formWithErrors: Form[?]) => Future.successful(BadRequest(view(formWithErrors, mode))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(NamePage, value))

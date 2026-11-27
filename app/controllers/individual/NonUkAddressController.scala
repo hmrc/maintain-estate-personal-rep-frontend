@@ -42,7 +42,7 @@ class NonUkAddressController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: NonUkAddressView,
   val countryOptions: CountryOptionsNonUK
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   val form: Form[NonUkAddress] = formProvider()

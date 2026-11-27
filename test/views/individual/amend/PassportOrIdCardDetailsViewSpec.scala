@@ -40,8 +40,8 @@ class PassportOrIdCardDetailsViewSpec extends QuestionViewBehaviours[CombinedPas
 
     val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptions].options()
 
-    def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, name.displayName, countryOptions)(fakeRequest, messages)
+    def applyView(form: Form[?]): HtmlFormat.Appendable =
+      view.apply(form, name.displayName, countryOptions)(using fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.displayName)
 

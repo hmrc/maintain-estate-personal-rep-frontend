@@ -22,7 +22,7 @@ import controllers.individual.{routes => rts}
 import controllers.individual.add.{routes => addRts}
 import controllers.individual.amend.{routes => amendRts}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import pages.individual._
+import pages.individual.*
 import pages.individual.add.{IdCardDetailsPage, PassportDetailsPage, PassportOrIdCardPage, StartDatePage}
 import pages.individual.amend.PassportOrIdCardDetailsPage
 

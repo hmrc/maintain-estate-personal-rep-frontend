@@ -28,7 +28,7 @@ import pages.individual.add.StartDatePage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.individual.add.StartDateView
 
 class StartDateControllerSpec extends SpecBase {
@@ -57,7 +57,7 @@ class StartDateControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, name.displayName)(request, messages).toString
+        view(form, name.displayName)(using request, messages).toString
 
       application.stop()
     }
@@ -80,7 +80,7 @@ class StartDateControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), name.displayName)(request, messages).toString
+        view(form.fill(validAnswer), name.displayName)(using request, messages).toString
 
       application.stop()
     }
@@ -128,7 +128,7 @@ class StartDateControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, name.displayName)(request, messages).toString
+        view(boundForm, name.displayName)(using request, messages).toString
 
       application.stop()
     }

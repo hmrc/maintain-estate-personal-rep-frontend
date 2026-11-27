@@ -18,8 +18,8 @@ package models
 
 import java.time.LocalDate
 
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.*
 
 final case class IndividualPersonalRep(
   name: Name,
@@ -33,7 +33,7 @@ final case class IndividualPersonalRep(
 
 object IndividualPersonalRep extends EntityReads {
 
-  implicit val reads: Reads[IndividualPersonalRep] =
+  given reads: Reads[IndividualPersonalRep] =
     ((__ \ Symbol("name")).read[Name] and
       (__ \ Symbol("dateOfBirth")).read[LocalDate] and
       __.lazyRead(readAtSubPath[IndividualIdentification](__ \ Symbol("identification"))) and
@@ -47,13 +47,15 @@ object IndividualPersonalRep extends EntityReads {
 
     }
 
-  implicit val writes: Writes[IndividualPersonalRep] =
-    ((__ \ Symbol("name")).write[Name] and
-      (__ \ Symbol("dateOfBirth")).write[LocalDate] and
-      (__ \ Symbol("identification")).write[IndividualIdentification] and
-      (__ \ Symbol("identification") \ Symbol("address")).write[Address] and
-      (__ \ Symbol("phoneNumber")).write[String] and
-      (__ \ Symbol("email")).writeNullable[String] and
-      (__ \ "entityStart").write[LocalDate]).apply(unlift(IndividualPersonalRep.unapply))
+  given writes: Writes[IndividualPersonalRep] =
+    ((__ \ "name").write[Name] and
+      (__ \ "dateOfBirth").write[LocalDate] and
+      (__ \ "identification").write[IndividualIdentification] and
+      (__ \ "identification" \ "address").write[Address] and
+      (__ \ "phoneNumber").write[String] and
+      (__ \ "email").writeNullable[String] and
+      (__ \ "entityStart").write[LocalDate])(rep =>
+      (rep.name, rep.dateOfBirth, rep.identification, rep.address, rep.phoneNumber, rep.email, rep.entityStart)
+    )
 
 }

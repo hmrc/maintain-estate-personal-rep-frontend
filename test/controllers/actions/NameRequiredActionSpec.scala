@@ -1,0 +1,79 @@
+/*
+ * Copyright 2026 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package controllers.actions
+
+import base.SpecBase
+import controllers.actions.business.NameRequiredAction
+import models.NormalMode
+import models.UserAnswers
+import models.requests.{BusinessNameRequest, DataRequest, OrganisationUser}
+import org.scalatest.concurrent.ScalaFutures
+import pages.business.NamePage
+import play.api.mvc.Result
+import play.api.mvc.Results.Redirect
+import uk.gov.hmrc.auth.core.Enrolments
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+
+class NameRequiredActionSpec extends SpecBase with ScalaFutures {
+
+  class Harness extends NameRequiredAction(global) {
+    def callRefine[A](request: DataRequest[A]): Future[Either[Result, BusinessNameRequest[A]]] = refine(request)
+  }
+
+  private val user = OrganisationUser("id", Enrolments(Set()))
+
+  "Name Required Action" when {
+
+    "NamePage is missing from UserAnswers" must {
+
+      "return Left and redirect to UkRegisteredCompanyYesNoController" in {
+
+        val action      = new Harness
+        val userAnswers = new UserAnswers("id", "UTR", frontendAppConfig.minDate)
+        val request     = DataRequest(fakeRequest, userAnswers, user)
+
+        val futureResult = action.callRefine(request)
+
+        whenReady(futureResult) { result =>
+          result mustBe Left(
+            Redirect(controllers.business.routes.UkRegisteredCompanyYesNoController.onPageLoad(NormalMode))
+          )
+        }
+      }
+    }
+
+    "NamePage is present in UserAnswers" must {
+
+      "return Right with BusinessNameRequest" in {
+
+        val action      = new Harness
+        val userAnswers =
+          new UserAnswers("id", "UTR", frontendAppConfig.minDate).set(NamePage, "Test Business").success.value
+        val request     = DataRequest(fakeRequest, userAnswers, user)
+
+        val futureResult = action.callRefine(request)
+
+        whenReady(futureResult) { result =>
+          result mustBe Right(BusinessNameRequest(request, "Test Business"))
+        }
+      }
+    }
+  }
+
+}

@@ -18,7 +18,7 @@
     button: GovukButton,
 )
 
-@(overrideMessage: Option[String] = None, submitClass: Option[String] = None)(implicit messages: Messages)
+@(overrideMessage: Option[String] = None, submitClass: Option[String] = None)(using messages: Messages)
 
 @button(Button(
     attributes = Map("id"->"submit"),

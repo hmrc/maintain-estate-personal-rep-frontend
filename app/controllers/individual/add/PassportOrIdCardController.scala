@@ -40,7 +40,7 @@ class PassportOrIdCardController @Inject() (
   formProvider: PassportOrIdCardFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: PassportOrIdCardView
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
   val form: Form[PassportOrIdCard] = formProvider()
@@ -58,7 +58,7 @@ class PassportOrIdCardController @Inject() (
     form
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors, request.individualName))),
+        (formWithErrors: Form[?]) => Future.successful(BadRequest(view(formWithErrors, request.individualName))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(PassportOrIdCardPage, value))

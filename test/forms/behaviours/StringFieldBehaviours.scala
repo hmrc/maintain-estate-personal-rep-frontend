@@ -24,7 +24,7 @@ import wolfendale.scalacheck.regexp.RegexpGen
 
 trait StringFieldBehaviours extends FieldBehaviours with OptionalFieldBehaviours {
 
-  def fieldWithMaxLength(form: Form[_], fieldName: String, maxLength: Int, lengthError: FormError): Unit =
+  def fieldWithMaxLength(form: Form[?], fieldName: String, maxLength: Int, lengthError: FormError): Unit =
 
     s"not bind strings longer than $maxLength characters" in
       forAll(stringsLongerThan(maxLength) -> "longString") { string =>
@@ -32,7 +32,7 @@ trait StringFieldBehaviours extends FieldBehaviours with OptionalFieldBehaviours
         result.errors shouldEqual Seq(lengthError)
       }
 
-  def fieldWithMinLength(form: Form[_], fieldName: String, minLength: Int, lengthError: FormError): Unit =
+  def fieldWithMinLength(form: Form[?], fieldName: String, minLength: Int, lengthError: FormError): Unit =
 
     s"not bind strings shorter than $minLength characters" in {
 
@@ -44,7 +44,7 @@ trait StringFieldBehaviours extends FieldBehaviours with OptionalFieldBehaviours
       }
     }
 
-  def nonEmptyField(form: Form[_], fieldName: String, requiredError: FormError): Unit =
+  def nonEmptyField(form: Form[?], fieldName: String, requiredError: FormError): Unit =
 
     "not bind spaces" in {
 
@@ -53,7 +53,7 @@ trait StringFieldBehaviours extends FieldBehaviours with OptionalFieldBehaviours
     }
 
   def fieldWithRegexpWithGenerator(
-    form: Form[_],
+    form: Form[?],
     fieldName: String,
     regexp: String,
     generator: Gen[String],
@@ -68,7 +68,7 @@ trait StringFieldBehaviours extends FieldBehaviours with OptionalFieldBehaviours
         }
       }
 
-  def ninoField(form: Form[_], fieldName: String, requiredError: FormError): Unit =
+  def ninoField(form: Form[?], fieldName: String, requiredError: FormError): Unit =
 
     s"not bind strings which do not match valid nino format " in {
       val generator = RegexpGen.from(Validation.validNinoFormat)
@@ -80,7 +80,7 @@ trait StringFieldBehaviours extends FieldBehaviours with OptionalFieldBehaviours
       }
     }
 
-  def telephoneNumberField(form: Form[_], fieldName: String, requiredError: FormError): Unit =
+  def telephoneNumberField(form: Form[?], fieldName: String, requiredError: FormError): Unit =
 
     "not bind strings which do not match valid telephone number format" in {
       val generator = RegexpGen.from(Validation.telephoneRegex)

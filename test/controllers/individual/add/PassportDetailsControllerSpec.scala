@@ -31,7 +31,7 @@ import pages.individual.NamePage
 import pages.individual.add.PassportDetailsPage
 import play.api.inject.bind
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import repositories.SessionRepository
 import utils.InputOption
 import utils.countryOptions.CountryOptions
@@ -65,7 +65,7 @@ class PassportDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, countryOptions, name.displayName)(getRequest, messages).toString
+        view(form, countryOptions, name.displayName)(using getRequest, messages).toString
 
       application.stop()
     }
@@ -83,7 +83,7 @@ class PassportDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validData), countryOptions, name.displayName)(getRequest, messages).toString
+        view(form.fill(validData), countryOptions, name.displayName)(using getRequest, messages).toString
 
       application.stop()
     }
@@ -92,7 +92,7 @@ class PassportDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val mockPlaybackRepository = mock[SessionRepository]
 
-      when(mockPlaybackRepository.set(any())) thenReturn Future.successful(true)
+      when(mockPlaybackRepository.set(any())).thenReturn(Future.successful(true))
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswersWithName))
@@ -135,7 +135,7 @@ class PassportDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, countryOptions, name.displayName)(request, messages).toString
+        view(boundForm, countryOptions, name.displayName)(using request, messages).toString
 
       application.stop()
     }

@@ -17,7 +17,7 @@
 package connectors
 
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder
-import com.github.tomakehurst.wiremock.client.WireMock._
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import models.auth.{AuthAgentAllowed, AuthAllowed, AuthDenied, AuthInternalServerError}
 import org.scalatest.freespec.AsyncFreeSpec
 import org.scalatest.matchers.must.Matchers
@@ -31,7 +31,7 @@ import utils.WireMockHelper
 
 class EstatesAuthConnectorSpec extends AsyncFreeSpec with Matchers with WireMockHelper with DefaultAwaitTimeout {
 
-  implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+  given hc: HeaderCarrier = HeaderCarrier()
 
   private val authorisedUrl: String                 = "/estates-auth/agent-authorised"
   private def authorisedUrlFor(utr: String): String = s"/estates-auth/authorised/$utr"
@@ -52,7 +52,7 @@ class EstatesAuthConnectorSpec extends AsyncFreeSpec with Matchers with WireMock
       Seq(
         "microservice.services.estates-auth.port" -> server.port(),
         "auditing.enabled"                        -> false
-      ): _*
+      )*
     )
     .build()
 

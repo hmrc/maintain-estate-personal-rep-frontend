@@ -24,7 +24,7 @@ import play.api.data.{Form, FormError}
 
 trait PassportOrIdCardFieldBehaviours extends StringFieldBehaviours {
 
-  def dateField(form: Form[_], key: String, validData: Gen[LocalDate]): Unit =
+  def dateField(form: Form[?], key: String, validData: Gen[LocalDate]): Unit =
 
     "bind valid data" in
       forAll(validData -> "valid date") { date =>
@@ -39,7 +39,7 @@ trait PassportOrIdCardFieldBehaviours extends StringFieldBehaviours {
         result.errors.foreach(error => error.key shouldNot equal(key))
       }
 
-  def dateFieldWithMax(form: Form[_], key: String, max: LocalDate, error: FormError): Unit =
+  def dateFieldWithMax(form: Form[?], key: String, max: LocalDate, error: FormError): Unit =
 
     s"fail to bind a date greater than ${max.format(DateTimeFormatter.ISO_LOCAL_DATE)}" in {
 
@@ -58,7 +58,7 @@ trait PassportOrIdCardFieldBehaviours extends StringFieldBehaviours {
       }
     }
 
-  def dateFieldWithMin(form: Form[_], key: String, min: LocalDate, error: FormError): Unit =
+  def dateFieldWithMin(form: Form[?], key: String, min: LocalDate, error: FormError): Unit =
 
     s"fail to bind a date earlier than ${min.format(DateTimeFormatter.ISO_LOCAL_DATE)}" in {
 
@@ -77,7 +77,7 @@ trait PassportOrIdCardFieldBehaviours extends StringFieldBehaviours {
       }
     }
 
-  def mandatoryDateField(form: Form[_], key: String, requiredAllKey: String, errorArgs: Seq[String] = Seq.empty): Unit =
+  def mandatoryDateField(form: Form[?], key: String, requiredAllKey: String, errorArgs: Seq[String] = Seq.empty): Unit =
 
     "fail to bind an empty date" in {
 

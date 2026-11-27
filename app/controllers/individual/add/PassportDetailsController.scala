@@ -43,7 +43,7 @@ class PassportDetailsController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: PassportDetailsView,
   val countryOptions: CountryOptions
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   val form: Form[Passport] = formProvider.withPrefix("individual")

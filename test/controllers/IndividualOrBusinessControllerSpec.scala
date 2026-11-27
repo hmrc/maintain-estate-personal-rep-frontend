@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import controllers.routes._
+import controllers.routes.*
 import forms.IndividualOrBusinessFormProvider
 import models.{CheckMode, IndividualOrBusiness, NormalMode}
 import pages.IndividualOrBusinessPage
@@ -103,7 +103,7 @@ class IndividualOrBusinessControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form, NormalMode)(request, messages).toString
+          view(form, NormalMode)(using request, messages).toString
 
         application.stop()
       }
@@ -123,7 +123,7 @@ class IndividualOrBusinessControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form.fill(IndividualOrBusiness.values.head), NormalMode)(request, messages).toString
+          view(form.fill(IndividualOrBusiness.values.head), NormalMode)(using request, messages).toString
 
         application.stop()
       }
@@ -183,7 +183,7 @@ class IndividualOrBusinessControllerSpec extends SpecBase {
         status(result) mustEqual BAD_REQUEST
 
         contentAsString(result) mustEqual
-          view(boundForm, NormalMode)(request, messages).toString
+          view(boundForm, NormalMode)(using request, messages).toString
 
         application.stop()
       }

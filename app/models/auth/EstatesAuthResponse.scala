@@ -22,29 +22,29 @@ sealed trait EstatesAuthResponse
 
 object EstatesAuthResponse {
 
-  implicit val reads: Reads[EstatesAuthResponse] =
-    __.read[AuthAllowed].widen[EstatesAuthResponse] orElse
+  given reads: Reads[EstatesAuthResponse] =
+    __.read[AuthDenied].widen[EstatesAuthResponse] orElse
       __.read[AuthAgentAllowed].widen[EstatesAuthResponse] orElse
-      __.read[AuthDenied].widen[EstatesAuthResponse]
+      __.read[AuthAllowed].widen[EstatesAuthResponse]
 
 }
 
 case class AuthAllowed(authorised: Boolean = true) extends EstatesAuthResponse
 
 case object AuthAllowed {
-  implicit val format: Format[AuthAllowed] = Json.format[AuthAllowed]
+  given format: Format[AuthAllowed] = Json.format[AuthAllowed]
 }
 
 case class AuthAgentAllowed(arn: String) extends EstatesAuthResponse
 
 case object AuthAgentAllowed {
-  implicit val format: Format[AuthAgentAllowed] = Json.format[AuthAgentAllowed]
+  given format: Format[AuthAgentAllowed] = Json.format[AuthAgentAllowed]
 }
 
 case class AuthDenied(redirectUrl: String) extends EstatesAuthResponse
 
 case object AuthDenied {
-  implicit val format: Format[AuthDenied] = Json.format[AuthDenied]
+  given format: Format[AuthDenied] = Json.format[AuthDenied]
 }
 
 case object AuthInternalServerError extends EstatesAuthResponse

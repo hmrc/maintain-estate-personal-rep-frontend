@@ -21,7 +21,7 @@ import controllers.business.{routes => rts}
 import controllers.business.add.{routes => addRts}
 import models.{CheckMode, NormalMode, UserAnswers}
 import pages.IndividualOrBusinessPage
-import pages.business._
+import pages.business.*
 import pages.business.add.StartDatePage
 import play.api.i18n.Messages
 import viewmodels.{AnswerRow, AnswerSection}
@@ -32,7 +32,7 @@ class BusinessPrintHelper @Inject() (answerRowConverter: AnswerRowConverter) {
     userAnswers: UserAnswers,
     provisional: Boolean,
     name: String
-  )(implicit messages: Messages): AnswerSection = {
+  )(using messages: Messages): AnswerSection = {
 
     val bound = answerRowConverter.bind(userAnswers, name)
 

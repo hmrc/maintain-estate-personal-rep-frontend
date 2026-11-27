@@ -20,17 +20,17 @@ import base.SpecBase
 import config.FrontendAppConfig
 import models.FakeUser
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito._
+import org.mockito.Mockito.*
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.Application
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{Action, AnyContent, BodyParsers, Results}
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import services.{EstateAuthenticationService, FakeAllowedEstateAuthenticationService}
-import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.*
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
 
-import scala.concurrent.ExecutionContext.Implicits._
+import scala.concurrent.ExecutionContext.Implicits.*
 import scala.concurrent.Future
 
 class IdentifierActionSpec extends SpecBase with MockitoSugar {
@@ -72,11 +72,11 @@ class IdentifierActionSpec extends SpecBase with MockitoSugar {
 
         val application = applicationBuilder(userAnswers = None).build()
 
-        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(using any(), any()))
           .thenReturn(authRetrievals(AffinityGroup.Agent, noEnrollment))
 
         val mockAuthService = mock[EstateAuthenticationService]
-        when(mockAuthService.authenticateAgent()(any()))
+        when(mockAuthService.authenticateAgent()(using any()))
           .thenReturn(Future.successful(Left(Redirect("test-redirect-url"))))
 
         val action = actionToTest(application, mockAuthService)
@@ -98,7 +98,7 @@ class IdentifierActionSpec extends SpecBase with MockitoSugar {
 
         val fakeAuthService = injector.instanceOf[FakeAllowedEstateAuthenticationService]
 
-        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(using any(), any()))
           .thenReturn(authRetrievals(AffinityGroup.Agent, agentEnrolment))
 
         val action     = actionToTest(application, fakeAuthService)
@@ -117,7 +117,7 @@ class IdentifierActionSpec extends SpecBase with MockitoSugar {
 
         val fakeAuthService = injector.instanceOf[FakeAllowedEstateAuthenticationService]
 
-        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(using any(), any()))
           .thenReturn(authRetrievals(AffinityGroup.Organisation, agentEnrolment))
 
         val action     = actionToTest(application, fakeAuthService)
@@ -136,7 +136,7 @@ class IdentifierActionSpec extends SpecBase with MockitoSugar {
 
         val fakeAuthService = injector.instanceOf[FakeAllowedEstateAuthenticationService]
 
-        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(using any(), any()))
           .thenReturn(authRetrievals(AffinityGroup.Individual, noEnrollment))
 
         val action     = actionToTest(application, fakeAuthService)
@@ -158,8 +158,8 @@ class IdentifierActionSpec extends SpecBase with MockitoSugar {
         val fakeAuthService = injector.instanceOf[FakeAllowedEstateAuthenticationService]
 
         when(
-          mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any())
-        ) thenReturn (Future failed MissingBearerToken())
+          mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(using any(), any())
+        ).thenReturn(Future failed MissingBearerToken())
 
         val action     = actionToTest(application, fakeAuthService)
         val controller = new Harness(action)
@@ -178,8 +178,8 @@ class IdentifierActionSpec extends SpecBase with MockitoSugar {
         val application = applicationBuilder(userAnswers = None).build()
 
         when(
-          mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any())
-        ) thenReturn (Future failed BearerTokenExpired())
+          mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(using any(), any())
+        ).thenReturn(Future failed BearerTokenExpired())
 
         val fakeAuthService = injector.instanceOf[FakeAllowedEstateAuthenticationService]
 
@@ -200,8 +200,8 @@ class IdentifierActionSpec extends SpecBase with MockitoSugar {
         val application = applicationBuilder(userAnswers = None).build()
 
         when(
-          mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any())
-        ) thenReturn (Future failed InsufficientEnrolments())
+          mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(using any(), any())
+        ).thenReturn(Future failed InsufficientEnrolments())
 
         val fakeAuthService = injector.instanceOf[FakeAllowedEstateAuthenticationService]
 
@@ -222,8 +222,8 @@ class IdentifierActionSpec extends SpecBase with MockitoSugar {
         val application = applicationBuilder(userAnswers = None).build()
 
         when(
-          mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any())
-        ) thenReturn (Future failed InsufficientConfidenceLevel())
+          mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(using any(), any())
+        ).thenReturn(Future failed InsufficientConfidenceLevel())
 
         val fakeAuthService = injector.instanceOf[FakeAllowedEstateAuthenticationService]
 
@@ -244,8 +244,8 @@ class IdentifierActionSpec extends SpecBase with MockitoSugar {
         val application = applicationBuilder(userAnswers = None).build()
 
         when(
-          mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any())
-        ) thenReturn (Future failed UnsupportedAuthProvider())
+          mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(using any(), any())
+        ).thenReturn(Future failed UnsupportedAuthProvider())
 
         val fakeAuthService = injector.instanceOf[FakeAllowedEstateAuthenticationService]
 
@@ -266,8 +266,8 @@ class IdentifierActionSpec extends SpecBase with MockitoSugar {
         val application = applicationBuilder(userAnswers = None).build()
 
         when(
-          mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any())
-        ) thenReturn (Future failed UnsupportedAffinityGroup())
+          mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(using any(), any())
+        ).thenReturn(Future failed UnsupportedAffinityGroup())
 
         val fakeAuthService = injector.instanceOf[FakeAllowedEstateAuthenticationService]
 
@@ -288,8 +288,8 @@ class IdentifierActionSpec extends SpecBase with MockitoSugar {
         val application = applicationBuilder(userAnswers = None).build()
 
         when(
-          mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any())
-        ) thenReturn (Future failed UnsupportedCredentialRole())
+          mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(using any(), any())
+        ).thenReturn(Future failed UnsupportedCredentialRole())
 
         val fakeAuthService = injector.instanceOf[FakeAllowedEstateAuthenticationService]
 
@@ -310,7 +310,7 @@ class IdentifierActionSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+      when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(using any(), any()))
         .thenReturn(authRetrievals(AffinityGroup.Organisation, agentEnrolment))
 
       val fakeAuthService = injector.instanceOf[FakeAllowedEstateAuthenticationService]

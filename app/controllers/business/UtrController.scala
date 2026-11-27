@@ -39,7 +39,7 @@ class UtrController @Inject() (
   sessionRepository: SessionRepository,
   view: UtrView,
   @Business navigator: Navigator
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   val form: Form[String] = formProvider.withPrefix("business.utr")
@@ -57,7 +57,7 @@ class UtrController @Inject() (
     form
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors, request.businessName, mode))),
+        (formWithErrors: Form[?]) => Future.successful(BadRequest(view(formWithErrors, request.businessName, mode))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(UtrPage, value))

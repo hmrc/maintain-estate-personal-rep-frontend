@@ -28,11 +28,11 @@ import org.mockito.Mockito.when
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
 import pages.IndividualOrBusinessPage
-import pages.business._
+import pages.business.*
 import pages.business.add.StartDatePage
 import play.api.inject.bind
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 import uk.gov.hmrc.http.HttpResponse
 import utils.print.BusinessPrintHelper
@@ -97,13 +97,13 @@ class CheckDetailsControllerSpec extends SpecBase with MockitoSugar with ScalaFu
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(Seq(answerSection))(request, messages).toString
+        view(Seq(answerSection))(using request, messages).toString
     }
 
     "submitting" when {
 
       val mockEstatesConnector = mock[EstatesConnector]
-      when(mockEstatesConnector.addOrAmendPersonalRep(any(), any())(any(), any()))
+      when(mockEstatesConnector.addOrAmendPersonalRep(any(), any())(using any(), any()))
         .thenReturn(Future.successful(HttpResponse(OK, "")))
 
       "individual" must {

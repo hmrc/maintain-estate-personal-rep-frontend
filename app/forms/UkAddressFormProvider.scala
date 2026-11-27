@@ -19,8 +19,9 @@ package forms
 import forms.helpers.FormHelper.emptyToNone
 import forms.mappings.{Mappings, Validation}
 import models.UkAddress
+import org.apache.pekko.japi.Option.some
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 
 import javax.inject.Inject
 
@@ -74,7 +75,9 @@ class UkAddressFormProvider @Inject() extends Mappings {
               regexp(Validation.postcodeRegex, "ukAddress.postcode.error.invalid")
             )
           )
-    )(UkAddress.apply)(UkAddress.unapply)
+    )(UkAddress.apply)((ukAddress: UkAddress) =>
+      some((ukAddress.line1, ukAddress.line2, ukAddress.line3, ukAddress.line4, ukAddress.postcode))
+    )
   )
 
 }

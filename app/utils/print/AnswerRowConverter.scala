@@ -28,9 +28,9 @@ import java.time.LocalDate
 
 class AnswerRowConverter @Inject() (checkAnswersFormatters: CheckAnswersFormatters) {
 
-  def bind(userAnswers: UserAnswers, name: String)(implicit messages: Messages): Bound = new Bound(userAnswers, name)
+  def bind(userAnswers: UserAnswers, name: String)(using messages: Messages): Bound = new Bound(userAnswers, name)
 
-  class Bound(userAnswers: UserAnswers, name: String)(implicit messages: Messages) {
+  class Bound(userAnswers: UserAnswers, name: String)(using messages: Messages) {
 
     def nameQuestion(query: QuestionPage[Name], labelKey: String, changeUrl: String): Option[AnswerRow] = {
       val format = (x: Name) => HtmlFormat.escape(x.displayFullName)
@@ -49,7 +49,7 @@ class AnswerRowConverter @Inject() (checkAnswersFormatters: CheckAnswersFormatte
     def ninoQuestion(query: QuestionPage[String], labelKey: String, changeUrl: String): Option[AnswerRow] =
       question(query, labelKey, checkAnswersFormatters.formatNino, changeUrl)
 
-    def addressQuestion[T <: Address](query: QuestionPage[T], labelKey: String, changeUrl: String)(implicit
+    def addressQuestion[T <: Address](query: QuestionPage[T], labelKey: String, changeUrl: String)(using
       messages: Messages,
       reads: Reads[T]
     ): Option[AnswerRow] =
@@ -68,7 +68,7 @@ class AnswerRowConverter @Inject() (checkAnswersFormatters: CheckAnswersFormatte
     ): Option[AnswerRow] =
       question(query, labelKey, checkAnswersFormatters.formatPassportOrIdCardDetails, changeUrl)
 
-    def enumQuestion[T](query: QuestionPage[T], labelKey: String, changeUrl: String)(implicit
+    def enumQuestion[T](query: QuestionPage[T], labelKey: String, changeUrl: String)(using
       messages: Messages,
       reads: Reads[T]
     ): Option[AnswerRow] = {
@@ -92,7 +92,7 @@ class AnswerRowConverter @Inject() (checkAnswersFormatters: CheckAnswersFormatte
           None
       }
 
-    private def question[T](query: QuestionPage[T], labelKey: String, format: T => Html, changeUrl: String)(implicit
+    private def question[T](query: QuestionPage[T], labelKey: String, format: T => Html, changeUrl: String)(using
       rds: Reads[T]
     ): Option[AnswerRow] =
       userAnswers.get(query) map { x =>
